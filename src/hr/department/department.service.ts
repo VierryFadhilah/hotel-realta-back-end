@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { department } from 'models/humanResourceSchema';
 
 @Injectable()
 export class DepartmentService {
@@ -10,11 +11,35 @@ export class DepartmentService {
 
   findAll(page: number, entry: number): any;
   findAll(page: number, entry: number, search?: string): any;
-  findAll(page: number, entry: number, search?: string): any {
-    return {
-      message: 'success',
-      data: {},
-    };
+  async findAll(page: number, entry: number, search?: string): Promise<any> {
+    try {
+      const from = entry * (page - 1);
+      const totalData = await department.count();
+      const result = await department.findAll({
+        limit: entry,
+        offset: from,
+
+        order: [['dept_id', 'ASC']],
+      });
+
+      return {
+        statusCode: 200,
+        message: 'success',
+        data: {
+          department: result,
+          page: page,
+          rows: entry,
+          totalData,
+          from: from + 1,
+          to: +from + result.length,
+        },
+      };
+    } catch (error) {
+      return {
+        statusCode: 400,
+        message: error.message,
+      };
+    }
   }
 
   findOne(id: number) {

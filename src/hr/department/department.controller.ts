@@ -27,8 +27,10 @@ export class DepartmentController {
     @Query('page') page: number,
     @Query('entry') entry: number,
   ) {
-    return;
-    // this.departmentService.findAll();
+    if (search) {
+      return this.departmentService.findAll(page, entry, search);
+    }
+    return this.departmentService.findAll(page, entry);
   }
 
   @Get(':id')
