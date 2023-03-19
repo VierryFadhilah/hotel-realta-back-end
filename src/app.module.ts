@@ -2,6 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { HotelsModule } from './hotel-schema/hotels/hotels.module';
+import { HotelReviewsModule } from './hotel-schema/hotel-reviews/hotel-reviews.module';
+import { FacilitiesModule } from './hotel-schema/facilities/facilities.module';
+import { FacilityPriceHistoryModule } from './hotel-schema/facility-price-history/facility-price-history.module';
+import { FacilityPhotosModule } from './hotel-schema/facility-photos/facility-photos.module';
 
 @Module({
   imports: [
@@ -16,6 +21,11 @@ import { SequelizeModule } from '@nestjs/sequelize';
       autoLoadModels: true,
       synchronize: true,
     }),
+    HotelsModule,
+    HotelReviewsModule,
+    FacilitiesModule,
+    FacilityPriceHistoryModule,
+    FacilityPhotosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
