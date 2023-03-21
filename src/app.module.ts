@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { BankModule } from './payment/bank/bank.module';
+import { EntityModule } from './payment/entity/entity.module';
+import { FintechModule } from './payment/fintech/fintech.module';
 
 @Module({
   imports: [
@@ -16,8 +19,11 @@ import { SequelizeModule } from '@nestjs/sequelize';
       autoLoadModels: true,
       synchronize: true,
     }),
+    BankModule,
+    EntityModule,
+    FintechModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  // controllers: [AppController],
+  // providers: [AppService],
 })
 export class AppModule {}
