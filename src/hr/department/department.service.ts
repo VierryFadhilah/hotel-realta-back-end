@@ -2,31 +2,61 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { department } from 'models/humanResourceSchema';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class DepartmentService {
-  create(createDepartmentDto: CreateDepartmentDto) {
-    return 'This action adds a new department';
+  async create(createDepartmentDto: any) {
+    // const  createDepartmentDto.name
+    const result = await department.create({
+      dept_name: createDepartmentDto.name,
+    });
+    return {
+      statusCode: 200,
+      data: {
+        id: result.dept_id,
+        name: result.dept_name,
+      },
+    };
   }
 
   findAll(page: number, entry: number): any;
   findAll(page: number, entry: number, search?: string): any;
   async findAll(page: number, entry: number, search?: string): Promise<any> {
     try {
+      let dept_name: any;
+      if (search) {
+        dept_name = {
+          dept_name: {
+            [Op.iLike]: `%${search}%`,
+          },
+        };
+      }
+
       const from = entry * (page - 1);
       const totalData = await department.count();
       const result = await department.findAll({
+        where: dept_name,
         limit: entry,
         offset: from,
 
         order: [['dept_id', 'ASC']],
       });
+      const departmentList = [];
+      for (let i = 0; i < result.length; i++) {
+        const column = result[i];
+        departmentList.push({
+          id: column.dept_id,
+          name: column.dept_name,
+          modifiedDate: column.dept_modified_date,
+        });
+      }
 
       return {
         statusCode: 200,
         message: 'success',
         data: {
-          department: result,
+          department: departmentList,
           page: page,
           rows: entry,
           totalData,
@@ -46,11 +76,70 @@ export class DepartmentService {
     return `This action returns a #${id} department`;
   }
 
-  update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
-    return `This action updates a #${id} department`;
+  async update(id: number, updateDepartmentDto: any) {
+    try {
+      const dept_name = updateDepartmentDto.name;
+      // console.log(updateDepartmentDto, id);
+      const result = await department.update(
+        { dept_name: dept_name },
+        {
+          where: {
+            dept_id: id,
+          },
+        },
+      );
+
+      if (result[0]) {
+        return {
+          statusCode: 200,
+          message: 'success',
+          data: {
+            id: id,
+            name: dept_name,
+          },
+        };
+      } else {
+        throw new Error('You Cannot edit with Null Value');
+      }
+    } catch (error) {
+      return {
+        statusCode: 400,
+        message: error.message,
+      };
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} department`;
+  async remove(id: number) {
+    try {
+      const result = await department.findOne({
+        where: {
+          dept_id: id,
+        },
+      });
+      const dept_name = result.dept_name;
+      const dept_id = result.dept_id;
+
+      const resDelete = await department.destroy({
+        where: {
+          dept_id: id,
+        },
+      });
+      if (!resDelete) {
+        throw new Error('Oops! Something Error');
+      }
+      return {
+        statusCode: 200,
+        message: 'success',
+        data: {
+          id: dept_id, //number
+          name: dept_name, //string
+        },
+      };
+    } catch (error) {
+      return {
+        statusCode: 400,
+        message: error.message,
+      };
+    }
   }
 }

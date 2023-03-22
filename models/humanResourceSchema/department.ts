@@ -14,7 +14,13 @@ export interface departmentAttributes {
   dept_modified_date?: Date;
 }
 
-@Table({ tableName: 'department', schema: 'human_resource', timestamps: false })
+@Table({
+  tableName: 'department',
+  schema: 'human_resource',
+  timestamps: true,
+  createdAt: 'dept_modified_date',
+  updatedAt: 'dept_modified_date',
+})
 export class department
   extends Model<departmentAttributes, departmentAttributes>
   implements departmentAttributes

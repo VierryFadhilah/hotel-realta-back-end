@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
   Query,
@@ -17,7 +17,7 @@ export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}
 
   @Post()
-  create(@Body() createDepartmentDto: CreateDepartmentDto) {
+  create(@Body() createDepartmentDto: any) {
     return this.departmentService.create(createDepartmentDto);
   }
 
@@ -38,11 +38,8 @@ export class DepartmentController {
     return this.departmentService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateDepartmentDto: UpdateDepartmentDto,
-  ) {
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateDepartmentDto: any) {
     return this.departmentService.update(+id, updateDepartmentDto);
   }
 
