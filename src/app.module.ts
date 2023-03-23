@@ -2,11 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { HotelsModule } from './hotel-schema/hotels/hotels.module';
-import { HotelReviewsModule } from './hotel-schema/hotel-reviews/hotel-reviews.module';
-import { FacilitiesModule } from './hotel-schema/facilities/facilities.module';
-import { FacilityPriceHistoryModule } from './hotel-schema/facility-price-history/facility-price-history.module';
-import { FacilityPhotosModule } from './hotel-schema/facility-photos/facility-photos.module';
+import { UsersModule } from './users-schema/users/users.module';
+import { HotelModule } from './hotel-schema/hotel.module';
+import { MasterModule } from './master-schema/master.module';
 
 @Module({
   imports: [
@@ -21,11 +19,9 @@ import { FacilityPhotosModule } from './hotel-schema/facility-photos/facility-ph
       autoLoadModels: true,
       synchronize: true,
     }),
-    HotelsModule,
-    HotelReviewsModule,
-    FacilitiesModule,
-    FacilityPriceHistoryModule,
-    FacilityPhotosModule,
+    HotelModule,
+    // UsersModule,
+    MasterModule,
   ],
   controllers: [AppController],
   providers: [AppService],

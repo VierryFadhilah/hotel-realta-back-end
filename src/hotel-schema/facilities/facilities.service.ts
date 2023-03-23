@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { UpdateFacilityDto } from './dto/update-facility.dto';
+import { facilities } from 'models/hotel_module';
 
 @Injectable()
 export class FacilitiesService {
-  create(createFacilityDto: CreateFacilityDto) {
-    return 'This action adds a new facility';
+  async create(createFacilityDto: CreateFacilityDto) {
+    return await facilities.create(createFacilityDto);
   }
 
-  findAll() {
-    return `This action returns all facilities`;
+  async findAll() {
+    return await facilities.findAll();
   }
 
   findOne(id: number) {

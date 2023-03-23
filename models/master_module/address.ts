@@ -42,7 +42,7 @@ export class address
   @Column({ allowNull: true, type: DataType.STRING(5) })
   addr_postal_code?: string;
 
-  @Column({ allowNull: true })
+  @Column({ allowNull: true, type: DataType.JSON })
   addr_spatial_location?: any;
 
   @Column({ allowNull: true, type: DataType.INTEGER })

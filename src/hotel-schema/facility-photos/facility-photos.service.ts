@@ -1,11 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateFacilityPhotoDto } from './dto/create-facility-photo.dto';
 import { UpdateFacilityPhotoDto } from './dto/update-facility-photo.dto';
+import { facility_photos } from 'models/hotel_module';
 
 @Injectable()
 export class FacilityPhotosService {
-  create(createFacilityPhotoDto: CreateFacilityPhotoDto) {
-    return 'This action adds a new facilityPhoto';
+  async create(createFacilityPhotoDto: CreateFacilityPhotoDto) {
+    try {
+      return await facility_photos.create(createFacilityPhotoDto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   findAll() {
