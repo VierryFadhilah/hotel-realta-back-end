@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { UsersModule } from './users-schema/users/users.module';
+import { HotelModule } from './hotel-schema/hotel.module';
+import { MasterModule } from './master-schema/master.module';
 import { HrModule } from './hr/hr.module';
 
 @Module({
@@ -17,6 +20,9 @@ import { HrModule } from './hr/hr.module';
       autoLoadModels: true,
       synchronize: true,
     }),
+    HotelModule,
+    UsersModule,
+    MasterModule,
     HrModule,
   ],
   controllers: [AppController],
