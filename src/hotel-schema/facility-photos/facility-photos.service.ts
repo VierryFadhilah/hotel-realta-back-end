@@ -28,9 +28,13 @@ export class FacilityPhotosService {
 
   async getImage(filename: string, res: any) {
     try {
-      const imagePath = path.join(process.cwd(), 'uploads/hotel', filename);
+      const imagePath = path.join(
+        process.cwd(),
+        `${process.env.UPLOAD_PATH}`,
+        filename,
+      );
       if (!fs.existsSync(imagePath)) {
-        throw new NotFoundException('File not found');
+        console.log(imagePath);
       }
       res.sendFile(imagePath);
     } catch (error) {
@@ -66,7 +70,7 @@ export class FacilityPhotosService {
   deleteImgInFile(photoFilename) {
     const imagePath = path.join(
       __dirname,
-      '../../../../uploads/hotel',
+      `../../../../${process.env.UPLOAD_PATH}`,
       photoFilename,
     );
 
