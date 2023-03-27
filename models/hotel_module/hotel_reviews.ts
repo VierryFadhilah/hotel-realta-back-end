@@ -14,7 +14,7 @@ export interface hotel_reviewsAttributes {
   hore_rating?: number;
   hore_created_on?: Date;
   hore_user_id?: number;
-  horeriotelid?: number;
+  hore_hotel_id?: number;
 }
 
 @Table({ tableName: 'hotel_reviews', schema: 'hotel', timestamps: false })
@@ -39,12 +39,16 @@ export class hotel_reviews
   @Column({ allowNull: true, type: DataType.INTEGER })
   hore_rating?: number;
 
-  @Column({ allowNull: true, type: DataType.DATE(6) })
+  @Column({
+    allowNull: true,
+    type: DataType.DATE(6),
+    defaultValue: Sequelize.literal('now()'),
+  })
   hore_created_on?: Date;
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   hore_user_id?: number;
 
   @Column({ allowNull: true, type: DataType.INTEGER })
-  horeriotelid?: number;
+  hore_hotel_id?: number;
 }

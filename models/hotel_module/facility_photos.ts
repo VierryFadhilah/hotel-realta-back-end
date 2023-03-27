@@ -45,6 +45,10 @@ export class facility_photos
   @Column({ allowNull: true, type: DataType.BOOLEAN })
   fapho_primary?: boolean;
 
-  @Column({ allowNull: true, type: DataType.DATE(6) })
+  @Column({
+    allowNull: true,
+    type: DataType.DATE(6),
+    defaultValue: Sequelize.literal('now()'),
+  })
   fapho_modified_date?: Date;
 }

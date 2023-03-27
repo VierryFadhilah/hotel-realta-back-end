@@ -18,7 +18,7 @@ export interface facility_price_historyAttributes {
   faph_discount?: string;
   faph_tax_rate?: string;
   faph_modified_date?: Date;
-  fapri_user_id?: number;
+  faph_user_id?: number;
   faph_faci_id?: number;
 }
 
@@ -66,11 +66,15 @@ export class facility_price_history
   @Column({ allowNull: true, type: DataType.NUMBER })
   faph_tax_rate?: string;
 
-  @Column({ allowNull: true, type: DataType.DATE(6) })
+  @Column({
+    allowNull: true,
+    type: DataType.DATE(6),
+    defaultValue: Sequelize.literal('now()'),
+  })
   faph_modified_date?: Date;
 
   @Column({ allowNull: true, type: DataType.INTEGER })
-  fapri_user_id?: number;
+  faph_user_id?: number;
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   faph_faci_id?: number;

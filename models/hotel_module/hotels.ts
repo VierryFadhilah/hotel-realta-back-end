@@ -12,7 +12,7 @@ export interface hotelsAttributes {
   hotel_id?: number;
   hotel_name?: string;
   hotel_description?: string;
-  hotel_rating_star?: number;
+  hotel_rating_star?: string;
   hotel_phonenumber?: string;
   status?: string;
   reason?: string;
@@ -27,7 +27,6 @@ export class hotels
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('hotel.hotels_hotel_id_seq'::regclass)",
@@ -42,8 +41,8 @@ export class hotels
   @Column({ allowNull: true, type: DataType.STRING(500) })
   hotel_description?: string;
 
-  @Column({ allowNull: true, type: DataType.INTEGER })
-  hotel_rating_star?: number;
+  @Column({ allowNull: true, type: DataType.DECIMAL })
+  hotel_rating_star?: string;
 
   @Column({ allowNull: true, type: DataType.STRING(25) })
   hotel_phonenumber?: string;

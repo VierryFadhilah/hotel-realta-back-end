@@ -49,6 +49,7 @@ export class HotelsService {
   async remove(id: number) {
     try {
       const result = await this.findOne(id);
+      result.destroy();
       return `This action removes a #${id} hotel`;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);

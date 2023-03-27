@@ -20,7 +20,7 @@ import { MasterModule } from './master-schema/master.module';
       synchronize: true,
     }),
     HotelModule,
-    // UsersModule,
+    UsersModule,
     MasterModule,
   ],
   controllers: [AppController],
