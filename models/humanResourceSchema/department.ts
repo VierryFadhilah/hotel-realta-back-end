@@ -33,6 +33,7 @@ export class department
       "nextval('human_resource.department_dept_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'pk_dept_id', using: 'btree', unique: true })
   dept_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(50) })

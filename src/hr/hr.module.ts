@@ -8,8 +8,12 @@ import {
   employee_department_history,
   employee_pay_history,
   job_role,
+  work_order_detail,
+  work_orders,
 } from 'models/humanResourceSchema';
 import { EmployeeModule } from './employee/employee.module';
+import { users } from 'models/usersSchema';
+import { service_task } from 'models/masterSchema';
 
 @Module({
   imports: [
@@ -19,6 +23,10 @@ import { EmployeeModule } from './employee/employee.module';
       employee_pay_history,
       employee_department_history,
       job_role,
+      work_orders,
+      users,
+      work_order_detail,
+      service_task,
     ]),
     WorkorderModule,
     DepartmentModule,

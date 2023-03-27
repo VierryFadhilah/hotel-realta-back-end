@@ -6,7 +6,11 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
+import { users } from '../usersSchema/users';
+import { work_order_detail } from './work_order_detail';
 
 export interface work_ordersAttributes {
   woro_id?: number;
@@ -32,14 +36,26 @@ export class work_orders
       "nextval('human_resource.work_orders_woro_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'pk_woro_id', using: 'btree', unique: true })
   woro_id?: number;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
   woro_start_date?: Date;
 
-  @Column({ allowNull: true, type: DataType.STRING(15) })
+  @Column({
+    allowNull: true,
+    type: DataType.STRING(15),
+    defaultValue: Sequelize.literal("'OPEN'::character varying"),
+  })
   woro_status?: string;
 
+  @ForeignKey(() => users)
   @Column({ allowNull: true, type: DataType.INTEGER })
   woro_user_id?: number;
+
+  @BelongsTo(() => users)
+  user?: users;
+
+  @HasMany(() => work_order_detail, { sourceKey: 'woro_id' })
+  work_order_details?: work_order_detail[];
 }

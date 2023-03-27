@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
+import { work_orders } from '../humanResourceSchema/work_orders';
 
 export interface usersAttributes {
   user_id?: number;
@@ -30,6 +32,7 @@ export class users
       "nextval('users.users_user_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'pk_user_id', using: 'btree', unique: true })
   user_id?: number;
 
   @Column({
@@ -48,6 +51,7 @@ export class users
   user_email?: string;
 
   @Column({ allowNull: true, type: DataType.STRING(25) })
+  @Index({ name: 'users_user_phone_number_key', using: 'btree', unique: true })
   user_phone_number?: string;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
@@ -59,4 +63,7 @@ export class users
     defaultValue: Sequelize.literal("'T'::character varying"),
   })
   user_type?: string;
+
+  @HasMany(() => work_orders, { sourceKey: 'user_id' })
+  work_orders?: work_orders[];
 }

@@ -38,9 +38,11 @@ export class employee_department_history
       "nextval('human_resource.employee_department_history_edhi_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'pk_edhi', using: 'btree', unique: true })
   edhi_id?: number;
 
   @Column({ primaryKey: true, type: DataType.INTEGER })
+  @Index({ name: 'pk_edhi', using: 'btree', unique: true })
   edhi_emp_id!: number;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })

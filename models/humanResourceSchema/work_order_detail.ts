@@ -6,7 +6,11 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
+  HasOne,
 } from 'sequelize-typescript';
+import { work_orders } from './work_orders';
+import { employee } from './employee';
 
 export interface work_order_detailAttributes {
   wode_id?: number;
@@ -38,6 +42,7 @@ export class work_order_detail
       "nextval('human_resource.work_order_detail_wode_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'pk_wode_id', using: 'btree', unique: true })
   wode_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(255) })
@@ -64,6 +69,13 @@ export class work_order_detail
   @Column({ allowNull: true, type: DataType.INTEGER })
   wode_faci_id?: number;
 
+  @ForeignKey(() => work_orders)
   @Column({ allowNull: true, type: DataType.INTEGER })
   wode_woro_id?: number;
+
+  @BelongsTo(() => work_orders)
+  work_order?: work_orders;
+
+  @HasOne(() => employee, { sourceKey: 'wode_emp_id' })
+  employee?: employee;
 }

@@ -25,16 +25,31 @@ export class DepartmentService {
   async findAll(page: number, entry: number, search?: string): Promise<any> {
     try {
       let dept_name: any;
+      let totalPage: any;
+      let totalData: any;
+
       if (search) {
         dept_name = {
           dept_name: {
             [Op.iLike]: `%${search}%`,
           },
         };
+        totalData = await department.count({
+          where: {
+            dept_name: {
+              [Op.iLike]: `%${search}%`,
+            },
+          },
+        });
+        totalPage = Math.ceil(totalData / entry);
+      } else {
+        totalData = await department.count();
+
+        totalPage = Math.ceil(totalData / entry);
       }
 
       const from = entry * (page - 1);
-      const totalData = await department.count();
+
       const result = await department.findAll({
         where: dept_name,
         limit: entry,
@@ -51,7 +66,6 @@ export class DepartmentService {
           modifiedDate: column.dept_modified_date,
         });
       }
-
       return {
         statusCode: 200,
         message: 'success',
@@ -60,6 +74,7 @@ export class DepartmentService {
           page: page,
           rows: entry,
           totalData,
+          totalPage,
           from: from + 1,
           to: +from + result.length,
         },

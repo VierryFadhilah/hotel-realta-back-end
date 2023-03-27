@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { work_order_detail } from './work_order_detail';
 
 export interface employeeAttributes {
   emp_id?: number;
@@ -30,6 +32,7 @@ export class employee
   extends Model<employeeAttributes, employeeAttributes>
   implements employeeAttributes
 {
+  @ForeignKey(() => work_order_detail)
   @Column({
     primaryKey: true,
     autoIncrement: true,
@@ -38,9 +41,11 @@ export class employee
       "nextval('human_resource.employee_emp_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'pk_emp_id', using: 'btree', unique: true })
   emp_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(25) })
+  @Index({ name: 'employee_emp_national_id_key', using: 'btree', unique: true })
   emp_national_id?: string;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
@@ -78,4 +83,7 @@ export class employee
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   emp_joro_id?: number;
+
+  @BelongsTo(() => work_order_detail)
+  work_order_detail?: work_order_detail;
 }

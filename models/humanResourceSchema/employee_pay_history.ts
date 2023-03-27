@@ -19,18 +19,18 @@ export interface employee_pay_historyAttributes {
 @Table({
   tableName: 'employee_pay_history',
   schema: 'human_resource',
-  timestamps: true,
-  createdAt: 'ephi_rate_change_date',
-  updatedAt: 'ephi_modified_date',
+  timestamps: false,
 })
 export class employee_pay_history
   extends Model<employee_pay_historyAttributes, employee_pay_historyAttributes>
   implements employee_pay_historyAttributes
 {
   @Column({ primaryKey: true, type: DataType.INTEGER })
+  @Index({ name: 'pk_ephi', using: 'btree', unique: true })
   ephi_emp_id!: number;
 
   @Column({ primaryKey: true, type: DataType.DATE(6) })
+  @Index({ name: 'pk_ephi', using: 'btree', unique: true })
   ephi_rate_change_date!: Date;
 
   @Column({ allowNull: true, type: DataType.NUMBER })

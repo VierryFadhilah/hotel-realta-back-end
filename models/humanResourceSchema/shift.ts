@@ -28,14 +28,18 @@ export class shift
       "nextval('human_resource.shift_shift_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'pk_shift_id', using: 'btree', unique: true })
   shift_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(25) })
+  @Index({ name: 'shift_shift_name_key', using: 'btree', unique: true })
   shift_name?: string;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
+  @Index({ name: 'shift_shift_start_time_key', using: 'btree', unique: true })
   shift_start_time?: Date;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
+  @Index({ name: 'shift_shift_end_time_key', using: 'btree', unique: true })
   shift_end_time?: Date;
 }

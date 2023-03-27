@@ -27,9 +27,11 @@ export class job_role
       "nextval('human_resource.job_role_joro_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'pk_joro_id', using: 'btree', unique: true })
   joro_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(55) })
+  @Index({ name: 'job_role_joro_name_key', using: 'btree', unique: true })
   joro_name?: string;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
