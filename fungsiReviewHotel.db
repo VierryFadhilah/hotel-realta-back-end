@@ -1,0 +1,19 @@
+CREATE OR REPLACE FUNCTION update_hotel_rating_star()
+RETURNS TRIGGER AS $$
+DECLARE
+  avg_rating NUMERIC;
+BEGIN
+  SELECT AVG(hore_rating) INTO avg_rating FROM hotel.hotel_reviews WHERE hore_hotel_id = NEW.hore_hotel_id;
+  UPDATE hotel.hotels SET hotel_rating_star = avg_rating WHERE hotel_id = NEW.hore_hotel_id;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_hotel_rating_star_trigger
+AFTER INSERT OR UPDATE ON hotel.hotel_reviews
+FOR EACH ROW
+EXECUTE FUNCTION update_hotel_rating_star();
+
+DROP TRIGGER IF EXISTS update_hotel_rating_star_trigger ON hotel.hotel_reviews;
+
+ALTER TABLE hotel.hotels ALTER COLUMN hotel_rating_star TYPE NUMERIC;
