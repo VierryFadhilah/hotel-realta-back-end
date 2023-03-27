@@ -2,6 +2,13 @@
 /src/master-schema
 /src/users-schema
 
+#db
+/contohpagination.sql
+/dbhotel.sql
+/dbmaster.sql
+/dbusers.sql
+/fungsiReviewHotel.db
+
 
 # compiled output
 /dist
