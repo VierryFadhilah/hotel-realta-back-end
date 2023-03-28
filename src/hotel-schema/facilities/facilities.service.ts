@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateFacilityDto } from './dto/create-facility.dto';
 import { UpdateFacilityDto } from './dto/update-facility.dto';
-import { facilities } from 'models/hotel_module';
+import { facilities } from 'models/hotelSchema';
 import { FacilityPriceHistoryService } from '../facility-price-history/facility-price-history.service';
 
 @Injectable()
@@ -97,6 +97,7 @@ export class FacilitiesService {
         faph_faci_id: id,
         faph_user_id: updateFacilityDto.faph_user_id,
       };
+      // eslint-disable-next-line @typescript-eslint/ban-types
       let facilityPriceHistoryData: {};
       if (
         updateFacilityDto.faci_low_price ||

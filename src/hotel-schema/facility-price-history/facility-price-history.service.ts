@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateFacilityPriceHistoryDto } from './dto/create-facility-price-history.dto';
 import { UpdateFacilityPriceHistoryDto } from './dto/update-facility-price-history.dto';
 import { InjectModel } from '@nestjs/sequelize';
-import { facility_price_history } from 'models/hotel_module';
+import { facility_price_history } from 'models/hotelSchema';
 
 @Injectable()
 export class FacilityPriceHistoryService {

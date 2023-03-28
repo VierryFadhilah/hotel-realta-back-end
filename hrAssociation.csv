@@ -1,3 +1,0 @@
-1:N,  user_id,woro_user_id,  users, work_orders
-1:N ,woro_id, wode_woro_id, work_orders, work_order_detail
-1:1,wode_emp_id,emp_id, work_order_detail,employee

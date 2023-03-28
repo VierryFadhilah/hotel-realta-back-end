@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { CreateFacilityPhotoDto } from './dto/create-facility-photo.dto';
 import { UpdateFacilityPhotoDto } from './dto/update-facility-photo.dto';
-import { facility_photos } from 'models/hotel_module';
+import { facility_photos } from 'models/hotelSchema';
 import * as fs from 'fs';
 import * as path from 'path';
 

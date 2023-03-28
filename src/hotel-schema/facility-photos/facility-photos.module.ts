@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { FacilityPhotosService } from './facility-photos.service';
 import { FacilityPhotosController } from './facility-photos.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { facility_photos } from 'models/hotel_module/facility_photos';
+import { facility_photos } from 'models/hotelSchema/facility_photos';
 import { MulterModule } from '@nestjs/platform-express';
 
 @Module({

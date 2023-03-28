@@ -26,10 +26,10 @@ export class policy_category_group
   implements policy_category_groupAttributes
 {
   @Column({ primaryKey: true, type: DataType.INTEGER })
-  @Index({ name: 'policy_category_group_pkey', using: 'btree', unique: true })
+  @Index({ name: 'pk_poca_poli_id', using: 'btree', unique: true })
   poca_poli_id!: number;
 
   @Column({ primaryKey: true, type: DataType.INTEGER })
-  @Index({ name: 'policy_category_group_pkey', using: 'btree', unique: true })
+  @Index({ name: 'pk_poca_poli_id', using: 'btree', unique: true })
   poca_cagro_id!: number;
 }
