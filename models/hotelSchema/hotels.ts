@@ -32,6 +32,7 @@ export class hotels
       "nextval('hotel.hotels_hotel_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'pk_hotel_id', using: 'btree', unique: true })
   @Index({ name: 'hotels_pkey', using: 'btree', unique: true })
   hotel_id?: number;
 

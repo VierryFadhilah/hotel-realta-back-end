@@ -8,7 +8,7 @@ import {
   ForeignKey,
   HasMany,
 } from 'sequelize-typescript';
-import { work_orders } from '../humanResourceSchema/work_orders';
+import { work_orders } from '../humanResourceSchema';
 
 export interface usersAttributes {
   user_id?: number;

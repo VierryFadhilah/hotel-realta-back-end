@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateHotelReviewDto } from './dto/create-hotel-review.dto';
 import { UpdateHotelReviewDto } from './dto/update-hotel-review.dto';
-import { hotel_reviews } from 'models/hotel_module';
+import { hotel_reviews } from 'models/hotelSchema';
 
 @Injectable()
 export class HotelReviewsService {

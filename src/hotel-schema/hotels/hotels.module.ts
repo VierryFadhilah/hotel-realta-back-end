@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { HotelsService } from './hotels.service';
 import { HotelsController } from './hotels.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { hotels } from 'models/hotel_module';
+import { hotels } from 'models/hotelSchema';
 
 @Module({
   imports: [SequelizeModule.forFeature([hotels])],
