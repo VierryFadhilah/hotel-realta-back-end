@@ -4,7 +4,8 @@ import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 // import { HotelModule } from './hotel-schema/hotel.module';
 // import { HrModule } from './hr/hr.module';
-import { RestoTModule } from './resto/resto-t.module';
+// import { RestoTModule } from './resto/resto-t.module';
+import { PurchasingModule } from './purchasing/purchasing.module';
 
 @Module({
   imports: [
@@ -19,9 +20,10 @@ import { RestoTModule } from './resto/resto-t.module';
       autoLoadModels: true,
       synchronize: true,
     }),
+    PurchasingModule,
     // HotelModule,
     // HrModule,
-    RestoTModule,
+    // RestoTModule,
   ],
   controllers: [AppController],
   providers: [AppService],
