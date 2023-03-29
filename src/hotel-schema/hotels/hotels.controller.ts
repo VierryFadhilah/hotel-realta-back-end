@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+} from '@nestjs/common';
 import { HotelsService } from './hotels.service';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
@@ -15,6 +24,11 @@ export class HotelsController {
   @Get()
   findAll() {
     return this.hotelsService.findAll();
+  }
+
+  @Get('/pagination/:offset')
+  getUsersPagination(@Param('offset', ParseIntPipe) offset: number) {
+    return this.hotelsService.getHotelsPagination(offset);
   }
 
   @Get(':id')

@@ -22,9 +22,9 @@ export interface facilitiesAttributes {
   faci_rate_price?: string;
   faci_discount?: string;
   faci_tax_rate?: string;
-  facimodifieddate?: Date;
   faci_cagro_id?: number;
-  facihotelid?: number;
+  faci_hotel_id?: number;
+  faci_modified_date?: Date;
 }
 
 @Table({ tableName: 'facilities', schema: 'hotel', timestamps: false })
@@ -34,7 +34,6 @@ export class facilities
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('hotel.facilities_faci_id_seq'::regclass)",
@@ -84,12 +83,16 @@ export class facilities
   @Column({ allowNull: true, type: DataType.NUMBER })
   faci_tax_rate?: string;
 
-  @Column({ allowNull: true, type: DataType.DATE(6) })
-  facimodifieddate?: Date;
-
   @Column({ allowNull: true, type: DataType.INTEGER })
   faci_cagro_id?: number;
 
   @Column({ allowNull: true, type: DataType.INTEGER })
-  facihotelid?: number;
+  faci_hotel_id?: number;
+
+  @Column({
+    allowNull: true,
+    type: DataType.DATE(6),
+    defaultValue: Sequelize.literal('now()'),
+  })
+  faci_modified_date?: Date;
 }

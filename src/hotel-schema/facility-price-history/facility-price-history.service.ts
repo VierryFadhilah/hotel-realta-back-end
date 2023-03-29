@@ -1,26 +1,76 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateFacilityPriceHistoryDto } from './dto/create-facility-price-history.dto';
 import { UpdateFacilityPriceHistoryDto } from './dto/update-facility-price-history.dto';
+import { InjectModel } from '@nestjs/sequelize';
+import { facility_price_history } from 'models/hotel_module';
 
 @Injectable()
 export class FacilityPriceHistoryService {
-  create(createFacilityPriceHistoryDto: CreateFacilityPriceHistoryDto) {
-    return 'This action adds a new facilityPriceHistory';
+  constructor(
+    @InjectModel(facility_price_history)
+    private facilityPriceHistoryModel: typeof facility_price_history,
+  ) {}
+
+  async create(createFacilityPriceHistoryDto: CreateFacilityPriceHistoryDto) {
+    try {
+      return await facility_price_history.create(createFacilityPriceHistoryDto);
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findAll() {
-    return `This action returns all facilityPriceHistory`;
+  async findAll() {
+    try {
+      return await facility_price_history.findAll();
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} facilityPriceHistory`;
+  async findOne(faph_id: number) {
+    try {
+      const result = await facility_price_history.findOne({
+        where: { faph_id },
+      });
+      if (!result) {
+        throw new HttpException(
+          'facility price history tidak ditemukan',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      return result;
+    } catch (error) {
+      if (error.status == 400) {
+        throw new HttpException(
+          'facility price history tidak ditemukan',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  update(id: number, updateFacilityPriceHistoryDto: UpdateFacilityPriceHistoryDto) {
-    return `This action updates a #${id} facilityPriceHistory`;
+  async update(
+    id: number,
+    updateFacilityPriceHistoryDto: UpdateFacilityPriceHistoryDto,
+  ) {
+    try {
+      const faph = await this.findOne(id);
+      faph.update(updateFacilityPriceHistoryDto);
+      return faph;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} facilityPriceHistory`;
+  async remove(id: number) {
+    try {
+      const result = await this.findOne(id);
+
+      result.destroy();
+      return `delete a #${id} from facilityPriceHistory`;
+    } catch (error) {
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }
