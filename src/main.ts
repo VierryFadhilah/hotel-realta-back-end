@@ -13,7 +13,10 @@ async function bootstrap() {
   app.enableCors({
     origin: true,
   });
-  app.useStaticAssets(join(__dirname, '..', '..', 'uploads'));
+  app.useStaticAssets(process.env.UPLOAD_PATH, {
+    prefix: '/uploads',
+  });
+
   await app.listen(port, () => {
     console.log(`App run on port ${port}`);
   });
