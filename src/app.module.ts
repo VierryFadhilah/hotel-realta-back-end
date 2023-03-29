@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { BankModule } from './payment/bank/bank.module';
-import { EntityModule } from './payment/entity/entity.module';
-import { FintechModule } from './payment/fintech/fintech.module';
-import { UserAccountsModule } from './payment/user_accounts/user_accounts.module';
-import { PaymentTransacationModule } from './payment/payment_transacation/payment_transacation.module';
+import { paymentModule } from './payment/payment.module';
+// import { HotelModule } from './hotel-schema/hotel.module';
+// import { HrModule } from './hr/hr.module';
+// import { RestoTModule } from './resto/resto-t.module';
+// import { PurchasingModule } from './purchasing/purchasing.module';
 
 @Module({
   imports: [
@@ -21,13 +19,11 @@ import { PaymentTransacationModule } from './payment/payment_transacation/paymen
       autoLoadModels: true,
       synchronize: true,
     }),
-    BankModule,
-    EntityModule,
-    FintechModule,
-    UserAccountsModule,
-    PaymentTransacationModule,
+    paymentModule,
+    // HotelModule,
+    // HrModule,
+    // RestoTModule,
+    // PurchasingModule,
   ],
-  // controllers: [AppController],
-  // providers: [AppService],
 })
 export class AppModule {}
