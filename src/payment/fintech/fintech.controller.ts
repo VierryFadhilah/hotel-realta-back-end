@@ -1,30 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put, Query } from '@nestjs/common';
 import { FintechService } from './fintech.service';
-import { CreateFintechDto } from './dto/create-fintech.dto';
-import { UpdateFintechDto } from './dto/update-fintech.dto';
+import { FintechDto } from './dto/fintech.dto';
+
 
 @Controller('fintech')
 export class FintechController {
   constructor(private readonly fintechService: FintechService) {}
 
   @Post()
-  create(@Body() createFintechDto: CreateFintechDto) {
-    return this.fintechService.create(createFintechDto);
+  create(@Body() fintechDto: FintechDto) {
+    return this.fintechService.create(fintechDto);
   }
 
   @Get()
-  findAll() {
-    return this.fintechService.findAll();
+  findAll( @Query('search') search: any):Promise<any> {
+    return this.fintechService.findAll({search});
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.fintechService.findOne(+id);
+  findById(@Param('id') id: string){
+    return this.fintechService.findById(+id)
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFintechDto: UpdateFintechDto) {
-    return this.fintechService.update(+id, updateFintechDto);
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() fintechDto: FintechDto) {
+    return this.fintechService.update(+id, fintechDto);
   }
 
   @Delete(':id')

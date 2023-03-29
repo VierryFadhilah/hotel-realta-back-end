@@ -5,6 +5,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { BankModule } from './payment/bank/bank.module';
 import { EntityModule } from './payment/entity/entity.module';
 import { FintechModule } from './payment/fintech/fintech.module';
+import { UserAccountsModule } from './payment/user_accounts/user_accounts.module';
+import { PaymentTransacationModule } from './payment/payment_transacation/payment_transacation.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { FintechModule } from './payment/fintech/fintech.module';
     BankModule,
     EntityModule,
     FintechModule,
+    UserAccountsModule,
+    PaymentTransacationModule,
   ],
   // controllers: [AppController],
   // providers: [AppService],

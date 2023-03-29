@@ -17,10 +17,10 @@ export interface payment_transacationAttributes {
   part_note?: string;
   part_modified_date?: Date;
   part_order_number?: string;
-  part_source_id?: number;
-  part_target_id?: number;
+  part_source_id?: string;
+  part_target_id?: string;
   part_trx_number_ref?: string;
-  pary_user_id?: number;
+  part_user_id?: number;
 }
 
 @Table({
@@ -69,11 +69,11 @@ export class payment_transacation
   @Column({ allowNull: true, type: DataType.STRING(55) })
   part_order_number?: string;
 
-  @Column({ allowNull: true, type: DataType.INTEGER })
-  part_source_id?: number;
+  @Column({ allowNull: true, type: DataType.STRING(25) })
+  part_source_id?: string;
 
-  @Column({ allowNull: true, type: DataType.INTEGER })
-  part_target_id?: number;
+  @Column({ allowNull: true, type: DataType.STRING(25) })
+  part_target_id?: string;
 
   @Column({ allowNull: true, type: DataType.STRING(55) })
   @Index({
@@ -84,5 +84,5 @@ export class payment_transacation
   part_trx_number_ref?: string;
 
   @Column({ allowNull: true, type: DataType.INTEGER })
-  pary_user_id?: number;
+  part_user_id?: number;
 }

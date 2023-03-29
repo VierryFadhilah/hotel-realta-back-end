@@ -13,8 +13,13 @@ export class BankController {
   }
 
   @Get()
-  findAll( @Query('search') search: any, @Query('page') page: any, @Query('limit') limit: any):Promise<any> {
-    return this.bankService.findAll({search,page,limit});
+  findAll( @Query('search') search: any):Promise<any> {
+    return this.bankService.findAll({search});
+  }
+
+  @Get(':id')
+  findById(@Param('id') id: string){
+    return this.bankService.findById(+id)
   }
 
   @Put(':id')

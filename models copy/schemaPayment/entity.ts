@@ -7,8 +7,8 @@ import {
   Sequelize,
   ForeignKey,
   BelongsTo,
-  HasOne,
   HasMany,
+  HasOne,
 } from 'sequelize-typescript';
 import { bank } from './bank';
 import { fintech } from './fintech';
@@ -23,6 +23,7 @@ export class entity
   extends Model<entityAttributes, entityAttributes>
   implements entityAttributes
 {
+
   @ForeignKey(() => bank)
   @ForeignKey(() => fintech)
   @ForeignKey(() => user_accounts)

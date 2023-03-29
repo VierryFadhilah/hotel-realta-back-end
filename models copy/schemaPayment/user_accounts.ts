@@ -9,8 +9,8 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 
-import { entity } from './entity';
 import { bank } from './bank';
+import { entity } from './entity';
 
 export interface user_accountsAttributes {
   usac_entity_id: number;
@@ -23,13 +23,7 @@ export interface user_accountsAttributes {
   usac_modified_date?: Date;
 }
 
-@Table({
-  tableName: 'user_accounts',
-  schema: 'payment',
-  timestamps: true,
-  createdAt: 'usac_modified_date',
-  updatedAt: 'usac_modified_date',
-})
+@Table({ tableName: 'user_accounts', schema: 'payment', timestamps: false })
 export class user_accounts
   extends Model<user_accountsAttributes, user_accountsAttributes>
   implements user_accountsAttributes
@@ -69,4 +63,6 @@ export class user_accounts
 
   @BelongsTo(() => bank)
   bank?: bank;
+
+
 }

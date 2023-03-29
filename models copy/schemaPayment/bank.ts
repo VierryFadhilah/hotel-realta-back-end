@@ -18,13 +18,7 @@ export interface bankAttributes {
   bank_modified_date?: Date;
 }
 
-@Table({
-  tableName: 'bank',
-  schema: 'payment',
-  timestamps: true,
-  createdAt: 'bank_modified_date',
-  updatedAt: 'bank_modified_date',
-})
+@Table({ tableName: 'bank', schema: 'payment', timestamps: false })
 export class bank
   extends Model<bankAttributes, bankAttributes>
   implements bankAttributes
@@ -42,6 +36,10 @@ export class bank
   @Index({ name: 'bank_bank_name_key', using: 'btree', unique: true })
   bank_name?: string;
 
+  @Column({ allowNull: true, type: DataType.DATE(6) })
+  bank_modified_date?: Date;
+
   @BelongsTo(() => entity)
   entity?: entity;
+
 }

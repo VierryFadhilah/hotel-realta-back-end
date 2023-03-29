@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { BankDto } from './dto/bank.dto';
-
 import { bank, entity } from 'models/schemaPayment';
 import { InjectModel } from '@nestjs/sequelize';
 import { Op } from 'sequelize';
@@ -33,26 +32,9 @@ export class BankService {
     }
   }
 
-  async findAll({ search, page, limit }) {
+  async findAll({search}) {
     try {
-      const pages = parseInt(page) || 0;
-      const limits = parseInt(limit) || 10;
       const searchs = search || '';
-
-      const offset = limits * pages;
-      const totalRows = await this.bankModel.count({
-        where: {
-          [Op.or]: [
-            {
-              bank_name: {
-                [Op.like]: '%' + searchs + '%',
-              },
-            },
-          ],
-        },
-      });
-      const totalPage = Math.ceil(totalRows / limits);
-
       const result = await this.bankModel.findAll({
         where: {
           [Op.or]: [
@@ -63,24 +45,36 @@ export class BankService {
             },
           ],
         },
-        offset: offset,
-        limit: limit,
         order: [['bank_entity_id', 'DESC']],
       });
       return {
         status: 200,
         message: 'succes',
         data: result,
-        page: pages,
-        limit: limits,
-        totalRows: totalRows,
-        totalPage: totalPage,
       };
     } catch (err) {
       return {
         status: 400,
         message: err,
       };
+    }
+  }
+
+  async findById(id:number){
+    try {
+      const result = await this.bankModel.findOne({
+        where:{bank_entity_id:id}
+      })
+      return {
+        status: 200,
+        message: "succesfully",
+        data: result
+      }
+    } catch (err) {
+      return{
+        status: 400,
+        message: err
+      }
     }
   }
 
