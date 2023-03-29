@@ -7,7 +7,6 @@ import {
   Sequelize,
   ForeignKey,
   BelongsTo,
-  HasOne,
 } from 'sequelize-typescript';
 import { work_orders } from './work_orders';
 import { employee } from './employee';
@@ -60,6 +59,7 @@ export class work_order_detail
   @Column({ allowNull: true, type: DataType.STRING(255) })
   wode_notes?: string;
 
+  @ForeignKey(() => employee)
   @Column({ allowNull: true, type: DataType.INTEGER })
   wode_emp_id?: number;
 
@@ -76,6 +76,6 @@ export class work_order_detail
   @BelongsTo(() => work_orders)
   work_order?: work_orders;
 
-  @HasOne(() => employee, { sourceKey: 'wode_emp_id' })
+  @BelongsTo(() => employee)
   employee?: employee;
 }

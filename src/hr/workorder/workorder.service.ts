@@ -82,6 +82,8 @@ export class WorkorderService {
         createdBy: element.user.user_full_name,
       });
     }
+
+    const totalPage = Math.ceil(workorder.length / entry);
     return {
       statusCode: 200,
       message: 'success',
@@ -89,6 +91,7 @@ export class WorkorderService {
         workorder,
         page: +page,
         rows: +entry,
+        totalPage,
         totalData,
         from: offset + 1,
         to: +offset + result.length,

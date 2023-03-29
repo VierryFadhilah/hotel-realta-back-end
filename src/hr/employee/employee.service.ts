@@ -7,10 +7,14 @@ import {
   employee_department_history,
   employee_pay_history,
   job_role,
+  work_order_detail,
+  work_orders,
 } from 'models/humanResourceSchema';
 import { Sequelize } from 'sequelize-typescript';
 import { unlink } from 'fs';
 import { join } from 'path';
+import { users } from 'models/usersSchema';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class EmployeeService {
@@ -27,7 +31,8 @@ export class EmployeeService {
     search?: string,
     status?: string,
   ): Promise<any> {
-    let currentFlag = ``;
+    // eslint-disable-next-line prefer-const
+    let where: any = {};
     let like = ``;
 
     if (search) {
@@ -35,25 +40,61 @@ export class EmployeeService {
     }
 
     if (status) {
-      currentFlag = `, '${status}' `;
+      where.emp_current_flag = {
+        [Op.eq]: status,
+      };
     }
     const from = entry * (page - 1);
 
     const totalData = await employee.count();
-    const result = await this.sequelize.query(
-      `select * from human_resource.show_employee_info_by_name('${like}',${entry}, ${from}  ${currentFlag})`,
-    );
+
+    const result = await employee.findAndCountAll({
+      attributes: [
+        'emp_id',
+        'emp_national_id',
+        'emp_birth_date',
+        'emp_hire_date',
+        'emp_current_flag',
+      ],
+      where,
+      include: [
+        {
+          model: users,
+          attributes: ['user_full_name'],
+          where: {
+            user_full_name: { [Op.iLike]: `%${like}%` },
+          },
+        },
+      ],
+      limit: entry,
+      offset: from,
+      order: [['emp_id', 'ASC']],
+    });
+    const employeeList = [];
+    for (let i = 0; i < result.rows.length; i++) {
+      const element = result.rows[i];
+      employeeList.push({
+        emp_id: element.emp_id,
+        user_full_name: element.user.user_full_name,
+        emp_national_id: element.emp_national_id,
+        emp_birth_date: element.emp_birth_date,
+        emp_hire_date: element.emp_hire_date,
+        emp_current_flag: element.emp_current_flag,
+      });
+    }
+    const totalPage = Math.ceil(result.count / entry);
 
     return {
       statusCode: 200,
       message: 'success',
       data: {
-        employee: result[0],
+        employee: employeeList,
         page: page,
         rows: entry,
+        totalPage,
         totalData,
         from: from + 1,
-        to: +from + result[0].length,
+        to: +from,
       },
     };
   }

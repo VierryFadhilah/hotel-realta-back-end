@@ -6,9 +6,11 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
   BelongsTo,
 } from 'sequelize-typescript';
 import { work_order_detail } from './work_order_detail';
+import { users } from '../usersSchema/users';
 
 export interface employeeAttributes {
   emp_id?: number;
@@ -25,6 +27,7 @@ export interface employeeAttributes {
   emp_modified_date?: Date;
   emp_emp_id?: number;
   emp_joro_id?: number;
+  emp_user_id?: number;
 }
 
 @Table({ tableName: 'employee', schema: 'human_resource', timestamps: false })
@@ -32,7 +35,6 @@ export class employee
   extends Model<employeeAttributes, employeeAttributes>
   implements employeeAttributes
 {
-  @ForeignKey(() => work_order_detail)
   @Column({
     primaryKey: true,
     autoIncrement: true,
@@ -84,6 +86,13 @@ export class employee
   @Column({ allowNull: true, type: DataType.INTEGER })
   emp_joro_id?: number;
 
-  @BelongsTo(() => work_order_detail)
-  work_order_detail?: work_order_detail;
+  @ForeignKey(() => users)
+  @Column({ allowNull: true, type: DataType.INTEGER })
+  emp_user_id?: number;
+
+  @HasMany(() => work_order_detail, { sourceKey: 'emp_id' })
+  work_order_details?: work_order_detail[];
+
+  @BelongsTo(() => users)
+  user?: users;
 }
