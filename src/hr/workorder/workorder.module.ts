@@ -4,6 +4,6 @@ import { WorkorderController } from './workorder.controller';
 
 @Module({
   controllers: [WorkorderController],
-  providers: [WorkorderService]
+  providers: [WorkorderService],
 })
 export class WorkorderModule {}
