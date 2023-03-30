@@ -100,15 +100,58 @@ export class EmployeeService {
   }
 
   async findOne(id: number) {
-    const result = await this.sequelize.query(
-      `select * from human_resource.get_employee_for_update2(${id})`,
-    );
-
-    return {
-      statusCode: 200,
-      message: 'success',
-      data: result[0][0],
-    };
+    // const result = await this.sequelize.query(
+    //   `select * from human_resource.get_employee_for_update2(${id})`,
+    // );
+    // return {
+    //   statusCode: 200,
+    //   message: 'success',
+    //   data: result[0][0],
+    // };
+    const result = await employee.findOne({
+      where: {
+        emp_id: id,
+      },
+      include: [
+        {
+          model: users,
+          attributes: ['user_full_name'],
+        },
+        {
+          model: job_role,
+        },
+      ],
+    });
+    return result;
+    // return {
+    //   statusCode: 200,
+    //   message: 'success',
+    //   data: {
+    //     nationalid: result.emp_national_id,
+    //     fullname: result.user.user_full_name,
+    //     birthdate: result.emp_birth_date,
+    //     hiredate: result.emp_hire_date,
+    //     maritalstatus: result.emp_marital_status,
+    //     gender: result.emp_gender,
+    //     salariedflag: result.emp_salaried_flag,
+    //     status: result.emp_current_flag,
+    //     vacationhours: result.emp_vacation_hours,
+    //     sickleavehours: result.emp_sickleave_hours,
+    //     jobroleid: result.emp_joro_id,
+    //     jobrolename: result.job_role.joro_name,
+    //     image: result.emp_photo,
+    //     salary: result.,
+    //     frequency: result.,
+    //     department: result.,
+    //     departmentname: result.,
+    //     startdate: result.,
+    //     enddate: result.,
+    //     shiftid: result.,
+    //     shiftname: result.,
+    //     starttime: result.,
+    //     endtime: result.,
+    //   },
+    // };
   }
 
   async update(id: number, updateEmployeeDto: any, filename?: string) {
