@@ -228,6 +228,7 @@ export class EmployeeService {
               emp_sickleave_hours: general.sickLeaveHours,
               emp_joro_id: general.jobRole,
               emp_photo,
+              emp_user_id: general.user_id,
             },
             {
               where: {
