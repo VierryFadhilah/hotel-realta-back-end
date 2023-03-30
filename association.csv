@@ -24,8 +24,5 @@ N:N, cagro_id, poli_id, master.category_group, master.policy, master.policy_cate
 1:N, faci_id, stod_faci_id, facilities, stock_detail
 1:N, stod_pohe_id, pohe_id, stock_detail, purchase_order_header
 1:N, pohe_id, pode_pohe_id, purchase_order_header, purchase_order_detail
-<<<<<<< HEAD
 1:N, stock_id, stod_stock_id, stocks, stock_detail
-=======
 1:N, stock_id, stod_stock_id, stocks, stock_detail
->>>>>>> master
