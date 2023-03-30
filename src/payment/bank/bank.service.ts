@@ -40,7 +40,7 @@ export class BankService {
           [Op.or]: [
             {
               bank_name: {
-                [Op.like]: '%' + searchs + '%',
+                [Op.iLike]: '%' + searchs + '%',
               },
             },
           ],

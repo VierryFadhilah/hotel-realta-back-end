@@ -14,20 +14,16 @@ export class PaymentTransacationService {
   ) {}
 
   async create(Payment: CreatePaymentTransacationDto) {
-    console.log(Payment);
     try {
       
       // const result = await this.paymentModels.create()
       const result =  await this.sequelize.query(
         `CALL payment.InsertTopupuser(${Payment.userID}, '${Payment.transactionType}', ${Payment.amount}, '${Payment.sourceNumber}', '${Payment.targetNumber}')`,
-        
-      ).then(data=>{
-        
-      });
+      )
+
       return {
         status: 200,
         message: 'success',
-     
       };
     } catch (err) {
       return err
