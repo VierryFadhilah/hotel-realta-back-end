@@ -23,3 +23,7 @@ N:N, cagro_id, poli_id, master.category_group, master.policy, master.policy_cate
 1:N, pohe_id, pode_pohe_id, purchase_order_header, purchase_order_detail
 1:N, stock_id, stod_stock_id, stocks, stock_detail
 1:1, emp_joro_id, joro_id, employee, job_role
+1:N, emp_id, ephi_emp_id, employee, employee_pay_history
+1:N, emp_id, edhi_emp_id, employee, employee_department_history
+1:1, edhi_dept_id, dept_id, employee_department_history, department
+1:1, edhi_shift_id, shift_id, employee_department_history, shift
