@@ -7,6 +7,7 @@ import {
   employee_department_history,
   employee_pay_history,
   job_role,
+  shift,
   work_order_detail,
   work_orders,
 } from 'models/humanResourceSchema';
@@ -100,14 +101,91 @@ export class EmployeeService {
   }
 
   async findOne(id: number) {
-    const result = await this.sequelize.query(
-      `select * from human_resource.get_employee_for_update2(${id})`,
-    );
+    // const result = await this.sequelize.query(
+    //   `select * from human_resource.get_employee_for_update2(${id})`,
+    // );
+    // return {
+    //   statusCode: 200,
+    //   message: 'success',
+    //   data: result[0][0],
+    // };
+    const result = await employee.findOne({
+      where: {
+        emp_id: id,
+      },
+      include: [
+        {
+          model: users,
+          attributes: ['user_full_name'],
+        },
+        {
+          model: job_role,
+        },
+        {
+          model: employee_pay_history,
+          limit: 1,
 
+          order: [['ephi_rate_change_date', 'DESC']],
+          attributes: [
+            'ephi_rate_change_date',
+            'ephi_rate_salary',
+            'ephi_pay_frequence',
+          ],
+        },
+        {
+          model: employee_department_history,
+          order: [['edhi_id', 'DESC']],
+          limit: 1,
+          attributes: [
+            'edhi_dept_id',
+            'edhi_id',
+            'edhi_start_date',
+            'edhi_end_date',
+          ],
+          include: [
+            {
+              model: department,
+              attributes: ['dept_id', 'dept_name'],
+            },
+            {
+              model: shift,
+            },
+          ],
+        },
+      ],
+    });
+    const emDeHi = result.employee_department_histories[0];
+    const emPaHa = result.employee_pay_histories[0];
+
+    // return result;
     return {
       statusCode: 200,
       message: 'success',
-      data: result[0][0],
+      data: {
+        nationalid: result.emp_national_id,
+        fullname: result.user.user_full_name,
+        birthdate: result.emp_birth_date,
+        hiredate: result.emp_hire_date,
+        maritalstatus: result.emp_marital_status,
+        gender: result.emp_gender,
+        salariedflag: result.emp_salaried_flag,
+        status: result.emp_current_flag,
+        vacationhours: result.emp_vacation_hours,
+        sickleavehours: result.emp_sickleave_hours,
+        jobroleid: result.emp_joro_id,
+        jobrolename: result.job_role.joro_name,
+        image: result.emp_photo,
+        salary: emPaHa.ephi_rate_salary,
+        frequency: emPaHa.ephi_pay_frequence,
+        department: emDeHi.department.dept_id,
+        departmentname: emDeHi.department.dept_name,
+        startdate: emDeHi.edhi_start_date,
+        enddate: emDeHi.edhi_end_date,
+        shiftid: emDeHi.shift.shift_id,
+        shiftname: emDeHi.shift.shift_name,
+        starttime: emDeHi.shift.shift_start_time,
+        endtime: emDeHi.shift.shift_end_time,
+      },
     };
   }
 
@@ -150,6 +228,7 @@ export class EmployeeService {
               emp_sickleave_hours: general.sickLeaveHours,
               emp_joro_id: general.jobRole,
               emp_photo,
+              emp_user_id: general.user_id,
             },
             {
               where: {
