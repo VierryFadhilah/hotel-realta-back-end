@@ -1,3 +1,4 @@
+
 import {
   HttpStatus,
   Injectable,
@@ -23,6 +24,43 @@ import { unlink } from 'fs';
 
 @Injectable()
 export class UsersService {
+
+  async getUserByName(search: string) {
+    try {
+      const result = await users.findAll({
+        where: {
+          user_full_name: {
+            [Op.iLike]: `%${search}%`,
+          },
+        },
+        limit: 5,
+      });
+      const resultList = [];
+      for (let i = 0; i < result.length; i++) {
+        const element = result[i];
+        resultList.push({
+          user_id: element.user_id,
+          user_full_name: element.user_full_name,
+        });
+      }
+
+      if (result.length === 0) {
+        return {
+          statusCode: HttpStatus.OK,
+          message: 'Users Not Found',
+          data: resultList,
+        };
+      }
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Users Found',
+        data: resultList,
+      };
+    } catch (e) {
+      return { statusCode: HttpStatus.BAD_REQUEST, message: e };
+    }
+  }
   findOne(arg0: number) {
     throw new Error('Method not implemented.');
   }
@@ -114,5 +152,6 @@ export class UsersService {
     } catch (e) {
       return e;
     }
+
   }
 }

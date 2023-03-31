@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { employee_department_history } from './employee_department_history';
 
 export interface departmentAttributes {
   dept_id?: number;
@@ -19,6 +21,7 @@ export class department
   extends Model<departmentAttributes, departmentAttributes>
   implements departmentAttributes
 {
+  @ForeignKey(() => employee_department_history)
   @Column({
     primaryKey: true,
     autoIncrement: true,
@@ -35,4 +38,7 @@ export class department
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
   dept_modified_date?: Date;
+
+  @BelongsTo(() => employee_department_history)
+  employee_department_history?: employee_department_history;
 }

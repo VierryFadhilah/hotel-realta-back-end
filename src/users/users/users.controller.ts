@@ -21,11 +21,17 @@ import { SignupEmployee } from './dto/signUpEmployee.dto';
 import { SignupGuest } from './dto/signUpGuest.dto copy';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+@Get('usersByName')
+  getUsersByName(@Query('search') search: string) {
+    return this.usersService.getUserByName(search);
+  }
 
   @Post('signupEmployee')
   async signupEmployee(@Body() signupEmployee: SignupEmployee) {
@@ -36,6 +42,14 @@ export class UsersController {
     return this.usersService.signupGuest(signupGuest);
   }
 
+  
+
+  
+
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
+  }
   @Get('find')
   findAll() {
     return this.usersService.findAll();
@@ -105,5 +119,6 @@ export class UsersController {
     } catch (e) {
       throw e;
     }
+
   }
 }

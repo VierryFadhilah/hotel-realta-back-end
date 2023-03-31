@@ -1,12 +1,13 @@
-import { Module, RequestMethod } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
+import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-// import { HotelModule } from './hotel-schema/hotel.module';
-// import { HrModule } from './hr/hr.module';
+import { PaymentModule } from './payment/payment.module';
+import { HotelModule } from './hotel-schema/hotel.module';
+import { HrModule } from './hr/hr.module';
+import { RestoTModule } from './resto/resto-t.module';
+import { PurchasingModule } from './purchasing/purchasing.module';
 import { UsersTModule } from './users/users.module';
-import { UserPasswordModule } from './users/user-password/user-password.module';
-import { AuthMiddleware } from './users/auth/auth.middleware';
+
 @Module({
   imports: [
     SequelizeModule.forRoot({
@@ -20,12 +21,13 @@ import { AuthMiddleware } from './users/auth/auth.middleware';
       autoLoadModels: true,
       synchronize: true,
     }),
+
+    PaymentModule,
+    HotelModule,
+    HrModule,
+    RestoTModule,
+    PurchasingModule,
     UsersTModule,
-    UserPasswordModule,
-    // HotelModule,
-    // HrModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

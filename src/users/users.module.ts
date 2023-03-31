@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from './users/users.module';
 import {
@@ -30,5 +31,6 @@ import { AuthModule } from './auth/auth.module';
     RolesModule,
     AuthModule,
   ],
+
 })
 export class UsersTModule {}
