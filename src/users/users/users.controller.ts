@@ -14,6 +14,7 @@ import {
   ParseFilePipe,
   UploadedFile,
   Req,
+  Query,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UsersService } from './users.service';
@@ -28,7 +29,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-@Get('usersByName')
+  @Get('usersByName')
   getUsersByName(@Query('search') search: string) {
     return this.usersService.getUserByName(search);
   }
@@ -42,14 +43,6 @@ export class UsersController {
     return this.usersService.signupGuest(signupGuest);
   }
 
-  
-
-  
-
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
   @Get('find')
   findAll() {
     return this.usersService.findAll();
@@ -119,6 +112,5 @@ export class UsersController {
     } catch (e) {
       throw e;
     }
-
   }
 }

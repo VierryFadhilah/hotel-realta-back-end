@@ -1,4 +1,3 @@
-
 import {
   HttpStatus,
   Injectable,
@@ -21,10 +20,10 @@ import path from 'path';
 import { UpdateUserDto } from './dto/update-user.dto';
 import e from 'express';
 import { unlink } from 'fs';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class UsersService {
-
   async getUserByName(search: string) {
     try {
       const result = await users.findAll({
@@ -152,6 +151,5 @@ export class UsersService {
     } catch (e) {
       return e;
     }
-
   }
 }
