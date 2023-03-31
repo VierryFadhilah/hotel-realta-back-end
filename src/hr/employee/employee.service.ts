@@ -12,7 +12,7 @@ import {
   work_orders,
 } from 'models/humanResourceSchema';
 import { Sequelize } from 'sequelize-typescript';
-import { unlink } from 'fs';
+import { unlink, unlinkSync } from 'fs';
 import { join } from 'path';
 import { users } from 'models/usersSchema';
 import { Op } from 'sequelize';
@@ -20,9 +20,52 @@ import { Op } from 'sequelize';
 @Injectable()
 export class EmployeeService {
   constructor(private readonly sequelize: Sequelize) {}
-
-  create(createEmployeeDto: CreateEmployeeDto) {
-    return 'This action adds a new employee';
+  create(createEmployeeDto: CreateEmployeeDto): any;
+  create(createEmployeeDto: CreateEmployeeDto, file: Express.Multer.File): any;
+  async create(
+    createEmployeeDto: CreateEmployeeDto,
+    file?: Express.Multer.File,
+  ): Promise<any> {
+    try {
+      let emp_photo: string;
+      if (file) {
+        emp_photo = file.filename;
+      }
+      const general = createEmployeeDto.general;
+      const result = await employee.create({
+        emp_national_id: general.nationalId,
+        emp_birth_date: general.birth,
+        emp_hire_date: general.hireDate,
+        emp_salaried_flag: general.salariedFlag,
+        emp_marital_status: general.status,
+        emp_gender: general.gender,
+        emp_current_flag: general.currentFlag,
+        emp_vacation_hours: general.vacationHours,
+        emp_sickleave_hours: general.sickLeaveHours,
+        emp_joro_id: general.jobRole,
+        emp_photo,
+        emp_user_id: general.user_id,
+      });
+      return {
+        statusCode: 200,
+        message: 'success',
+        data: {
+          message: `data berhasil di buat dengan ID = ${result.emp_id}`,
+        },
+      };
+    } catch (error) {
+      unlinkSync(
+        join(
+          __dirname,
+          `../../../../uploads/image/human_resource/${file.filename}`,
+        ),
+      );
+      return {
+        statusCode: 400,
+        message: error.message,
+        data: [],
+      };
+    }
   }
   findAll(page: number, entry: number): any;
   findAll(page: number, entry: number, search?: string, status?: string): any;

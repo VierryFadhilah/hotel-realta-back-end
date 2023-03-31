@@ -34,7 +34,13 @@ export interface employeeAttributes {
   emp_user_id?: number;
 }
 
-@Table({ tableName: 'employee', schema: 'human_resource', timestamps: false })
+@Table({
+  tableName: 'employee',
+  schema: 'human_resource',
+  timestamps: true,
+  createdAt: 'emp_modified_date',
+  updatedAt: 'emp_modified_date',
+})
 export class employee
   extends Model<employeeAttributes, employeeAttributes>
   implements employeeAttributes
