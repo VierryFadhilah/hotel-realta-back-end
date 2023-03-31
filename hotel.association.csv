@@ -1,6 +1,7 @@
 1:N, region_code, country_region_id, master.regions, master.country
 1:N, country_id, prov_country_id, master.country, master.provinces
-1:N, prov_id, addr_prov_id, master.provinces, master.address
+1:N, prov_id, city_prov_id, master.provinces, master.city
+1:N, city_id, addr_city_id, master.city, master.address
 N:N, cagro_id, poli_id, master.category_group, master.policy, master.policy_category_group
 1:N, addr_id, hotel_addr_id, master.address, hotel.hotels
 1:N, user_id, hore_user_id, users.users, hotel.hotel_reviews

@@ -1,6 +1,7 @@
 #punyaku
 /src/master-schema
 /src/users-schema
+/xdb
 
 #db
 /contohpagination.sql

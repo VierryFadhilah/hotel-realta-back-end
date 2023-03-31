@@ -24,6 +24,7 @@ export interface facilitiesAttributes {
   faci_tax_rate?: string;
   faci_cagro_id?: number;
   faci_hotel_id?: number;
+  faci_modified_date?: Date;
 }
 
 @Table({ tableName: 'facilities', schema: 'hotel', timestamps: false })
@@ -31,9 +32,15 @@ export class facilities
   extends Model<facilitiesAttributes, facilitiesAttributes>
   implements facilitiesAttributes
 {
-  @Column({ primaryKey: true, autoIncrement: true, type: DataType.INTEGER })
-  @Index({ name: 'pk_faci_id', using: 'btree', unique: true })
+  @Column({
+    primaryKey: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal(
+      "nextval('hotel.facilities_faci_id_seq'::regclass)",
+    ),
+  })
   @Index({ name: 'facilities_pkey', using: 'btree', unique: true })
+  @Index({ name: 'pk_faci_id', using: 'btree', unique: true })
   faci_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(125) })
@@ -82,4 +89,11 @@ export class facilities
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   faci_hotel_id?: number;
+
+  @Column({
+    allowNull: true,
+    type: DataType.DATE(6),
+    defaultValue: Sequelize.literal('now()'),
+  })
+  faci_modified_date?: Date;
 }

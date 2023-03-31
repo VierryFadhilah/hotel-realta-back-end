@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { HotelModule } from './hotel-schema/hotel.module';
-import { HrModule } from './hr/hr.module';
+// import { HrModule } from './hr/hr.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { HrModule } from './hr/hr.module';
       synchronize: true,
     }),
     HotelModule,
-    HrModule,
+    // HrModule,
   ],
   controllers: [AppController],
   providers: [AppService],
