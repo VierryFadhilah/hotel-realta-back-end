@@ -29,11 +29,9 @@ export class user_members
       "nextval('users.user_members_usme_user_id_seq'::regclass)",
     ),
   })
-  @Index({ name: 'pkey_user_members', using: 'btree', unique: true })
   usme_user_id?: number;
 
   @Column({ primaryKey: true, type: DataType.STRING(15) })
-  @Index({ name: 'pkey_user_members', using: 'btree', unique: true })
   usme_memb_name!: string;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })

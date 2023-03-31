@@ -6,18 +6,18 @@ import {
   Index,
   Sequelize,
   ForeignKey,
-  HasMany,
 } from 'sequelize-typescript';
-import { work_orders } from '../humanResourceSchema';
 
 export interface usersAttributes {
   user_id?: number;
   user_full_name?: string;
+  user_type?: string;
   user_company_name?: string;
   user_email?: string;
   user_phone_number?: string;
+  user_photo_profile?: string;
   user_modified_date?: Date;
-  user_type?: string;
+  user_hotel_id?: number;
 }
 
 @Table({ tableName: 'users', schema: 'users', timestamps: false })
@@ -27,22 +27,19 @@ export class users
 {
   @Column({
     primaryKey: true,
+    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('users.users_user_id_seq'::regclass)",
     ),
   })
-  @Index({ name: 'pk_user_id', using: 'btree', unique: true })
   user_id?: number;
 
-  @Column({
-    allowNull: true,
-    type: DataType.STRING,
-    defaultValue: Sequelize.literal(
-      "('guest'::text || nextval('sequence_for_user_full_name'::regclass))",
-    ),
-  })
+  @Column({ allowNull: true, type: DataType.STRING })
   user_full_name?: string;
+
+  @Column({ allowNull: true, type: DataType.STRING(15) })
+  user_type?: string;
 
   @Column({ allowNull: true, type: DataType.STRING(225) })
   user_company_name?: string;
@@ -51,19 +48,17 @@ export class users
   user_email?: string;
 
   @Column({ allowNull: true, type: DataType.STRING(25) })
-  @Index({ name: 'users_user_phone_number_key', using: 'btree', unique: true })
   user_phone_number?: string;
+
+  @Column({ allowNull: true, type: DataType.STRING(225) })
+  user_photo_profile?: string;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
   user_modified_date?: Date;
 
-  @Column({
-    allowNull: true,
-    type: DataType.STRING(15),
-    defaultValue: Sequelize.literal("'T'::character varying"),
-  })
-  user_type?: string;
-
-  @HasMany(() => work_orders, { sourceKey: 'user_id' })
-  work_orders?: work_orders[];
+  @Column({ allowNull: true, type: DataType.INTEGER })
+  user_hotel_id?: number;
+  length: number;
+  image: any;
+  static photoProfile: any;
 }

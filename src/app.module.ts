@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { HotelModule } from './hotel-schema/hotel.module';
-import { HrModule } from './hr/hr.module';
-
+// import { HotelModule } from './hotel-schema/hotel.module';
+// import { HrModule } from './hr/hr.module';
+import { UsersTModule } from './users/users.module';
+import { UserPasswordModule } from './users/user-password/user-password.module';
+import { AuthMiddleware } from './users/auth/auth.middleware';
 @Module({
   imports: [
     SequelizeModule.forRoot({
@@ -18,8 +20,10 @@ import { HrModule } from './hr/hr.module';
       autoLoadModels: true,
       synchronize: true,
     }),
-    HotelModule,
-    HrModule,
+    UsersTModule,
+    UserPasswordModule,
+    // HotelModule,
+    // HrModule,
   ],
   controllers: [AppController],
   providers: [AppService],
