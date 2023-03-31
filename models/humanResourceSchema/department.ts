@@ -11,7 +11,7 @@ import {
 import { employee_department_history } from './employee_department_history';
 
 export interface departmentAttributes {
-  dept_id?: number;
+  dept_id: number;
   dept_name?: string;
   dept_modified_date?: Date;
 }
@@ -22,16 +22,9 @@ export class department
   implements departmentAttributes
 {
   @ForeignKey(() => employee_department_history)
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-    type: DataType.INTEGER,
-    defaultValue: Sequelize.literal(
-      "nextval('human_resource.department_dept_id_seq'::regclass)",
-    ),
-  })
+  @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'pk_dept_id', using: 'btree', unique: true })
-  dept_id?: number;
+  dept_id!: number;
 
   @Column({ allowNull: true, type: DataType.STRING(50) })
   dept_name?: string;

@@ -12,7 +12,7 @@ import { work_orders } from './work_orders';
 import { employee } from './employee';
 
 export interface work_order_detailAttributes {
-  wode_id?: number;
+  wode_id: number;
   wode_task_name?: string;
   wode_status?: string;
   wode_start_date?: Date;
@@ -33,16 +33,9 @@ export class work_order_detail
   extends Model<work_order_detailAttributes, work_order_detailAttributes>
   implements work_order_detailAttributes
 {
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-    type: DataType.INTEGER,
-    defaultValue: Sequelize.literal(
-      "nextval('human_resource.work_order_detail_wode_id_seq'::regclass)",
-    ),
-  })
+  @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'pk_wode_id', using: 'btree', unique: true })
-  wode_id?: number;
+  wode_id!: number;
 
   @Column({ allowNull: true, type: DataType.STRING(255) })
   wode_task_name?: string;

@@ -13,7 +13,7 @@ import { users } from '../usersSchema/users';
 import { work_order_detail } from './work_order_detail';
 
 export interface work_ordersAttributes {
-  woro_id?: number;
+  woro_id: number;
   woro_start_date?: Date;
   woro_status?: string;
   woro_user_id?: number;
@@ -28,25 +28,14 @@ export class work_orders
   extends Model<work_ordersAttributes, work_ordersAttributes>
   implements work_ordersAttributes
 {
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-    type: DataType.INTEGER,
-    defaultValue: Sequelize.literal(
-      "nextval('human_resource.work_orders_woro_id_seq'::regclass)",
-    ),
-  })
+  @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'pk_woro_id', using: 'btree', unique: true })
-  woro_id?: number;
+  woro_id!: number;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
   woro_start_date?: Date;
 
-  @Column({
-    allowNull: true,
-    type: DataType.STRING(15),
-    defaultValue: Sequelize.literal("'OPEN'::character varying"),
-  })
+  @Column({ allowNull: true, type: DataType.STRING(15) })
   woro_status?: string;
 
   @ForeignKey(() => users)

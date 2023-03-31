@@ -11,7 +11,7 @@ import {
 import { employee } from './employee';
 
 export interface job_roleAttributes {
-  joro_id?: number;
+  joro_id: number;
   joro_name?: string;
   joro_modified_date?: Date;
 }
@@ -22,16 +22,9 @@ export class job_role
   implements job_roleAttributes
 {
   @ForeignKey(() => employee)
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-    type: DataType.INTEGER,
-    defaultValue: Sequelize.literal(
-      "nextval('human_resource.job_role_joro_id_seq'::regclass)",
-    ),
-  })
+  @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'pk_joro_id', using: 'btree', unique: true })
-  joro_id?: number;
+  joro_id!: number;
 
   @Column({ allowNull: true, type: DataType.STRING(55) })
   @Index({ name: 'job_role_joro_name_key', using: 'btree', unique: true })

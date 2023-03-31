@@ -17,7 +17,7 @@ import { employee_pay_history } from './employee_pay_history';
 import { employee_department_history } from './employee_department_history';
 
 export interface employeeAttributes {
-  emp_id?: number;
+  emp_id: number;
   emp_national_id?: string;
   emp_birth_date?: Date;
   emp_marital_status?: string;
@@ -31,7 +31,6 @@ export interface employeeAttributes {
   emp_modified_date?: Date;
   emp_emp_id?: number;
   emp_joro_id?: number;
-  emp_user_id?: number;
 }
 
 @Table({ tableName: 'employee', schema: 'human_resource', timestamps: false })
@@ -39,16 +38,9 @@ export class employee
   extends Model<employeeAttributes, employeeAttributes>
   implements employeeAttributes
 {
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-    type: DataType.INTEGER,
-    defaultValue: Sequelize.literal(
-      "nextval('human_resource.employee_emp_id_seq'::regclass)",
-    ),
-  })
+  @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'pk_emp_id', using: 'btree', unique: true })
-  emp_id?: number;
+  emp_id!: number;
 
   @Column({ allowNull: true, type: DataType.STRING(25) })
   @Index({ name: 'employee_emp_national_id_key', using: 'btree', unique: true })
@@ -89,11 +81,6 @@ export class employee
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   emp_joro_id?: number;
-
-  @ForeignKey(() => users)
-  @Column({ allowNull: true, type: DataType.INTEGER })
-  @Index({ name: 'emp_user_id_unique', using: 'btree', unique: true })
-  emp_user_id?: number;
 
   @HasMany(() => work_order_detail, { sourceKey: 'emp_id' })
   work_order_details?: work_order_detail[];
