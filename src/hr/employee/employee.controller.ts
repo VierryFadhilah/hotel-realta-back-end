@@ -33,8 +33,21 @@ export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
 
   @Post()
-  create(@Body() createEmployeeDto: CreateEmployeeDto) {
-    return this.employeeService.create(createEmployeeDto);
+  @UseInterceptors(FileInterceptor('image', { storage }))
+  create(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createEmployeeDto: any,
+  ) {
+    const data = {
+      general: JSON.parse(createEmployeeDto.general),
+      salary: JSON.parse(createEmployeeDto.salary),
+      assigment: JSON.parse(createEmployeeDto.assigment),
+      shift: JSON.parse(createEmployeeDto.shift),
+    };
+    if (file) {
+      return this.employeeService.create(data, file);
+    }
+    return this.employeeService.create(data);
   }
 
   @Get()
