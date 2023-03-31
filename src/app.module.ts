@@ -1,3 +1,4 @@
+
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PaymentModule } from './payment/payment.module';
@@ -20,6 +21,7 @@ import { UsersTModule } from './users/users.module';
       autoLoadModels: true,
       synchronize: true,
     }),
+
     PaymentModule,
     HotelModule,
     HrModule,

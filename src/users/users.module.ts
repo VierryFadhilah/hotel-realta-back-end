@@ -1,9 +1,36 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
+
 import { SequelizeModule } from '@nestjs/sequelize';
-import { users } from 'models/usersSchema';
+import { UsersModule } from './users/users.module';
+import {
+  user_bonus_points,
+  user_members,
+  user_password,
+  user_profiles,
+  user_roles,
+  users,
+} from 'models/usersSchema';
+import { UserMembersModule } from './user-members/user-members.module';
+import { UserBonusPointsModule } from './user-bonus-points/user-bonus-points.module';
+import { RolesModule } from './roles/roles.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [SequelizeModule.forFeature([users]), UsersModule],
+  imports: [
+    SequelizeModule.forFeature([
+      users,
+      user_password,
+      user_profiles,
+      user_members,
+      user_bonus_points,
+      user_roles,
+    ]),
+    UsersModule,
+    UserMembersModule,
+    UserBonusPointsModule,
+    RolesModule,
+    AuthModule,
+  ],
+
 })
 export class UsersTModule {}
