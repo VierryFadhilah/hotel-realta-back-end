@@ -29,6 +29,7 @@
     "stg:master" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s master -u postgres -x root -o models/masterSchema --indices --associations-file ./association.csv",    
     "stg:hotel" : "stg -D postgres -o models/hotelSchema/ -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv -s hotel",
     "stg:purchasing" : "stg -D postgres -o models/purchasingSchema/ -h localhost -p 5432 -d HotelRealtaDB -u postgres -x root --indices --associations-file ./association.csv -s purchasing"
+
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
