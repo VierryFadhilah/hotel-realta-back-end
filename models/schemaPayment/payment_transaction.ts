@@ -26,9 +26,7 @@ export interface payment_transactionAttributes {
 @Table({
   tableName: 'payment_transaction',
   schema: 'payment',
-  timestamps: true,
-  createdAt: 'part_modified_date',
-  updatedAt: 'part_modified_date',
+  timestamps: false,
 })
 export class payment_transaction
   extends Model<payment_transactionAttributes, payment_transactionAttributes>
