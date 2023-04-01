@@ -9,8 +9,8 @@ export class UserAccountsService {
   constructor(
     @InjectModel(user_accounts)
     private userModel: typeof user_accounts,
-    private sequelize: Sequelize
-  ){}
+    private sequelize: Sequelize,
+  ) {}
 
   async create(userAccountDto: UserAccountDto) {
     try {
@@ -19,19 +19,18 @@ export class UserAccountsService {
         usac_user_id: userAccountDto.usac_user_id,
         usac_account_number: userAccountDto.usac_account_number,
         usac_saldo: userAccountDto.usac_saldo,
-        usac_type: userAccountDto.usac_type
-      })
-      return{
+        usac_type: userAccountDto.usac_type,
+      });
+      return {
         status: 201,
-        message: "successfully",
-        data: result
-      }
-    
+        message: 'successfully',
+        data: result,
+      };
     } catch (err) {
-      return{
+      return {
         status: 400,
-        message: err
-      }
+        message: err,
+      };
     }
   }
 
@@ -53,66 +52,70 @@ export class UserAccountsService {
   //     return {
   //       status: 400,
   //       message: err
-  //     }      
+  //     }
   //   }
   // }
 
-  async findAll(){
+  async findAll() {
     try {
-      const result = await this.sequelize.query('SELECT * FROM  payment.user_accountfindall');
+      const result = await this.sequelize.query(
+        'SELECT * FROM  payment.user_accountfindall',
+      );
       return {
         status: 200,
-        message: "successfully",
-        data: result[0]
-      }
+        message: 'successfully',
+        data: result[0],
+      };
     } catch (err) {
       return {
         status: 400,
         message: err,
-      }
+      };
     }
   }
 
- async findOne(id: any) {
+  async findOne(id: any) {
     try {
-      const result = await this.sequelize.query(`SELECT * FROM payment.user_accountfindall WHERE  "accountNumber" = '${id}'::text`);
+      const result = await this.sequelize.query(
+        `SELECT * FROM payment.user_accountfindall WHERE  "accountNumber" = '${id}'::text`,
+      );
       return {
         status: 200,
-        message: "successfully",
-        data: result[0]
-      }
+        message: 'successfully',
+        data: result[0],
+      };
     } catch (err) {
       return {
         status: 400,
         message: err,
-      }
+      };
     }
   }
 
   async update(id: string, userAccountDto: UserAccountDto) {
     try {
-      const result = await this.userModel.update({
-        usac_entity_id: userAccountDto.usac_entity_id,
-        usac_user_id: userAccountDto.usac_user_id,
-        usac_account_number: userAccountDto.usac_account_number,
-        usac_saldo: userAccountDto.usac_saldo,
-        usac_type: userAccountDto.usac_type
-      },
-      {
-        where: { usac_account_number: id },
-      }
+      const result = await this.userModel.update(
+        {
+          usac_entity_id: userAccountDto.usac_entity_id,
+          usac_user_id: userAccountDto.usac_user_id,
+          usac_account_number: userAccountDto.usac_account_number,
+          usac_saldo: userAccountDto.usac_saldo,
+          usac_type: userAccountDto.usac_type,
+        },
+        {
+          where: { usac_account_number: id },
+        },
       );
-      return{
+      return {
         status: 201,
-        message: "successfully",
-        data: result
-      }
-    
+        message: 'successfully',
+        data: result,
+      };
     } catch (err) {
-      return{
+      return {
         status: 400,
-        message: err
-      }
+        message: err,
+      };
     }
   }
 
