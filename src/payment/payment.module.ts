@@ -15,4 +15,4 @@ import { UserAccountsModule } from './user_accounts/user_accounts.module';
   ],
  
 })
-export class paymentModule {}
+export class PaymentModule {}

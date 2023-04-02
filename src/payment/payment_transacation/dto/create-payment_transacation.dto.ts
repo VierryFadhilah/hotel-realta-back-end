@@ -3,6 +3,7 @@ import { IsOptional, IsNotEmpty } from 'class-validator';
 export class CreatePaymentTransacationDto {
     @IsNotEmpty()
     userID: number;		
+
     @IsOptional()
     orderNumber: string;
 
@@ -13,7 +14,7 @@ export class CreatePaymentTransacationDto {
     transactionType: string;
     
     @IsNotEmpty()
-    amount: number;
+    amount: string;
 
     @IsNotEmpty()
     sourceNumber: string;

@@ -12,6 +12,11 @@ export class PaymentTransacationController {
     return this.paymentTransacationService.create(createPaymentTransacationDto);
   }
 
+  @Post('booking')
+  createBooking(@Body() createPaymentTransacationDto: CreatePaymentTransacationDto) {
+    return this.paymentTransacationService.createBooking(createPaymentTransacationDto);
+  }
+
   @Get()
   findAll() {
     return this.paymentTransacationService.findAll();

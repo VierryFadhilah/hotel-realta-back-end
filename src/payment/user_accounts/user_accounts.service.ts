@@ -59,7 +59,7 @@ export class UserAccountsService {
 
   async findAll(){
     try {
-      const result = await this.sequelize.query('SELECT * FROM  payment.user_accountfindall');
+      const result = await this.sequelize.query('SELECT * FROM payment.user_accountfindall');
       return {
         status: 200,
         message: "successfully",

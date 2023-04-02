@@ -32,7 +32,7 @@ export class BankService {
     }
   }
 
-  async findAll({search}) {
+  async findAll(search?:any) {
     try {
       const searchs = search || '';
       const result = await this.bankModel.findAll({

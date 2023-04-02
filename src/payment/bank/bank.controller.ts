@@ -14,7 +14,7 @@ export class BankController {
 
   @Get()
   findAll( @Query('search') search: any):Promise<any> {
-    return this.bankService.findAll({search});
+    return this.bankService.findAll(search);
   }
 
   @Get(':id')
