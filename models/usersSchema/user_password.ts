@@ -9,7 +9,7 @@ import {
 } from 'sequelize-typescript';
 
 export interface user_passwordAttributes {
-  uspa_user_id: number;
+  uspa_user_id?: number;
   uspa_passwordhash?: string;
   uspa_passwordsalt?: string;
 }
@@ -19,8 +19,8 @@ export class user_password
   extends Model<user_passwordAttributes, user_passwordAttributes>
   implements user_passwordAttributes
 {
-  @Column({ primaryKey: true, type: DataType.INTEGER })
-  uspa_user_id!: number;
+  @Column({ autoIncrement: true, allowNull: true, type: DataType.INTEGER })
+  uspa_user_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(128) })
   uspa_passwordhash?: string;

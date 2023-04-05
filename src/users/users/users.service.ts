@@ -14,6 +14,7 @@ import {
   user_roles,
   user_profiles,
 } from 'models/usersSchema';
+import { QueryTypes } from 'sequelize';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import path from 'path';
@@ -21,9 +22,12 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import e from 'express';
 import { unlink } from 'fs';
 import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
+import { employee } from 'models/humanResourceSchema';
 
 @Injectable()
 export class UsersService {
+  constructor(private sequelize: Sequelize) {}
   async getUserByName(search: string) {
     try {
       const result = await users.findAll({
@@ -31,9 +35,18 @@ export class UsersService {
           user_full_name: {
             [Op.iLike]: `%${search}%`,
           },
+          '$employee.emp_id$': null,
         },
         limit: 5,
+        include: [
+          {
+            model: employee,
+            attributes: ['emp_id'],
+          },
+        ],
       });
+      // // console.log(result);
+      // return result;
       const resultList = [];
       for (let i = 0; i < result.length; i++) {
         const element = result[i];
@@ -93,6 +106,17 @@ export class UsersService {
     } catch (error) {
       return error;
     }
+  }
+  async getUserJoinById(id: number) {
+    return await this.sequelize.query(
+      'SELECT * FROM users.get_user_data(:user_id);',
+      {
+        replacements: {
+          user_id: id,
+        },
+        type: QueryTypes.SELECT,
+      },
+    );
   }
   async getUserById(id: number) {
     return await users.findOne({ where: { user_id: id } });

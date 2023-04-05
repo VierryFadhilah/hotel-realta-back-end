@@ -11,6 +11,7 @@ import {
   HasOne,
 } from 'sequelize-typescript';
 import { work_order_detail } from './work_order_detail';
+import { shift_detail } from './shift_detail';
 import { users } from '../usersSchema/users';
 import { job_role } from './job_role';
 import { employee_pay_history } from './employee_pay_history';
@@ -34,13 +35,7 @@ export interface employeeAttributes {
   emp_user_id?: number;
 }
 
-@Table({
-  tableName: 'employee',
-  schema: 'human_resource',
-  timestamps: true,
-  createdAt: 'emp_modified_date',
-  updatedAt: 'emp_modified_date',
-})
+@Table({ tableName: 'employee', schema: 'human_resource', timestamps: false })
 export class employee
   extends Model<employeeAttributes, employeeAttributes>
   implements employeeAttributes
@@ -103,6 +98,9 @@ export class employee
 
   @HasMany(() => work_order_detail, { sourceKey: 'emp_id' })
   work_order_details?: work_order_detail[];
+
+  @HasMany(() => shift_detail, { sourceKey: 'emp_id' })
+  shift_details?: shift_detail[];
 
   @BelongsTo(() => users)
   user?: users;

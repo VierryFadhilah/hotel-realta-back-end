@@ -1,6 +1,4 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { department } from 'models/humanResourceSchema';
 import { Op } from 'sequelize';
 
@@ -94,7 +92,7 @@ export class DepartmentService {
   async update(id: number, updateDepartmentDto: any) {
     try {
       const dept_name = updateDepartmentDto.name;
-      // console.log(updateDepartmentDto, id);
+
       const result = await department.update(
         { dept_name: dept_name },
         {

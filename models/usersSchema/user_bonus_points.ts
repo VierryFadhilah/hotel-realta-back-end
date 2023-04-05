@@ -9,10 +9,10 @@ import {
 } from 'sequelize-typescript';
 
 export interface user_bonus_pointsAttributes {
-  ubpo_id?: any;
-  ubpo_user_id: any;
+  ubpo_id?: number;
+  ubpo_user_id: number;
   ubpo_total_points?: number;
-  ubpo_bonus_type?: any;
+  ubpo_bonus_type?: string;
   ubpo_created_on?: Date;
 }
 
@@ -29,16 +29,18 @@ export class user_bonus_points
       "nextval('users.user_bonus_points_ubpo_id_seq'::regclass)",
     ),
   })
-  ubpo_id?: any;
+  @Index({ name: 'pkey_user_bonus_points', using: 'btree', unique: true })
+  ubpo_id?: number;
 
   @Column({ primaryKey: true, type: DataType.INTEGER })
-  ubpo_user_id!: any;
+  @Index({ name: 'pkey_user_bonus_points', using: 'btree', unique: true })
+  ubpo_user_id!: number;
 
   @Column({ allowNull: true, type: DataType.INTEGER })
-  ubpo_total_points?: any;
+  ubpo_total_points?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(1) })
-  ubpo_bonus_type?: any;
+  ubpo_bonus_type?: string;
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
   ubpo_created_on?: Date;

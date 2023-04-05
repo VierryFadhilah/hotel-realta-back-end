@@ -13,6 +13,7 @@ N:N, cagro_id, poli_id, master.category_group, master.policy, master.policy_cate
 1:N, user_id, woro_user_id, users, work_orders
 1:N, woro_id, wode_woro_id, work_orders, work_order_detail
 1:N, emp_id, wode_emp_id, employee, work_order_detail
+1:N, emp_id,shide_emp_id,employee, shift_detail
 1:1, user_id,emp_user_id, users,employee
 1:N, vendor_entity_id, pohe_vendor_id, vendor, purchase_order_header
 1:1, stock_id, pode_stock_id, stocks, purchase_order_detail
