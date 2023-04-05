@@ -1,4 +1,3 @@
-
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PaymentModule } from './payment/payment.module';

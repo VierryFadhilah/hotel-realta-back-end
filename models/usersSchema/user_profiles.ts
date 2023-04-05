@@ -24,14 +24,8 @@ export class user_profiles
   extends Model<user_profilesAttributes, user_profilesAttributes>
   implements user_profilesAttributes
 {
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-    type: DataType.INTEGER,
-    defaultValue: Sequelize.literal(
-      "nextval('users.user_profiles_uspro_id_seq'::regclass)",
-    ),
-  })
+  @Column({ primaryKey: true, autoIncrement: true, type: DataType.INTEGER })
+  @Index({ name: 'user_profiles_pkey', using: 'btree', unique: true })
   uspro_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(20) })

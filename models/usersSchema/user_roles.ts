@@ -19,8 +19,10 @@ export class user_roles
   implements user_rolesAttributes
 {
   @Column({ primaryKey: true, type: DataType.INTEGER })
+  @Index({ name: 'pkey_user_roles', using: 'btree', unique: true })
   usro_user_id!: number;
 
   @Column({ primaryKey: true, type: DataType.INTEGER })
+  @Index({ name: 'pkey_user_roles', using: 'btree', unique: true })
   usro_role_id!: number;
 }

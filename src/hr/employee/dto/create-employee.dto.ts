@@ -1,4 +1,4 @@
-interface Igeneral {
+export class CreateEmployeeDto {
   user_id: number;
   nationalId: string;
   birth: Date;
@@ -10,28 +10,11 @@ interface Igeneral {
   jobRole: number;
   gender: string;
   currentFlag: number;
-}
-interface ISalary {
-  salary: number;
+  salary: string;
   frequency: number;
   department: number;
-}
-
-interface IAssigment {
-  startDate: string;
-  endDate: string;
-}
-
-interface IShift {
-  shift: number;
-  startTime: number;
-  endTime: number;
-}
-
-export class CreateEmployeeDto {
-  general: Igeneral;
-
-  salary: ISalary;
-  assigment: IAssigment;
-  shift: IShift;
+  startDate: Date;
+  endDate: Date;
+  shift_id: number[] | string;
+  emp_photo: string;
 }

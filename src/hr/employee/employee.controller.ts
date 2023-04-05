@@ -36,18 +36,25 @@ export class EmployeeController {
   @UseInterceptors(FileInterceptor('image', { storage }))
   create(
     @UploadedFile() file: Express.Multer.File,
-    @Body() createEmployeeDto: any,
+    @Body() createEmployeeDto: CreateEmployeeDto,
   ) {
-    const data = {
-      general: JSON.parse(createEmployeeDto.general),
-      salary: JSON.parse(createEmployeeDto.salary),
-      assigment: JSON.parse(createEmployeeDto.assigment),
-      shift: JSON.parse(createEmployeeDto.shift),
-    };
+    createEmployeeDto.shift_id = JSON.parse(
+      createEmployeeDto.shift_id as string,
+    );
+
     if (file) {
-      return this.employeeService.create(data, file);
+      return this.employeeService.create(createEmployeeDto, file);
     }
-    return this.employeeService.create(data);
+    return this.employeeService.create(createEmployeeDto);
+  }
+
+  @Get('shift')
+  getShift(@Query('search') search: string) {
+    return this.employeeService.findShift(search);
+  }
+  @Get('shift/:id')
+  OneShift(@Param('id') id: number) {
+    return this.employeeService.shiftById(id);
   }
 
   @Get()

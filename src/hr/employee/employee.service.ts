@@ -8,6 +8,7 @@ import {
   employee_pay_history,
   job_role,
   shift,
+  shift_detail,
   work_order_detail,
   work_orders,
 } from 'models/humanResourceSchema';
@@ -28,24 +29,47 @@ export class EmployeeService {
   ): Promise<any> {
     try {
       let emp_photo: string;
-      if (file) {
+
+      if (!!file) {
         emp_photo = file.filename;
       }
-      const general = createEmployeeDto.general;
       const result = await employee.create({
-        emp_national_id: general.nationalId,
-        emp_birth_date: general.birth,
-        emp_hire_date: general.hireDate,
-        emp_salaried_flag: general.salariedFlag,
-        emp_marital_status: general.status,
-        emp_gender: general.gender,
-        emp_current_flag: general.currentFlag,
-        emp_vacation_hours: general.vacationHours,
-        emp_sickleave_hours: general.sickLeaveHours,
-        emp_joro_id: general.jobRole,
+        emp_national_id: createEmployeeDto.nationalId,
+        emp_birth_date: createEmployeeDto.birth,
+        emp_marital_status: createEmployeeDto.status,
+        emp_gender: createEmployeeDto.gender,
+        emp_hire_date: createEmployeeDto.hireDate,
+        emp_salaried_flag: createEmployeeDto.salariedFlag,
+        emp_vacation_hours: createEmployeeDto.vacationHours,
+        emp_sickleave_hours: createEmployeeDto.sickLeaveHours,
+        emp_current_flag: createEmployeeDto.currentFlag,
         emp_photo,
-        emp_user_id: general.user_id,
+
+        emp_emp_id: null,
+        emp_joro_id: createEmployeeDto.jobRole,
+        emp_user_id: createEmployeeDto.user_id,
       });
+      const employeePayHistory = await employee_pay_history.create({
+        ephi_emp_id: result.emp_id,
+        ephi_rate_change_date: new Date(),
+        ephi_rate_salary: createEmployeeDto.salary,
+        ephi_pay_frequence: createEmployeeDto.frequency,
+      });
+      for (let i = 0; i < createEmployeeDto.shift_id.length; i++) {
+        const element = createEmployeeDto.shift_id[i];
+        console.log(element as number);
+        await shift_detail.create({
+          shide_shift_id: element as number,
+          shide_emp_id: result.emp_id,
+        });
+      }
+      const createDepartmentHistory = await employee_department_history.create({
+        edhi_emp_id: result.emp_id,
+        edhi_start_date: createEmployeeDto.startDate,
+        edhi_end_date: createEmployeeDto.endDate,
+        edhi_dept_id: createEmployeeDto.department,
+      });
+
       return {
         statusCode: 200,
         message: 'success',
@@ -54,15 +78,15 @@ export class EmployeeService {
         },
       };
     } catch (error) {
-      unlinkSync(
-        join(
-          __dirname,
-          `../../../../uploads/image/human_resource/${file.filename}`,
-        ),
-      );
+      // unlinkSync(
+      //   join(
+      //     __dirname,
+      //     `../../../../uploads/image/human_resource/${file.filename}`,
+      //   ),
+      // );
       return {
         statusCode: 400,
-        message: error.message,
+        message: error,
         data: [],
       };
     }
@@ -80,7 +104,7 @@ export class EmployeeService {
     let like = ``;
 
     if (search) {
-      like = ``;
+      like = search;
     }
 
     if (status) {
@@ -138,20 +162,12 @@ export class EmployeeService {
         totalPage,
         totalData,
         from: from + 1,
-        to: +from,
+        to: +from + employeeList.length,
       },
     };
   }
 
   async findOne(id: number) {
-    // const result = await this.sequelize.query(
-    //   `select * from human_resource.get_employee_for_update2(${id})`,
-    // );
-    // return {
-    //   statusCode: 200,
-    //   message: 'success',
-    //   data: result[0][0],
-    // };
     const result = await employee.findOne({
       where: {
         emp_id: id,
@@ -385,5 +401,36 @@ export class EmployeeService {
         department: departmentList,
       },
     };
+  }
+
+  async findShift(search: string) {
+    try {
+      const result = await shift.findAll({
+        where: {
+          shift_name: {
+            [Op.iLike]: `%${search}%`,
+          },
+        },
+        limit: 5,
+      });
+      const resultList = [];
+      for (let i = 0; i < result.length; i++) {
+        const element = result[i];
+        resultList.push({
+          shift_id: element.shift_id,
+          shift_name: element.shift_name,
+        });
+      }
+      return {
+        statusCode: 200,
+        message: 'success',
+        data: resultList,
+      };
+    } catch (error) {
+      return { statusCode: 400, message: error };
+    }
+  }
+  async shiftById(id: number) {
+    return await shift.findByPk(id);
   }
 }
