@@ -22,7 +22,14 @@ export class facility_photos
   extends Model<facility_photosAttributes, facility_photosAttributes>
   implements facility_photosAttributes
 {
-  @Column({ allowNull: true, type: DataType.INTEGER })
+  @Column({
+    primaryKey: true,
+    autoIncrement: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal(
+      "nextval('hotel.facility_photos_fapho_id_seq'::regclass)",
+    ),
+  })
   @Index({ name: 'facility_photos_pkey', using: 'btree', unique: true })
   fapho_id?: number;
 

@@ -20,6 +20,7 @@ export interface facility_price_historyAttributes {
   faph_modified_date?: Date;
   faph_user_id?: number;
   faph_faci_id?: number;
+  faph_expose_price?: string;
 }
 
 @Table({
@@ -34,7 +35,14 @@ export class facility_price_history
   >
   implements facility_price_historyAttributes
 {
-  @Column({ allowNull: true, type: DataType.INTEGER })
+  @Column({
+    primaryKey: true,
+    autoIncrement: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal(
+      "nextval('hotel.facility_price_history_faph_id_seq'::regclass)",
+    ),
+  })
   @Index({ name: 'facility_price_history_pkey', using: 'btree', unique: true })
   faph_id?: number;
 
@@ -71,4 +79,7 @@ export class facility_price_history
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   faph_faci_id?: number;
+
+  @Column({ allowNull: true, type: DataType.STRING(20) })
+  faph_expose_price?: string;
 }
