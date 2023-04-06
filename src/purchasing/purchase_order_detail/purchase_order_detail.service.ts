@@ -25,6 +25,13 @@ export class PurchaseOrderDetailService {
     };
   }
 
+  getAll() {
+    const result = purchase_order_detail.findAll({
+      order: [['pode_id', 'ASC']],
+    });
+    return result;
+  }
+
   async findAll(page: number, limit: number) {
     const offset = (page - 1) * limit;
     const result = await purchase_order_detail.count({});

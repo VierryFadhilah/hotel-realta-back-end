@@ -1,3 +1,4 @@
+import { stock_detail } from 'models/purchasingSchema';
 import {
   Model,
   Table,
@@ -105,4 +106,7 @@ export class facilities
     defaultValue: Sequelize.literal("'Rate Price'::character varying"),
   })
   faci_expose_price?: string;
+
+  @HasMany(() => stock_detail, { sourceKey: 'faci_id' })
+  stock_detail?: stock_detail[];
 }

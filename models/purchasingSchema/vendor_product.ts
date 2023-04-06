@@ -9,6 +9,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { stocks } from './stocks';
+import { vendor } from './vendor';
 
 export interface vendor_productAttributes {
   vepro_id?: number;
@@ -48,9 +49,13 @@ export class vendor_product
   @Column({ allowNull: true, type: DataType.INTEGER })
   vepro_stock_id?: number;
 
+  @ForeignKey(() => vendor)
   @Column({ allowNull: true, type: DataType.INTEGER })
   vepro_vendor_id?: number;
 
   @BelongsTo(() => stocks)
   stock?: stocks;
+
+  @BelongsTo(() => vendor)
+  vendor?: vendor;
 }

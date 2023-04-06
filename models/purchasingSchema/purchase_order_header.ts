@@ -18,9 +18,9 @@ export interface purchase_order_headerAttributes {
   pohe_number?: string;
   pohe_status?: string;
   pohe_order_date?: Date;
-  pohe_subtotal?: string;
-  pohe_tax?: string;
-  pohe_total_amount?: string;
+  pohe_subtotal?: number;
+  pohe_tax?: number;
+  pohe_total_amount?: number;
   pohe_refund?: string;
   pohe_arrival_date?: Date;
   pohe_pay_type?: string;
@@ -64,13 +64,13 @@ export class purchase_order_header
   pohe_order_date?: Date;
 
   @Column({ allowNull: true, type: DataType.DECIMAL })
-  pohe_subtotal?: string;
+  pohe_subtotal?: number;
 
   @Column({ allowNull: true, type: DataType.DECIMAL })
-  pohe_tax?: string;
+  pohe_tax?: number;
 
   @Column({ allowNull: true, type: DataType.DECIMAL })
-  pohe_total_amount?: string;
+  pohe_total_amount?: number;
 
   @Column({ allowNull: true, type: DataType.DECIMAL })
   pohe_refund?: string;
