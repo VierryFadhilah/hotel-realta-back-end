@@ -24,13 +24,13 @@ export class PurchaseOrderHeaderController {
 
   @Get('listOrder/:po')
   async getAll(
-    @Query('page') page = 1,
-    @Query('limit') limit = 5,
+    // @Query('page') page = 1,
+    // @Query('limit') limit = 5,
     @Param('po') po: string,
   ): Promise<any[]> {
     const result = await this.purchaseOrderHeaderService.listOrderDetail(
-      page,
-      limit,
+      // page,
+      // limit,
       po,
     );
     return result;
@@ -56,6 +56,17 @@ export class PurchaseOrderHeaderController {
       updatePurchaseOrderHeaderDto,
     );
   }
+
+  // @Put('purchase-order-header/status/:id')
+  // updateStatus(
+  //   @Param('id') id: string,
+  //   @Body() updatePurchaseOrderHeaderDto: CreatePurchaseOrderHeaderDto,
+  // ) {
+  //   return this.purchaseOrderHeaderService.update(
+  //     +id,
+  //     updatePurchaseOrderHeaderDto,
+  //   );
+  // }
 
   @Delete('purchase-order-header/:id')
   remove(@Param('id') id: string) {

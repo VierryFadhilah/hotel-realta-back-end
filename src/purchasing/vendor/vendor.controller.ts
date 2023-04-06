@@ -21,30 +21,30 @@ export class VendorController {
     return this.vendorService.create(createVendorDto);
   }
 
-  // @Get('vendor')
-  // findAll() {
-  //   return this.vendorService.findAll();
-  // }
   @Get('vendor')
-  async findAll(@Query('page') page = 1, @Query('limit') limit = 5) {
-    return this.vendorService.findAll(page, limit);
+  async getVendorPages(
+    @Query('search') search: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.vendorService.getPages(page, limit, search);
   }
 
   @Get('listOrder')
-  async getAll(
-    @Query('page') page = 1,
-    @Query('limit') limit = 5,
-  ): Promise<any[]> {
-    const result = await this.vendorService.listOrder(page, limit);
-    return result;
+  async getListOrder(
+    @Query('search') search: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.vendorService.listOrder(page, limit, search);
   }
 
-  @Get('vendor/:id')
-  findOne(@Param('id') id: string) {
-    return this.vendorService.findOne(+id);
+  @Get('vendor/:vendor_name')
+  findOne(@Param('vendor_name') vendor_name: string) {
+    return this.vendorService.findOne(vendor_name);
   }
 
-  @Get('vendor/name/:name')
+  @Get('vendor/search/:name')
   async findByVendorName(@Param('name') name: string) {
     const result = await this.vendorService.findByVendorName(name);
     if (!result) {

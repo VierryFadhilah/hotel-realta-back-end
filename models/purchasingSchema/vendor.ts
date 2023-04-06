@@ -9,6 +9,7 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { purchase_order_header } from './purchase_order_header';
+import { vendor_product } from './vendor_product';
 
 export interface vendorAttributes {
   vendor_entity_id?: number;
@@ -56,4 +57,7 @@ export class vendor
 
   @HasMany(() => purchase_order_header, { sourceKey: 'vendor_entity_id' })
   purchase_order_headers?: purchase_order_header[];
+
+  @HasMany(() => vendor_product, { sourceKey: 'vendor_entity_id' })
+  vendor_product?: vendor_product[];
 }

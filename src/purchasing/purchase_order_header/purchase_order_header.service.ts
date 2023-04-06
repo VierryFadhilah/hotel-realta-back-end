@@ -4,6 +4,7 @@ import {
   purchase_order_detail,
   purchase_order_header,
   stocks,
+  vendor,
 } from 'models/purchasingSchema';
 
 @Injectable()
@@ -25,7 +26,6 @@ export class PurchaseOrderHeaderService {
       const lastNumberStr = lastPoheNumber.substring(lastPoheNumber.length - 3);
       lastNumber = parseInt(lastNumberStr, 10);
     }
-
     const nextNumber = lastNumber + 1;
     const paddedNumber = nextNumber.toString().padStart(3, '0');
     const poheNumber = `PO-${formattedDate}-${paddedNumber}`;
@@ -34,9 +34,9 @@ export class PurchaseOrderHeaderService {
       pohe_number: poheNumber,
       pohe_status: createPurchaseOrderHeaderDto.pohe_status,
       pohe_order_date: new Date(createPurchaseOrderHeaderDto.pohe_order_date),
-      pohe_subtotal: createPurchaseOrderHeaderDto.pohe_subtotal,
-      pohe_tax: createPurchaseOrderHeaderDto.pohe_tax,
-      pohe_total_amount: createPurchaseOrderHeaderDto.pohe_total_amount,
+      // pohe_subtotal: createPurchaseOrderHeaderDto.pohe_subtotal,
+      // pohe_tax: createPurchaseOrderHeaderDto.pohe_tax,
+      // pohe_total_amount: total_amount,
       pohe_refund: createPurchaseOrderHeaderDto.pohe_refund,
       pohe_arrival_date: new Date(
         createPurchaseOrderHeaderDto.pohe_arrival_date,
@@ -44,7 +44,7 @@ export class PurchaseOrderHeaderService {
       pohe_pay_type: createPurchaseOrderHeaderDto.pohe_pay_type,
       pohe_emp_id: createPurchaseOrderHeaderDto.pohe_emp_id,
       pohe_vendor_id: createPurchaseOrderHeaderDto.pohe_vendor_id,
-      pohe_line_items: createPurchaseOrderHeaderDto.pohe_line_items,
+      // pohe_line_items: createPurchaseOrderHeaderDto.pohe_line_items,
     });
     return {
       statusCode: 200,
@@ -85,21 +85,32 @@ export class PurchaseOrderHeaderService {
     id: number,
     createPurchaseOrderHeaderDto: CreatePurchaseOrderHeaderDto,
   ) {
+    const totalLineTotal = await purchase_order_detail.sum('pode_line_total', {
+      where: { pode_pohe_id: id },
+    });
+    const totalLineItems = await purchase_order_detail.count({
+      where: { pode_pohe_id: id },
+    });
+    console.log(totalLineItems);
+    const total_amount =
+      Number(totalLineTotal) +
+      (Number(totalLineTotal) * Number(createPurchaseOrderHeaderDto.pohe_tax)) /
+        100;
     const result = await purchase_order_header.update(
       {
         pohe_status: createPurchaseOrderHeaderDto.pohe_status,
-        pohe_order_date: new Date(createPurchaseOrderHeaderDto.pohe_order_date),
-        pohe_subtotal: createPurchaseOrderHeaderDto.pohe_subtotal,
+        // pohe_order_date: new Date(createPurchaseOrderHeaderDto.pohe_order_date),
+        pohe_subtotal: totalLineTotal,
         pohe_tax: createPurchaseOrderHeaderDto.pohe_tax,
-        pohe_total_amount: createPurchaseOrderHeaderDto.pohe_total_amount,
-        pohe_refund: createPurchaseOrderHeaderDto.pohe_refund,
-        pohe_arrival_date: new Date(
-          createPurchaseOrderHeaderDto.pohe_arrival_date,
-        ),
-        pohe_pay_type: createPurchaseOrderHeaderDto.pohe_pay_type,
-        pohe_emp_id: createPurchaseOrderHeaderDto.pohe_emp_id,
-        pohe_vendor_id: createPurchaseOrderHeaderDto.pohe_vendor_id,
-        pohe_line_items: createPurchaseOrderHeaderDto.pohe_line_items,
+        pohe_total_amount: total_amount,
+        // pohe_refund: createPurchaseOrderHeaderDto.pohe_refund,
+        // pohe_arrival_date: new Date(
+        //   createPurchaseOrderHeaderDto.pohe_arrival_date,
+        // ),
+        // pohe_pay_type: createPurchaseOrderHeaderDto.pohe_pay_type,
+        // pohe_emp_id: createPurchaseOrderHeaderDto.pohe_emp_id,
+        // pohe_vendor_id: createPurchaseOrderHeaderDto.pohe_vendor_id,
+        pohe_line_items: totalLineItems,
       },
       {
         where: {
@@ -126,16 +137,19 @@ export class PurchaseOrderHeaderService {
     };
   }
 
-  async listOrderDetail(page: number, limit: number, po: string): Promise<any> {
+  async listOrderDetail(po: string): Promise<any> {
     try {
-      const offset = (page - 1) * limit;
+      // const offset = (page - 1) * limit;
       const result = await purchase_order_header.findAndCountAll({
-        limit,
-        offset,
+        // limit,
+        // offset,
         where: {
           pohe_number: po,
         },
         include: [
+          {
+            model: vendor,
+          },
           {
             model: purchase_order_detail,
             include: [
@@ -146,13 +160,13 @@ export class PurchaseOrderHeaderService {
           },
         ],
       });
-      const totalPages = Math.ceil(result.count / limit);
+      // const totalPages = Math.ceil(result.count / limit);
       return {
         statusCode: 200,
         message: 'Success',
         data: {
-          totalPages,
-          currentPage: page,
+          // totalPages,
+          // currentPage: page,
           data: result.rows,
         },
       };

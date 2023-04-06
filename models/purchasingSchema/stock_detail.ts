@@ -62,7 +62,7 @@ export class stock_detail
   stod_pohe_id?: number;
 
   @BelongsTo(() => facilities)
-  facility?: facilities;
+  facilities?: facilities;
 
   @HasMany(() => purchase_order_header, { sourceKey: 'stod_pohe_id' })
   purchase_order_headers?: purchase_order_header[];

@@ -1,3 +1,4 @@
+import { stock_detail } from 'models/purchasingSchema';
 import {
   Model,
   Table,
@@ -6,6 +7,7 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
 
 export interface facilitiesAttributes {
@@ -82,4 +84,7 @@ export class facilities
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   faci_hotel_id?: number;
+
+  @HasMany(() => stock_detail, { sourceKey: 'faci_id' })
+  stock_detail?: stock_detail[];
 }

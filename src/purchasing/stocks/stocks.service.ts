@@ -5,11 +5,13 @@ import {
   stock_detail,
   stock_photo,
   stocks,
+  vendor,
   vendor_product,
 } from 'models/purchasingSchema';
 import { facilities } from 'models/hotelSchema';
 import { Sequelize } from 'sequelize-typescript';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class StocksService {
@@ -36,23 +38,52 @@ export class StocksService {
     };
   }
 
-  async findAll(page: number, limit: number) {
-    const offset = (page - 1) * limit;
-    const result = await stocks.findAndCountAll({
-      order: [['stock_id', 'ASC']],
-      limit,
-      offset,
-    });
-    const totalPages = Math.ceil(result.count / limit);
-    return {
-      statusCode: 200,
-      message: 'Success',
-      data: {
-        totalPages,
-        currentPage: page,
-        data: result.rows,
-      },
-    };
+  async findAll(page, limit, search?) {
+    try {
+      const pages = parseInt(page) || 0;
+      const limits = parseInt(limit) || 2;
+      const searchh = search || '';
+      const offset = limits * (pages - 1);
+      const totalRows = await stocks.count({
+        where: {
+          [Op.or]: [
+            {
+              stock_name: {
+                [Op.iLike]: '%' + searchh + '%',
+              },
+            },
+          ],
+        },
+      });
+      const totalPage = Math.ceil(totalRows / limits);
+      const result = await stocks.findAll({
+        where: {
+          stock_name: {
+            [Op.iLike]: '%' + searchh + '%',
+          },
+        },
+        offset: offset,
+        limit: limit,
+        order: [['stock_name', 'ASC']],
+      });
+      return {
+        statusCode: 200,
+        message: 'Success',
+        data: {
+          totalPage: totalPage,
+          totalRows: totalRows,
+          currentPage: pages,
+          data: result,
+        },
+      };
+    } catch (error) {
+      return error;
+    }
+  }
+
+  getAll() {
+    const result = stocks.findAll({ order: [['stock_name', 'ASC']] });
+    return result;
   }
 
   async findOne(id: number) {
@@ -114,17 +145,16 @@ export class StocksService {
   async stockVepro(page: number, limit: number): Promise<any> {
     try {
       const offset = (page - 1) * limit;
-      const result = await stocks.findAndCountAll({
+      const result = await vendor.findAndCountAll({
         limit,
         offset,
-        attributes: ['stock_name'],
         include: [
           {
             model: vendor_product,
-            attributes: [
-              'vepro_qty_stocked',
-              'vepro_qty_remaining',
-              'vepro_price',
+            include: [
+              {
+                model: stocks,
+              },
             ],
           },
         ],
@@ -136,6 +166,41 @@ export class StocksService {
         data: {
           totalPages,
           currentPage: page,
+          data: result.rows,
+        },
+      };
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async stockVeproId(id: number): Promise<any> {
+    try {
+      // const offset = (page - 1) * limit;
+      const result = await vendor.findAndCountAll({
+        // limit,
+        // offset,
+        where: {
+          vendor_entity_id: id,
+        },
+        include: [
+          {
+            model: vendor_product,
+            include: [
+              {
+                model: stocks,
+              },
+            ],
+          },
+        ],
+      });
+      // const totalPages = Math.ceil(result.count / limit);
+      return {
+        statusCode: 200,
+        message: 'Success',
+        data: {
+          // totalPages,
+          // currentPage: page,
           data: result.rows,
         },
       };
@@ -150,15 +215,14 @@ export class StocksService {
       const result = await facilities.findAndCountAll({
         limit,
         offset,
-        attributes: ['hofa_faci_room_number'],
         include: [
           {
             model: stock_detail,
-            attributes: ['stod_barcode_number', 'stod_status', 'stod_notes'],
+            // attributes: ['stod_barcode_number', 'stod_status', 'stod_notes'],
             include: [
               {
                 model: purchase_order_header,
-                attributes: ['pohe_number'],
+                // attributes: ['pohe_number'],
               },
             ],
           },
@@ -179,37 +243,35 @@ export class StocksService {
     }
   }
 
-  async stockDet(page: number, limit: number, id: number): Promise<any> {
+  async stockDet(id: number): Promise<any> {
     try {
-      const offset = (page - 1) * limit;
-      const result = await stocks.findAndCountAll({
-        limit,
-        offset,
+      // const offset = (page - 1) * limit;
+      const result = await stock_detail.findOne({
+        // limit,
+        // offset,
         where: {
-          stock_id: id,
+          stod_id: id,
         },
         include: [
           {
-            model: stock_detail,
-            include: [
-              {
-                model: purchase_order_header,
-              },
-              {
-                model: facilities,
-              },
-            ],
+            model: stocks,
+          },
+          // {
+          //   model: facilities,
+          // },
+          {
+            model: purchase_order_header,
           },
         ],
       });
-      const totalPages = Math.ceil(result.count / limit);
+      // const totalPages = Math.ceil(result.count / limit);
       return {
         statusCode: 200,
         message: 'Success',
         data: {
-          totalPages,
-          currentPage: page,
-          data: result.rows,
+          // totalPages,
+          // currentPage: page,
+          data: result,
         },
       };
     } catch (err) {

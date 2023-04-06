@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVendorDto } from './dto/create-vendor.dto';
 import { purchase_order_header, vendor } from 'models/purchasingSchema';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class VendorService {
@@ -19,14 +20,10 @@ export class VendorService {
     };
   }
 
-  // findAll() {
-  //   const result = vendor.findAll({ order: [['vendor_entity_id', 'ASC']] });
-  //   return result;
-  // }
   async findAll(page: number, limit: number) {
     const offset = (page - 1) * limit;
     const vendors = await vendor.findAndCountAll({
-      order: [['vendor_entity_id', 'ASC']],
+      order: [['vendor_name', 'ASC']],
       limit,
       offset,
     });
@@ -42,12 +39,63 @@ export class VendorService {
     };
   }
 
-  async findOne(id: number) {
-    const result = await vendor.findByPk(id);
+  async getPages(page, limit, search?) {
+    try {
+      const pages = parseInt(page) || 0;
+      const limits = parseInt(limit) || 2;
+      const searchh = search || '';
+      const offset = limits * (pages - 1);
+      const totalRows = await vendor.count({
+        where: {
+          [Op.or]: [
+            {
+              vendor_name: {
+                [Op.iLike]: '%' + searchh + '%',
+              },
+            },
+          ],
+        },
+      });
+      const totalPage = Math.ceil(totalRows / limits);
+      const result = await vendor.findAll({
+        where: {
+          vendor_name: {
+            [Op.iLike]: '%' + searchh + '%',
+          },
+        },
+        offset: offset,
+        limit: limit,
+        order: [['vendor_name', 'ASC']],
+      });
+      return {
+        statusCode: 200,
+        message: 'Success',
+        data: {
+          totalPage: totalPage,
+          totalRows: totalRows,
+          currentPage: pages,
+          data: result,
+        },
+      };
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async findOne(vendor_name: any) {
+    const result = await vendor.findAll({
+      where: {
+        vendor_name: {
+          [Op.iLike]: `%${vendor_name}%`,
+        },
+      },
+    });
     return {
       statusCode: 200,
       message: 'Success',
-      data: result,
+      data: {
+        data: result,
+      },
     };
   }
 
@@ -95,34 +143,61 @@ export class VendorService {
     };
   }
 
-  async listOrder(page: number, limit: number): Promise<any> {
+  async listOrder(page, limit, search?) {
     try {
-      const offset = (page - 1) * limit;
-      const result = await purchase_order_header.findAndCountAll({
-        limit,
-        offset,
-        attributes: [
-          'pohe_number',
-          'pohe_order_date',
-          'pohe_line_items',
-          'pohe_total_amount',
-          'pohe_status',
-        ],
+      const pages = parseInt(page) || 0;
+      const limits = parseInt(limit) || 2;
+      const searchh = search || '';
+      const offset = limits * (pages - 1);
+      const totalRows = await purchase_order_header.count({
         include: [
           {
             model: vendor,
-            attributes: ['vendor_name'],
           },
         ],
+        where: {
+          [Op.or]: [
+            {
+              pohe_number: {
+                [Op.iLike]: '%' + searchh + '%',
+              },
+            },
+          ],
+        },
       });
-      const totalPages = Math.ceil(result.count / limit);
+      const totalPage = Math.ceil(totalRows / limits);
+      const result = await purchase_order_header.findAll({
+        // attributes: [
+        //   'pohe_id',
+        //   'pohe_number',
+        //   'pohe_order_date',
+        //   'pohe_line_items',
+        //   'pohe_total_amount',
+        //   'pohe_status',
+        // ],
+        include: [
+          {
+            model: vendor,
+            // attributes: ['vendor_name'],
+          },
+        ],
+        where: {
+          pohe_number: {
+            [Op.iLike]: '%' + searchh + '%',
+          },
+        },
+        offset: offset,
+        limit: limit,
+        order: [['pohe_number', 'ASC']],
+      });
       return {
         statusCode: 200,
         message: 'Success',
         data: {
-          totalPages,
-          currentPage: page,
-          data: result.rows,
+          totalPage: totalPage,
+          totalRows: totalRows,
+          currentPage: pages,
+          data: result,
         },
       };
     } catch (err) {
