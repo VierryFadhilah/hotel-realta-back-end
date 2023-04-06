@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { PaymentModule } from './payment/payment.module';
+// import { PaymentModule } from './payment/payment.module';
 import { HotelModule } from './hotel-schema/hotel.module';
-import { HrModule } from './hr/hr.module';
-import { RestoTModule } from './resto/resto-t.module';
-import { PurchasingModule } from './purchasing/purchasing.module';
-import { UsersTModule } from './users/users.module';
+import { MasterModule } from './master-schema/master.module';
+// import { HrModule } from './hr/hr.module';
+// import { RestoTModule } from './resto/resto-t.module';
+// import { PurchasingModule } from './purchasing/purchasing.module';
+// import { UsersTModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -21,12 +22,13 @@ import { UsersTModule } from './users/users.module';
       synchronize: true,
     }),
 
-    PaymentModule,
+    // PaymentModule,
     HotelModule,
-    HrModule,
-    RestoTModule,
-    PurchasingModule,
-    UsersTModule,
+    // HrModule,
+    // RestoTModule,
+    // PurchasingModule,
+    // UsersTModule,
+    MasterModule,
   ],
 })
 export class AppModule {}

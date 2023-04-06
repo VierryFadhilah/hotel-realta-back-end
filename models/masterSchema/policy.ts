@@ -27,6 +27,7 @@ export class policy
       "nextval('master.policy_poli_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'policy_pkey', using: 'btree', unique: true })
   @Index({ name: 'pk_poli_id', using: 'btree', unique: true })
   poli_id?: number;
 

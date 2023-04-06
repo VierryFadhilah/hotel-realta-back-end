@@ -9,8 +9,8 @@ export class UpdateFacilityDto extends PartialType(CreateFacilityDto) {
   faci_max_number?: number;
   faci_measure_unit?: string;
   faci_room_number?: string;
-  faci_startdate?: Date;
-  faci_enddate?: Date;
+  faci_startdate?: string | any;
+  faci_enddate?: string | any;
   faci_low_price?: string;
   faci_high_price?: string;
   faci_rate_price?: string;
