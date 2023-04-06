@@ -22,6 +22,10 @@
     "stg:users" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s users -u postgres -x root -o models/usersSchema --indices --associations-file ./association.csv",
     "stg:master" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s master -u postgres -x root -o models/masterSchema --indices --associations-file ./association.csv",    
     "stg:hotel" : "stg -D postgres -o models/hotelSchema/ -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv -s hotel",
+    "stg:purchasing" : "stg -D postgres -o models/purchasingSchema/ -h localhost -p 5432 -d HotelRealtaDB -u postgres -x root --indices --associations-file ./association.csv -s purchasing",
+    "stg:payment": "stg -D postgres -o models/schemaPayment -s payment -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv  ",
+    
+    "stg:hotel" : "stg -D postgres -o models/hotelSchema/ -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv -s hotel",
     "stg:resto" : "stg -D postgres -o models/restoSchema/ -h localhost -p 5432 -d hotel_realta -u postgres -x root --indices --associations-file ./association.csv -s resto"
   },
   "dependencies": {

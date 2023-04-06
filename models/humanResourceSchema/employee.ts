@@ -8,9 +8,14 @@ import {
   ForeignKey,
   HasMany,
   BelongsTo,
+  HasOne,
 } from 'sequelize-typescript';
 import { work_order_detail } from './work_order_detail';
+import { shift_detail } from './shift_detail';
 import { users } from '../usersSchema/users';
+import { job_role } from './job_role';
+import { employee_pay_history } from './employee_pay_history';
+import { employee_department_history } from './employee_department_history';
 
 export interface employeeAttributes {
   emp_id?: number;
@@ -88,11 +93,24 @@ export class employee
 
   @ForeignKey(() => users)
   @Column({ allowNull: true, type: DataType.INTEGER })
+  @Index({ name: 'emp_user_id_unique', using: 'btree', unique: true })
   emp_user_id?: number;
 
   @HasMany(() => work_order_detail, { sourceKey: 'emp_id' })
   work_order_details?: work_order_detail[];
 
+  @HasMany(() => shift_detail, { sourceKey: 'emp_id' })
+  shift_details?: shift_detail[];
+
   @BelongsTo(() => users)
   user?: users;
+
+  @HasOne(() => job_role, { sourceKey: 'emp_joro_id' })
+  job_role?: job_role;
+
+  @HasMany(() => employee_pay_history, { sourceKey: 'emp_id' })
+  employee_pay_histories?: employee_pay_history[];
+
+  @HasMany(() => employee_department_history, { sourceKey: 'emp_id' })
+  employee_department_histories?: employee_department_history[];
 }

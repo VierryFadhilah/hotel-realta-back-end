@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { employee } from './employee';
 
 export interface job_roleAttributes {
   joro_id?: number;
@@ -19,6 +21,7 @@ export class job_role
   extends Model<job_roleAttributes, job_roleAttributes>
   implements job_roleAttributes
 {
+  @ForeignKey(() => employee)
   @Column({
     primaryKey: true,
     autoIncrement: true,
@@ -36,4 +39,7 @@ export class job_role
 
   @Column({ allowNull: true, type: DataType.DATE(6) })
   joro_modified_date?: Date;
+
+  @BelongsTo(() => employee)
+  employee?: employee;
 }

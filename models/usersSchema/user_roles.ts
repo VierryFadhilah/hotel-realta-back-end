@@ -9,8 +9,8 @@ import {
 } from 'sequelize-typescript';
 
 export interface user_rolesAttributes {
-  uspro_user_id: number;
-  uspro_role_id: number;
+  usro_user_id: number;
+  usro_role_id: number;
 }
 
 @Table({ tableName: 'user_roles', schema: 'users', timestamps: false })
@@ -20,9 +20,9 @@ export class user_roles
 {
   @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'pkey_user_roles', using: 'btree', unique: true })
-  uspro_user_id!: number;
+  usro_user_id!: number;
 
   @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'pkey_user_roles', using: 'btree', unique: true })
-  uspro_role_id!: number;
+  usro_role_id!: number;
 }
