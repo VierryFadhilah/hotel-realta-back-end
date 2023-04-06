@@ -8,16 +8,16 @@ import {
   ForeignKey,
   HasMany,
 } from 'sequelize-typescript';
-import { work_orders } from '../humanResourceSchema';
+// import { work_orders } from '../humanResourceSchema';
 
 export interface usersAttributes {
   user_id?: number;
-  user_full_name?: string;
-  user_company_name?: string;
-  user_email?: string;
-  user_phone_number?: string;
-  user_modified_date?: Date;
-  user_type?: string;
+  // user_full_name?: string;
+  // user_company_name?: string;
+  // user_email?: string;
+  // user_phone_number?: string;
+  // user_modified_date?: Date;
+  // user_type?: string;
 }
 
 @Table({ tableName: 'users', schema: 'users', timestamps: false })
@@ -64,6 +64,6 @@ export class users
   })
   user_type?: string;
 
-  @HasMany(() => work_orders, { sourceKey: 'user_id' })
-  work_orders?: work_orders[];
+  // @HasMany(() => work_orders, { sourceKey: 'user_id' })
+  // work_orders?: work_orders[];
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateOrderMenuDetailDto } from './dto/create-order_menu_detail.dto';
 import { UpdateOrderMenuDetailDto } from './dto/update-order_menu_detail.dto';
 import { order_menu_detail } from 'models/restoSchema';
@@ -29,9 +29,13 @@ export class OrderMenuDetailService {
         omde_reme_id: createOrderMenuDetailDto.omde_reme_id,
       });
       const result = await orderMenus.save();
-      return { message: `Data berhasil ditambahkan`, data: result };
+      return {
+        status: 200,
+        message: `Data berhasil ditambahkan`,
+        data: result,
+      };
     } catch (error) {
-      return error;
+      return { status: 400, message: error };
     }
   }
 
@@ -40,13 +44,12 @@ export class OrderMenuDetailService {
     try {
       const result = await order_menu_detail.findAll();
       if (!result[0]) {
-        //jika tidak ada data data =0(kosong) tampilan perintah dibawah ini
-        return `Data tidak di temukan`;
+        return { status: 400, message: `Data tidak ditemukan` };
       } else {
-        return { message: `Data di temukan`, data: result };
+        return { status: 200, message: `Data ditemukan`, data: result };
       }
     } catch (error) {
-      return error;
+      return { status: HttpStatus.BAD_REQUEST, message: error, data: [] };
     }
   }
 
@@ -56,16 +59,20 @@ export class OrderMenuDetailService {
       const result = await order_menu_detail.findOne({ where: { omde_id } });
       if (result) {
         return {
-          message: `Order menu detail dengan id ${omde_id} di temukan`,
+          message: {
+            status: 200,
+            message: `Order menu detail dengan id ${omde_id} di temukan`,
+          },
           data: result,
         };
       } else {
         return {
+          status: 400,
           message: `Order menu detail dengan id ${omde_id} tidak ditemukan`,
         };
       }
     } catch (error) {
-      return error;
+      return { status: 400, message: error };
     }
   }
 
@@ -77,7 +84,7 @@ export class OrderMenuDetailService {
     try {
       const orderMenuDetail = await order_menu_detail.findByPk(omde_id);
       if (!orderMenuDetail) {
-        return `Data id ${omde_id} tidak ditemukan`;
+        return { status: 400, message: `Data id ${omde_id} tidak ditemukan` };
       }
 
       const subtotal = (
@@ -95,11 +102,12 @@ export class OrderMenuDetailService {
       });
 
       return {
+        status: 200,
         message: `Data pada id ${omde_id} telah diperbarui`,
         data: orderMenuDetail,
       };
     } catch (error) {
-      return error;
+      return { status: 400, message: error };
     }
   }
 
@@ -108,12 +116,12 @@ export class OrderMenuDetailService {
     try {
       const result = await order_menu_detail.destroy({ where: { omde_id } });
       if (!result) {
-        return `Data id ${omde_id} tidak di temukan`;
+        return { status: 400, message: `Data id ${omde_id} tidak di temukan` };
       } else {
-        return `Data id ${omde_id} berhasil di hapus`;
+        return { status: 200, message: `Data id ${omde_id} berhasil di hapus` };
       }
     } catch (error) {
-      return error;
+      return { status: 400, message: error };
     }
   }
 }

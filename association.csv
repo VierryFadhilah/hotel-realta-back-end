@@ -14,3 +14,6 @@ N:N, cagro_id, poli_id, master.category_group, master.policy, master.policy_cate
 1:N, woro_id, wode_woro_id, work_orders, work_order_detail
 1:N, emp_id, wode_emp_id, employee, work_order_detail
 1:1, user_id,emp_user_id, users,employee
+1:N,reme_id,remp_reme_id,resto_menus,resto_menu_photos
+1:N,reme_id,omde_reme_id,resto_menus,order_menu_detail
+1:N,orme_id,omde_orme_id,order_menus,order_menu_detail

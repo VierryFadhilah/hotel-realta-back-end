@@ -5,13 +5,17 @@ import {
   DataType,
   Index,
   Sequelize,
+  ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
+import { resto_menu_photos } from './resto_menu_photos';
+import { order_menu_detail } from './order_menu_detail';
 
 export interface resto_menusAttributes {
   reme_faci_id?: number;
   reme_id?: number;
   reme_name?: string;
-  reme_discription?: string;
+  reme_description?: string;
   reme_price?: string;
   reme_status?: string;
   reme_modified_date?: Date;
@@ -40,7 +44,7 @@ export class resto_menus
   reme_name?: string;
 
   @Column({ allowNull: true, type: DataType.STRING(255) })
-  reme_discription?: string;
+  reme_description?: string;
 
   @Column({ allowNull: true, type: DataType.NUMBER })
   reme_price?: string;
@@ -49,9 +53,15 @@ export class resto_menus
   reme_status?: string;
 
   @Column({
-    allowNull: false,
-    type: DataType.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: true,
+    type: DataType.DATE(6),
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP(6)'),
   })
   reme_modified_date?: Date;
+
+  @HasMany(() => resto_menu_photos, { sourceKey: 'reme_id' })
+  resto_menu_photos?: resto_menu_photos[];
+
+  @HasMany(() => order_menu_detail, { sourceKey: 'reme_id' })
+  order_menu_details?: order_menu_detail[];
 }

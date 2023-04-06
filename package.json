@@ -21,7 +21,8 @@
     "stg:hr" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s human_resource -u postgres -x root -o models/humanResourceSchema --indices --associations-file ./association.csv",
     "stg:users" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s users -u postgres -x root -o models/usersSchema --indices --associations-file ./association.csv",
     "stg:master" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s master -u postgres -x root -o models/masterSchema --indices --associations-file ./association.csv",    
-    "stg:hotel" : "stg -D postgres -o models/hotelSchema/ -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv -s hotel"
+    "stg:hotel" : "stg -D postgres -o models/hotelSchema/ -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv -s hotel",
+    "stg:resto" : "stg -D postgres -o models/restoSchema/ -h localhost -p 5432 -d hotel_realta -u postgres -x root --indices --associations-file ./association.csv -s resto"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

@@ -6,7 +6,10 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { resto_menus } from './resto_menus';
+import { order_menus } from './order_menus';
 
 export interface order_menu_detailAttributes {
   omde_id?: number;
@@ -46,9 +49,17 @@ export class order_menu_detail
   @Column({ allowNull: true, type: DataType.NUMBER })
   orme_discount?: string;
 
+  @ForeignKey(() => order_menus)
   @Column({ allowNull: true, type: DataType.INTEGER })
   omde_orme_id?: number;
 
+  @ForeignKey(() => resto_menus)
   @Column({ allowNull: true, type: DataType.INTEGER })
   omde_reme_id?: number;
+
+  @BelongsTo(() => resto_menus)
+  resto_menu?: resto_menus;
+
+  @BelongsTo(() => order_menus)
+  order_menu?: order_menus;
 }

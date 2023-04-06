@@ -12,36 +12,31 @@ import { RestoMenusService } from './resto_menus.service';
 import { CreateRestoMenuDto } from './dto/create-resto_menu.dto';
 import { UpdateRestoMenuDto } from './dto/update-resto_menu.dto';
 
-type FindOne = {
-  reme_name: string;
-  page: number;
-  entry: number;
-};
-
 @Controller('resto-menus')
 export class RestoMenusController {
   constructor(private readonly restoMenusService: RestoMenusService) {}
 
+  @Get()
+  async findAndSearch(
+    @Query('search') search: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.restoMenusService.findAndSearch(search, page, limit);
+  }
+
+  // @Get(':reme_name')
+  // findOne(@Param('reme_name') reme_name: any) {
+  //   return this.restoMenusService.findOne(reme_name);
+  // }
+  @Get('photo')
+  findAll(): Promise<any[]> {
+    return this.restoMenusService.findAllInclude();
+  }
+
   @Post()
   create(@Body() createRestoMenuDto: CreateRestoMenuDto) {
     return this.restoMenusService.create(createRestoMenuDto);
-  }
-
-  // @Get()
-  // findAll() {
-  //   return this.restoMenusService.findAll();
-  // }
-  @Get('search')
-  find(@Query() query: FindOne) {
-    return this.restoMenusService.findOne(
-      query.reme_name,
-      query.page,
-      query.entry,
-    );
-  }
-  @Get()
-  async findAll(@Query('page') page: number, @Query('limit') limit: number) {
-    return this.restoMenusService.findAll(page, limit);
   }
 
   @Put(':id')
