@@ -11,7 +11,7 @@ export interface resto_menusAttributes {
   reme_faci_id?: number;
   reme_id?: number;
   reme_name?: string;
-  reme_discription?: string;
+  reme_description?: string;
   reme_price?: string;
   reme_status?: string;
   reme_modified_date?: Date;
@@ -40,7 +40,7 @@ export class resto_menus
   reme_name?: string;
 
   @Column({ allowNull: true, type: DataType.STRING(255) })
-  reme_discription?: string;
+  reme_description?: string;
 
   @Column({ allowNull: true, type: DataType.NUMBER })
   reme_price?: string;

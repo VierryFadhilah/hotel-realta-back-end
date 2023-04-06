@@ -19,14 +19,7 @@ export class user_password
   extends Model<user_passwordAttributes, user_passwordAttributes>
   implements user_passwordAttributes
 {
-  @Column({
-    autoIncrement: true,
-    allowNull: true,
-    type: DataType.INTEGER,
-    defaultValue: Sequelize.literal(
-      "nextval('users.user_password_uspa_user_id_seq'::regclass)",
-    ),
-  })
+  @Column({ autoIncrement: true, allowNull: true, type: DataType.INTEGER })
   uspa_user_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(128) })

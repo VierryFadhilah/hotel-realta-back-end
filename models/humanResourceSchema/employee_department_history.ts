@@ -6,7 +6,12 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
+  HasOne,
 } from 'sequelize-typescript';
+import { employee } from './employee';
+import { department } from './department';
+import { shift } from './shift';
 
 export interface employee_department_historyAttributes {
   edhi_id?: number;
@@ -41,6 +46,7 @@ export class employee_department_history
   @Index({ name: 'pk_edhi', using: 'btree', unique: true })
   edhi_id?: number;
 
+  @ForeignKey(() => employee)
   @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'pk_edhi', using: 'btree', unique: true })
   edhi_emp_id!: number;
@@ -59,4 +65,13 @@ export class employee_department_history
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   edhi_shift_id?: number;
+
+  @BelongsTo(() => employee)
+  employee?: employee;
+
+  @HasOne(() => department, { sourceKey: 'edhi_dept_id' })
+  department?: department;
+
+  @HasOne(() => shift, { sourceKey: 'edhi_shift_id' })
+  shift?: shift;
 }

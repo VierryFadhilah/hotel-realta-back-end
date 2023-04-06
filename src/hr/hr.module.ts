@@ -8,6 +8,8 @@ import {
   employee_department_history,
   employee_pay_history,
   job_role,
+  shift,
+  shift_detail,
   work_order_detail,
   work_orders,
 } from 'models/humanResourceSchema';
@@ -27,6 +29,8 @@ import { service_task } from 'models/masterSchema';
       users,
       work_order_detail,
       service_task,
+      shift,
+      shift_detail,
     ]),
     WorkorderModule,
     DepartmentModule,
