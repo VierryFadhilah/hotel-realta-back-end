@@ -83,4 +83,10 @@ export class users
 
   @HasMany(() => user_accounts, { sourceKey: 'user_id' })
   user_accounts?: user_accounts[];
+
+  // @HasOne(() => employee, { sourceKey: 'user_id' })
+  // employee?: employee;
+
+  // @HasMany(() => user_accounts, { sourceKey: 'user_id' })
+  // user_accounts?: user_accounts[];
 }

@@ -8,4 +8,5 @@ export class UpdateRestoMenuDto extends PartialType(CreateRestoMenuDto) {
   reme_description?: string;
   reme_price?: string;
   reme_status?: string;
+  reme_modified_date: Date = new Date();
 }

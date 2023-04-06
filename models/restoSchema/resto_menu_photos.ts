@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { resto_menus } from './resto_menus';
 
 export interface resto_menu_photosAttributes {
   remp_id?: number;
@@ -45,6 +47,10 @@ export class resto_menu_photos
   @Column({ allowNull: true, type: DataType.STRING(255) })
   remp_url?: string;
 
+  @ForeignKey(() => resto_menus)
   @Column({ allowNull: true, type: DataType.INTEGER })
   remp_reme_id?: number;
+
+  @BelongsTo(() => resto_menus)
+  resto_menu?: resto_menus;
 }
