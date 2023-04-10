@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVendorProductDto } from './dto/create-vendor_product.dto';
-import { vendor_product } from 'models/purchasingSchema';
+import { vendor_product } from 'models/Purchasing/purchasingSchema';
 
 @Injectable()
 export class VendorProductService {

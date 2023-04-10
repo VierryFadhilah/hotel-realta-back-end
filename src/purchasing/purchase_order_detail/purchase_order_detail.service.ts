@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePurchaseOrderDetailDto } from './dto/create-purchase_order_detail.dto';
-import { purchase_order_detail, stocks } from 'models/purchasingSchema';
+import { purchase_order_detail, stocks } from 'models/Purchasing/purchasingSchema';
 
 @Injectable()
 export class PurchaseOrderDetailService {
