@@ -21,22 +21,29 @@ export class VendorController {
     return this.vendorService.create(createVendorDto);
   }
 
+  @Get('vendorAll')
+  findAll() {
+    return this.vendorService.getAll();
+  }
+
   @Get('vendor')
   async getVendorPages(
     @Query('search') search: string,
+    @Query('searchPri') searchPri: string,
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
-    return this.vendorService.getPages(page, limit, search);
+    return this.vendorService.getPages(page, limit, search, searchPri);
   }
 
   @Get('listOrder')
   async getListOrder(
     @Query('search') search: string,
+    @Query('searchStat') searchStat: string,
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
-    return this.vendorService.listOrder(page, limit, search);
+    return this.vendorService.listOrder(page, limit, search, searchStat);
   }
 
   @Get('vendor/:vendor_name')

@@ -54,6 +54,15 @@ export class StocksController {
     return this.stocksService.findAll(page, limit, search);
   }
 
+  @Get('gallery')
+  async gallery(
+    @Query('search') search: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.stocksService.gallery(page, limit, search);
+  }
+
   @Get('veproStock/:id')
   async getAllId(
     // @Query('page') page = 1,
@@ -64,21 +73,21 @@ export class StocksController {
     return result;
   }
 
+  @Get('veproStockId')
+  async find(
+    @Query('id') id: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.stocksService.stockVeproPag(page, limit, id);
+  }
+
   @Get('stockDetail')
   async stockDetail(
     @Query('page') page = 1,
     @Query('limit') limit = 5,
   ): Promise<any[]> {
     const result = await this.stocksService.stockDetail(page, limit);
-    return result;
-  }
-
-  @Get('gallery')
-  async gallery(
-    @Query('page') page = 1,
-    @Query('limit') limit = 5,
-  ): Promise<any[]> {
-    const result = await this.stocksService.gallery(page, limit);
     return result;
   }
 

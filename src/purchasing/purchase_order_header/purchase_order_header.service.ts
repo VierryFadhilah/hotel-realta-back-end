@@ -5,7 +5,7 @@ import {
   purchase_order_header,
   stocks,
   vendor,
-} from 'models/purchasingSchema';
+} from 'models/Purchasing/purchasingSchema';
 
 @Injectable()
 export class PurchaseOrderHeaderService {
@@ -85,13 +85,14 @@ export class PurchaseOrderHeaderService {
     id: number,
     createPurchaseOrderHeaderDto: CreatePurchaseOrderHeaderDto,
   ) {
-    const totalLineTotal = await purchase_order_detail.sum('pode_line_total', {
-      where: { pode_pohe_id: id },
-    });
-    const totalLineItems = await purchase_order_detail.count({
-      where: { pode_pohe_id: id },
-    });
-    console.log(totalLineItems);
+    const totalLineTotal =
+      (await purchase_order_detail.sum('pode_line_total', {
+        where: { pode_pohe_id: id },
+      })) ?? 0;
+    const totalLineItems =
+      (await purchase_order_detail.count({
+        where: { pode_pohe_id: id },
+      })) ?? 0;
     const total_amount =
       Number(totalLineTotal) +
       (Number(totalLineTotal) * Number(createPurchaseOrderHeaderDto.pohe_tax)) /
