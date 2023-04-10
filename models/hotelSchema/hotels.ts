@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
+import { facilities } from './facilities';
 
 export interface hotelsAttributes {
   hotel_id?: number;
@@ -63,4 +65,7 @@ export class hotels
     defaultValue: Sequelize.literal('now()'),
   })
   hotel_modified_date?: Date;
+
+  @HasMany(() => facilities, { sourceKey: 'hotel_id' })
+  facilities?: facilities[];
 }

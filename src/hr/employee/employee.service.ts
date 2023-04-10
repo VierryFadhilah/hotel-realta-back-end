@@ -11,11 +11,11 @@ import {
   shift_detail,
   work_order_detail,
   work_orders,
-} from 'models/humanResourceSchema';
+} from 'models/HR/humanResourceSchema';
 import { Sequelize } from 'sequelize-typescript';
 import { unlink, unlinkSync } from 'fs';
 import { join } from 'path';
-import { users } from 'models/usersSchema';
+import { users } from 'models/HR/usersSchema';
 import { Op } from 'sequelize';
 
 @Injectable()

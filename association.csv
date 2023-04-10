@@ -6,7 +6,7 @@ N:N, cagro_id, poli_id, master.category_group, master.policy, master.policy_cate
 1:N, user_id, hore_user_id, users.users, hotel.hotel_reviews
 1:N, hotel_id, hore_hotel_id, hotel.hotels, hotel.hotel_reviews
 1:N, cagro_id, faci_cagro_id, master.category_group, hotel.facilities
-1:N, hotel_id, faci_hotel_id, hotel.hotels, hotel.facilities
+1:N, hotel_id, faci_hotel_id, hotels, facilities
 1:N, faci_id, fapho_faci_id, hotel.facilities, hotel.facility_photos
 1:N, faci_id, faph_faci_id, hotel.facilities, hotel.facility_price_history
 1:N, user_id, faph_user_id, users.users, hotel.facility_price_history
