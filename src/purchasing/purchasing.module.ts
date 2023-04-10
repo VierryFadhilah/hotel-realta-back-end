@@ -8,7 +8,7 @@ import {
   stocks,
   vendor,
   vendor_product,
-} from 'models/purchasingSchema';
+} from 'models/Purchasing/purchasingSchema';
 import { PurchaseOrderDetailModule } from './purchase_order_detail/purchase_order_detail.module';
 import { PurchaseOrderHeaderModule } from './purchase_order_header/purchase_order_header.module';
 import { StockDetailModule } from './stock_detail/stock_detail.module';

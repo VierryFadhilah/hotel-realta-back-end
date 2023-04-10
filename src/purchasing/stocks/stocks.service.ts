@@ -8,7 +8,7 @@ import {
   stocks,
   vendor,
   vendor_product,
-} from 'models/purchasingSchema';
+} from 'models/Purchasing/purchasingSchema';
 import { facilities } from 'models/hotelSchema';
 import { Sequelize } from 'sequelize-typescript';
 import { InjectModel } from '@nestjs/sequelize';

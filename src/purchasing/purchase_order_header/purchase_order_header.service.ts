@@ -5,7 +5,7 @@ import {
   purchase_order_header,
   stocks,
   vendor,
-} from 'models/purchasingSchema';
+} from 'models/Purchasing/purchasingSchema';
 
 @Injectable()
 export class PurchaseOrderHeaderService {

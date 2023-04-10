@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateStockPhotoDto } from './dto/create-stock_photo.dto';
-import { stock_photo } from 'models/purchasingSchema';
+import { stock_photo } from 'models/Purchasing/purchasingSchema';
 import * as fs from 'fs';
 import { basename, join } from 'path';
 

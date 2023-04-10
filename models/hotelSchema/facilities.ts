@@ -1,4 +1,4 @@
-import { stock_detail } from 'models/purchasingSchema';
+import { stock_detail } from 'models/Purchasing/purchasingSchema';
 import {
   Model,
   Table,

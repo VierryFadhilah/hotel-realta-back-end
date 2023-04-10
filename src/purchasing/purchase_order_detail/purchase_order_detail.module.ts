@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PurchaseOrderDetailService } from './purchase_order_detail.service';
 import { PurchaseOrderDetailController } from './purchase_order_detail.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { purchase_order_detail } from 'models/purchasingSchema';
+import { purchase_order_detail } from 'models/Purchasing/purchasingSchema';
 
 @Module({
   imports: [SequelizeModule.forFeature([purchase_order_detail])],

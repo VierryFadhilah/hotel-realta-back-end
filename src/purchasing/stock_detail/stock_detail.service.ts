@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateStockDetailDto } from './dto/create-stock_detail.dto';
-import { stock_detail } from 'models/purchasingSchema';
+import { stock_detail } from 'models/Purchasing/purchasingSchema';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVendorDto } from './dto/create-vendor.dto';
-import { purchase_order_header, vendor } from 'models/purchasingSchema';
+import { purchase_order_header, vendor } from 'models/Purchasing/purchasingSchema';
 import { Op } from 'sequelize';
 
 @Injectable()
