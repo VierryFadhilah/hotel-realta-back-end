@@ -20,6 +20,11 @@ export class VendorService {
     };
   }
 
+  async getAll() {
+    const result = await vendor.findAll();
+    return result;
+  }
+
   async findAll(page: number, limit: number) {
     const offset = (page - 1) * limit;
     const vendors = await vendor.findAndCountAll({
@@ -39,30 +44,40 @@ export class VendorService {
     };
   }
 
-  async getPages(page, limit, search?) {
+  async getPages(page, limit, search?, searchPri?) {
     try {
       const pages = parseInt(page) || 0;
       const limits = parseInt(limit) || 2;
       const searchh = search || '';
+      const searchPriority = searchPri || '';
       const offset = limits * (pages - 1);
-      const totalRows = await vendor.count({
-        where: {
+      let where = {};
+      if (search && searchPri) {
+        where = {
           [Op.or]: [
             {
+              vendor_priority: searchPriority,
               vendor_name: {
                 [Op.iLike]: '%' + searchh + '%',
               },
             },
           ],
-        },
-      });
-      const totalPage = Math.ceil(totalRows / limits);
-      const result = await vendor.findAll({
-        where: {
+        };
+      } else if (search) {
+        where = {
           vendor_name: {
             [Op.iLike]: '%' + searchh + '%',
           },
-        },
+        };
+      } else if (searchPri) {
+        where = {
+          vendor_priority: searchPriority,
+        };
+      }
+      const totalRows = await vendor.count({ where });
+      const totalPage = Math.ceil(totalRows / limits);
+      const result = await vendor.findAll({
+        where,
         offset: offset,
         limit: limit,
         order: [['vendor_name', 'ASC']],
@@ -143,49 +158,52 @@ export class VendorService {
     };
   }
 
-  async listOrder(page, limit, search?) {
+  async listOrder(page, limit, search?, searchStat?) {
     try {
       const pages = parseInt(page) || 0;
       const limits = parseInt(limit) || 2;
       const searchh = search || '';
+      const searchStatus = searchStat || '';
       const offset = limits * (pages - 1);
+      let where = {};
+      if (search && searchStat) {
+        where = {
+          [Op.or]: [
+            {
+              pohe_status: searchStatus,
+              pohe_number: {
+                [Op.iLike]: '%' + searchh + '%',
+              },
+            },
+          ],
+        };
+      } else if (search) {
+        where = {
+          pohe_number: {
+            [Op.iLike]: '%' + searchh + '%',
+          },
+        };
+      } else if (searchStat) {
+        where = {
+          pohe_status: searchStatus,
+        };
+      }
       const totalRows = await purchase_order_header.count({
         include: [
           {
             model: vendor,
           },
         ],
-        where: {
-          [Op.or]: [
-            {
-              pohe_number: {
-                [Op.iLike]: '%' + searchh + '%',
-              },
-            },
-          ],
-        },
+        where,
       });
       const totalPage = Math.ceil(totalRows / limits);
       const result = await purchase_order_header.findAll({
-        // attributes: [
-        //   'pohe_id',
-        //   'pohe_number',
-        //   'pohe_order_date',
-        //   'pohe_line_items',
-        //   'pohe_total_amount',
-        //   'pohe_status',
-        // ],
         include: [
           {
             model: vendor,
-            // attributes: ['vendor_name'],
           },
         ],
-        where: {
-          pohe_number: {
-            [Op.iLike]: '%' + searchh + '%',
-          },
-        },
+        where,
         offset: offset,
         limit: limit,
         order: [['pohe_number', 'ASC']],
@@ -200,8 +218,8 @@ export class VendorService {
           data: result,
         },
       };
-    } catch (err) {
-      return err;
+    } catch (error) {
+      return error;
     }
   }
 }

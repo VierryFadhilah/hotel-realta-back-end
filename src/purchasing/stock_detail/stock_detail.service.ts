@@ -62,11 +62,11 @@ export class StockDetailService {
   async update(id: number, updateStockDetailDto: CreateStockDetailDto) {
     const result = await stock_detail.update(
       {
-        stod_stock_id: updateStockDetailDto.stod_stock_id,
+        // stod_stock_id: updateStockDetailDto.stod_stock_id,
         stod_status: updateStockDetailDto.stod_status,
-        stod_notes: updateStockDetailDto.stod_notes,
+        // stod_notes: updateStockDetailDto.stod_notes,
         stod_faci_id: updateStockDetailDto.stod_faci_id,
-        stod_pohe_id: updateStockDetailDto.stod_pohe_id,
+        // stod_pohe_id: updateStockDetailDto.stod_pohe_id,
       },
       {
         where: {
