@@ -19,7 +19,13 @@ export interface bankAttributes {
   bank_modified_date?: Date;
 }
 
-@Table({ tableName: 'bank', schema: 'payment', timestamps: false })
+@Table({
+  tableName: 'bank',
+  schema: 'payment',
+  timestamps: true,
+  createdAt: 'bank_modified_date',
+  updatedAt: 'bank_modified_date',
+})
 export class bank
   extends Model<bankAttributes, bankAttributes>
   implements bankAttributes

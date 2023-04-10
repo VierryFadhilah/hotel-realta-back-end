@@ -13,8 +13,8 @@ export class FintechController {
   }
 
   @Get()
-  findAll( @Query('search') search: any):Promise<any> {
-    return this.fintechService.findAll({search});
+  findAll( @Query('search') search?: any):Promise<any> {
+    return this.fintechService.findAll(search);
   }
 
   @Get(':id')
