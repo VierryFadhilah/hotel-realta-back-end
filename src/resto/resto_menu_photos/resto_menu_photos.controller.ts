@@ -9,12 +9,15 @@ import {
   UploadedFiles,
   UploadedFile,
   Put,
+  Res,
 } from '@nestjs/common';
 import { RestoMenuPhotosService } from './resto_menu_photos.service';
 import { CreateRestoMenuPhotoDto } from './dto/create-resto_menu_photo.dto';
 import { UpdateRestoMenuPhotoDto } from './dto/update-resto_menu_photo.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { Response } from 'express';
+import { join } from 'path';
 
 @Controller('resto-menu-photos')
 export class RestoMenuPhotosController {
@@ -117,5 +120,19 @@ export class RestoMenuPhotosController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.restoMenuPhotosService.remove(+id);
+  }
+
+  @Get('uploads/image/resto/:remp_photo_filename')
+  async getProductImage(
+    @Param('remp_photo_filename') remp_photo_filename: string,
+    @Res() res: Response,
+  ) {
+    const showImage = join(
+      __dirname,
+      '../../../../uploads/image/resto/',
+      remp_photo_filename,
+    );
+
+    res.sendFile(showImage);
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePurchaseOrderDetailDto } from './dto/create-purchase_order_detail.dto';
-import { purchase_order_detail, stocks } from 'models/purchasingSchema';
+import { purchase_order_detail, stocks } from 'models/Purchasing/purchasingSchema';
 
 @Injectable()
 export class PurchaseOrderDetailService {
@@ -23,6 +23,13 @@ export class PurchaseOrderDetailService {
       message: 'Success',
       data: result,
     };
+  }
+
+  getAll() {
+    const result = purchase_order_detail.findAll({
+      order: [['pode_id', 'ASC']],
+    });
+    return result;
   }
 
   async findAll(page: number, limit: number) {

@@ -30,6 +30,7 @@ export class category_group
       "nextval('master.category_group_cagro_id_seq'::regclass)",
     ),
   })
+  @Index({ name: 'category_group_pkey', using: 'btree', unique: true })
   @Index({ name: 'pk_cagro_id', using: 'btree', unique: true })
   cagro_id?: number;
 
@@ -41,31 +42,15 @@ export class category_group
   })
   cagro_name?: string;
 
-  @Column({
-    allowNull: true,
-    type: DataType.STRING(255),
-    defaultValue: Sequelize.literal('NULL::character varying'),
-  })
+  @Column({ allowNull: true, type: DataType.STRING(255) })
   cagro_description?: string;
 
-  @Column({
-    allowNull: true,
-    type: DataType.STRING(25),
-    defaultValue: Sequelize.literal('NULL::character varying'),
-  })
+  @Column({ allowNull: true, type: DataType.STRING(25) })
   cagro_type?: string;
 
-  @Column({
-    allowNull: true,
-    type: DataType.STRING(255),
-    defaultValue: Sequelize.literal('NULL::character varying'),
-  })
+  @Column({ allowNull: true, type: DataType.STRING(255) })
   cagro_icon?: string;
 
-  @Column({
-    allowNull: true,
-    type: DataType.STRING(255),
-    defaultValue: Sequelize.literal('NULL::character varying'),
-  })
+  @Column({ allowNull: true, type: DataType.STRING(255) })
   cagro_icon_url?: string;
 }

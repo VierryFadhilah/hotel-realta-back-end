@@ -22,7 +22,14 @@ export class hotel_reviews
   extends Model<hotel_reviewsAttributes, hotel_reviewsAttributes>
   implements hotel_reviewsAttributes
 {
-  @Column({ allowNull: true, type: DataType.INTEGER })
+  @Column({
+    primaryKey: true,
+    autoIncrement: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal(
+      "nextval('hotel.hotel_reviews_hore_id_seq'::regclass)",
+    ),
+  })
   @Index({ name: 'hotel_reviews_pkey', using: 'btree', unique: true })
   hore_id?: number;
 

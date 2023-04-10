@@ -9,12 +9,13 @@ import {
   employee_pay_history,
   job_role,
   shift,
+  shift_detail,
   work_order_detail,
   work_orders,
-} from 'models/humanResourceSchema';
+} from 'models/HR/humanResourceSchema';
 import { EmployeeModule } from './employee/employee.module';
-import { users } from 'models/usersSchema';
-import { service_task } from 'models/masterSchema';
+import { users } from 'models/HR/usersSchema';
+import { service_task } from 'models/HR/masterSchema';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { service_task } from 'models/masterSchema';
       work_order_detail,
       service_task,
       shift,
+      shift_detail,
     ]),
     WorkorderModule,
     DepartmentModule,

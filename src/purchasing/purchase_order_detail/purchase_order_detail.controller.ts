@@ -23,6 +23,11 @@ export class PurchaseOrderDetailController {
     return result;
   }
 
+  @Get('purchase-order-detail')
+  getStock() {
+    return this.purchaseOrderDetailService.getAll();
+  }
+
   @Post('purchase-order-detail')
   create(@Body() createPurchaseOrderDetailDto: CreatePurchaseOrderDetailDto) {
     return this.purchaseOrderDetailService.create(createPurchaseOrderDetailDto);

@@ -20,9 +20,13 @@ export class VendorProductController {
     return this.vendorProductService.create(createVendorProductDto);
   }
 
+  // @Get()
+  // async findAll(@Query('page') page = 1, @Query('limit') limit = 5) {
+  //   return this.vendorProductService.findAll(page, limit);
+  // }
   @Get()
-  async findAll(@Query('page') page = 1, @Query('limit') limit = 5) {
-    return this.vendorProductService.findAll(page, limit);
+  async findAll() {
+    return this.vendorProductService.findAll();
   }
 
   @Get(':id')

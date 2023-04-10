@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
+import { facilities } from './facilities';
 
 export interface hotelsAttributes {
   hotel_id?: number;
@@ -32,8 +34,8 @@ export class hotels
       "nextval('hotel.hotels_hotel_id_seq'::regclass)",
     ),
   })
-  @Index({ name: 'pk_hotel_id', using: 'btree', unique: true })
   @Index({ name: 'hotels_pkey', using: 'btree', unique: true })
+  @Index({ name: 'pk_hotel_id', using: 'btree', unique: true })
   hotel_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(85) })
@@ -63,4 +65,7 @@ export class hotels
     defaultValue: Sequelize.literal('now()'),
   })
   hotel_modified_date?: Date;
+
+  @HasMany(() => facilities, { sourceKey: 'hotel_id' })
+  facilities?: facilities[];
 }

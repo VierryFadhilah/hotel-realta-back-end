@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateVendorProductDto } from './dto/create-vendor_product.dto';
-import { vendor_product } from 'models/purchasingSchema';
+import { vendor_product } from 'models/Purchasing/purchasingSchema';
 
 @Injectable()
 export class VendorProductService {
@@ -19,20 +19,33 @@ export class VendorProductService {
     };
   }
 
-  async findAll(page: number, limit: number) {
-    const offset = (page - 1) * limit;
+  // async findAll(page: number, limit: number) {
+  //   const offset = (page - 1) * limit;
+  //   const result = await vendor_product.findAndCountAll({
+  //     order: [['vepro_id', 'ASC']],
+  //     limit,
+  //     offset,
+  //   });
+  //   const totalPages = Math.ceil(result.count / limit);
+  //   return {
+  //     statusCode: 200,
+  //     message: 'Success',
+  //     data: {
+  //       totalPages,
+  //       currentPage: page,
+  //       data: result.rows,
+  //     },
+  //   };
+  // }
+
+  async findAll() {
     const result = await vendor_product.findAndCountAll({
       order: [['vepro_id', 'ASC']],
-      limit,
-      offset,
     });
-    const totalPages = Math.ceil(result.count / limit);
     return {
       statusCode: 200,
       message: 'Success',
       data: {
-        totalPages,
-        currentPage: page,
         data: result.rows,
       },
     };

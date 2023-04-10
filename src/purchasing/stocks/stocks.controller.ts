@@ -16,7 +16,7 @@ import { CreateStockDto } from './dto/create-stock.dto';
 export class StocksController {
   constructor(private readonly stocksService: StocksService) {}
 
-  @Post('stocks')
+  @Post('stock')
   create(@Body() createStockDto: CreateStockDto) {
     return this.stocksService.create(createStockDto);
   }
@@ -30,6 +30,58 @@ export class StocksController {
     return result;
   }
 
+  @Get('stock/:id')
+  async stockDet(
+    // @Query('page') page = 1,
+    // @Query('limit') limit = 5,
+    @Param('id') id: number,
+  ): Promise<any[]> {
+    const result = await this.stocksService.stockDet(id);
+    return result;
+  }
+
+  @Get('stocks')
+  getStock() {
+    return this.stocksService.getAll();
+  }
+
+  @Get('stock')
+  async findAll(
+    @Query('search') search: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.stocksService.findAll(page, limit, search);
+  }
+
+  @Get('gallery')
+  async gallery(
+    @Query('search') search: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.stocksService.gallery(page, limit, search);
+  }
+
+  @Get('veproStock/:id')
+  async getAllId(
+    // @Query('page') page = 1,
+    // @Query('limit') limit = 5,
+    @Param('id') id: any,
+  ): Promise<any[]> {
+    const result = await this.stocksService.stockVeproId(id);
+    return result;
+  }
+
+  @Get('veproStockId')
+  async find(
+    @Query('id') id: string,
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+  ) {
+    return this.stocksService.stockVeproPag(page, limit, id);
+  }
+
   @Get('stockDetail')
   async stockDetail(
     @Query('page') page = 1,
@@ -37,30 +89,6 @@ export class StocksController {
   ): Promise<any[]> {
     const result = await this.stocksService.stockDetail(page, limit);
     return result;
-  }
-
-  @Get('stock/:id')
-  async stockDet(
-    @Query('page') page = 1,
-    @Query('limit') limit = 5,
-    @Param('id') id: number,
-  ): Promise<any[]> {
-    const result = await this.stocksService.stockDet(page, limit, +id);
-    return result;
-  }
-
-  @Get('gallery')
-  async gallery(
-    @Query('page') page = 1,
-    @Query('limit') limit = 5,
-  ): Promise<any[]> {
-    const result = await this.stocksService.gallery(page, limit);
-    return result;
-  }
-
-  @Get('stocks')
-  async findAll(@Query('page') page = 1, @Query('limit') limit = 5) {
-    return this.stocksService.findAll(page, limit);
   }
 
   @Get('stocks/:id')
@@ -77,12 +105,12 @@ export class StocksController {
     return result;
   }
 
-  @Put('stocks/:id')
+  @Put('stock/:id')
   update(@Param('id') id: string, @Body() updateStockDto: CreateStockDto) {
     return this.stocksService.update(+id, updateStockDto);
   }
 
-  @Delete('stocks/:id')
+  @Delete('stock/:id')
   remove(@Param('id') id: string) {
     return this.stocksService.remove(+id);
   }

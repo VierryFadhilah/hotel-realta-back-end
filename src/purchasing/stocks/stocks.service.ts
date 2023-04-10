@@ -1,15 +1,18 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateStockDto } from './dto/create-stock.dto';
 import {
+  purchase_order_detail,
   purchase_order_header,
   stock_detail,
   stock_photo,
   stocks,
+  vendor,
   vendor_product,
-} from 'models/purchasingSchema';
+} from 'models/Purchasing/purchasingSchema';
 import { facilities } from 'models/hotelSchema';
 import { Sequelize } from 'sequelize-typescript';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class StocksService {
@@ -22,10 +25,10 @@ export class StocksService {
     const result = await stocks.create({
       stock_name: createStockDto.stock_name,
       stock_description: createStockDto.stock_description,
-      stock_quantity: createStockDto.stock_quantity,
+      stock_quantity: 0,
       stock_reorder_point: createStockDto.stock_reorder_point,
-      stock_used: createStockDto.stock_used,
-      stock_scrap: createStockDto.stock_scrap,
+      stock_used: 0,
+      stock_scrap: 0,
       stock_size: createStockDto.stock_size,
       stock_color: createStockDto.stock_color,
     });
@@ -36,23 +39,72 @@ export class StocksService {
     };
   }
 
-  async findAll(page: number, limit: number) {
-    const offset = (page - 1) * limit;
-    const result = await stocks.findAndCountAll({
-      order: [['stock_id', 'ASC']],
-      limit,
-      offset,
-    });
-    const totalPages = Math.ceil(result.count / limit);
-    return {
-      statusCode: 200,
-      message: 'Success',
-      data: {
-        totalPages,
-        currentPage: page,
-        data: result.rows,
-      },
-    };
+  async findAll(page, limit, search?) {
+    try {
+      const pages = parseInt(page) || 0;
+      const limits = parseInt(limit) || 2;
+      const searchh = search || '';
+      const offset = limits * (pages - 1);
+      const totalRows = await stocks.count({
+        include: [
+          {
+            model: stock_detail,
+            include: [
+              {
+                model: purchase_order_header,
+              },
+            ],
+          },
+        ],
+        where: {
+          [Op.or]: [
+            {
+              stock_name: {
+                [Op.iLike]: '%' + searchh + '%',
+              },
+            },
+          ],
+        },
+      });
+      const totalPage = Math.ceil(totalRows / limits);
+      const result = await stocks.findAll({
+        where: {
+          stock_name: {
+            [Op.iLike]: '%' + searchh + '%',
+          },
+        },
+        include: [
+          {
+            model: stock_detail,
+            include: [
+              {
+                model: purchase_order_header,
+              },
+            ],
+          },
+        ],
+        offset: offset,
+        limit: limit,
+        order: [['stock_name', 'ASC']],
+      });
+      return {
+        statusCode: 200,
+        message: 'Success',
+        data: {
+          totalPage: totalPage,
+          totalRows: totalRows,
+          currentPage: pages,
+          data: result,
+        },
+      };
+    } catch (error) {
+      return error;
+    }
+  }
+
+  getAll() {
+    const result = stocks.findAll({ order: [['stock_name', 'ASC']] });
+    return result;
   }
 
   async findOne(id: number) {
@@ -74,14 +126,27 @@ export class StocksService {
   }
 
   async update(id: number, createStockDto: CreateStockDto) {
+    const totalQty =
+      (await vendor_product.sum('vepro_qty_stocked', {
+        where: { vepro_stock_id: id },
+      })) ?? 0;
+    const rejectQty =
+      (await purchase_order_detail.sum('pode_rejected_qty', {
+        where: { pode_stock_id: id },
+      })) ?? 0;
+    const useQty =
+      (await purchase_order_detail.sum('pode_received_qty', {
+        where: { pode_stock_id: id },
+      })) ?? 0;
+
     const result = await stocks.update(
       {
         stock_name: createStockDto.stock_name,
         stock_description: createStockDto.stock_description,
-        stock_quantity: createStockDto.stock_quantity,
+        stock_quantity: totalQty,
         stock_reorder_point: createStockDto.stock_reorder_point,
-        stock_used: createStockDto.stock_used,
-        stock_scrap: createStockDto.stock_scrap,
+        stock_used: useQty,
+        stock_scrap: rejectQty,
         stock_size: createStockDto.stock_size,
         stock_color: createStockDto.stock_color,
         stock_modified_date: new Date(),
@@ -114,17 +179,16 @@ export class StocksService {
   async stockVepro(page: number, limit: number): Promise<any> {
     try {
       const offset = (page - 1) * limit;
-      const result = await stocks.findAndCountAll({
+      const result = await vendor.findAndCountAll({
         limit,
         offset,
-        attributes: ['stock_name'],
         include: [
           {
             model: vendor_product,
-            attributes: [
-              'vepro_qty_stocked',
-              'vepro_qty_remaining',
-              'vepro_price',
+            include: [
+              {
+                model: stocks,
+              },
             ],
           },
         ],
@@ -137,6 +201,94 @@ export class StocksService {
           totalPages,
           currentPage: page,
           data: result.rows,
+        },
+      };
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async stockVeproId(id: number): Promise<any> {
+    try {
+      // const offset = (page - 1) * limit;
+      const result = await vendor.findAndCountAll({
+        // limit,
+        // offset,
+        where: {
+          vendor_entity_id: id,
+        },
+        include: [
+          {
+            model: vendor_product,
+            include: [
+              {
+                model: stocks,
+              },
+            ],
+          },
+        ],
+      });
+      // const totalPages = Math.ceil(result.count / limit);
+      return {
+        statusCode: 200,
+        message: 'Success',
+        data: {
+          // totalPages,
+          // currentPage: page,
+          data: result.rows,
+        },
+      };
+    } catch (err) {
+      return err;
+    }
+  }
+
+  async stockVeproPag(page, limit, id) {
+    try {
+      const pages = parseInt(page) || 0;
+      const limits = parseInt(limit) || 2;
+      const offset = limits * (pages - 1);
+      const totalRows = await vendor.count({
+        include: [
+          {
+            model: vendor_product,
+            include: [
+              {
+                model: stocks,
+              },
+            ],
+          },
+        ],
+        where: {
+          vendor_entity_id: id,
+        },
+      });
+      const totalPage = Math.ceil(totalRows / limits);
+      const result = await vendor.findAll({
+        where: {
+          vendor_entity_id: id,
+        },
+        include: [
+          {
+            model: vendor_product,
+            include: [
+              {
+                model: stocks,
+              },
+            ],
+          },
+        ],
+        offset: offset,
+        limit: limit,
+      });
+      return {
+        statusCode: 200,
+        message: 'Success',
+        data: {
+          totalPage: totalPage,
+          totalRows: totalRows,
+          currentPage: pages,
+          data: result,
         },
       };
     } catch (err) {
@@ -150,15 +302,14 @@ export class StocksService {
       const result = await facilities.findAndCountAll({
         limit,
         offset,
-        attributes: ['hofa_faci_room_number'],
         include: [
           {
             model: stock_detail,
-            attributes: ['stod_barcode_number', 'stod_status', 'stod_notes'],
+            // attributes: ['stod_barcode_number', 'stod_status', 'stod_notes'],
             include: [
               {
                 model: purchase_order_header,
-                attributes: ['pohe_number'],
+                // attributes: ['pohe_number'],
               },
             ],
           },
@@ -179,12 +330,12 @@ export class StocksService {
     }
   }
 
-  async stockDet(page: number, limit: number, id: number): Promise<any> {
+  async stockDet(id: number): Promise<any> {
     try {
-      const offset = (page - 1) * limit;
-      const result = await stocks.findAndCountAll({
-        limit,
-        offset,
+      // const offset = (page - 1) * limit;
+      const result = await stocks.findOne({
+        // limit,
+        // offset,
         where: {
           stock_id: id,
         },
@@ -195,21 +346,24 @@ export class StocksService {
               {
                 model: purchase_order_header,
               },
-              {
-                model: facilities,
-              },
             ],
           },
+          // {
+          //   model: facilities,
+          // },
+          // {
+          //   model: purchase_order_header,
+          // },
         ],
       });
-      const totalPages = Math.ceil(result.count / limit);
+      // const totalPages = Math.ceil(result.count / limit);
       return {
         statusCode: 200,
         message: 'Success',
         data: {
-          totalPages,
-          currentPage: page,
-          data: result.rows,
+          // totalPages,
+          // currentPage: page,
+          data: result,
         },
       };
     } catch (err) {
@@ -217,34 +371,76 @@ export class StocksService {
     }
   }
 
-  async gallery(page: number, limit: number): Promise<any> {
+  async gallery(page, limit, search?) {
     try {
-      const offset = (page - 1) * limit;
-      const result = await stock_photo.findAndCountAll({
-        limit,
-        offset,
-        attributes: ['spho_photo_filename'],
+      const pages = parseInt(page) || 0;
+      const limits = parseInt(limit) || 2;
+      const searchh = search || '';
+      const offset = limits * (pages - 1);
+      const totalRows = await stock_photo.count({
         include: [
           {
             model: stocks,
-            attributes: ['stock_name', 'stock_reorder_point'],
+            where: {
+              [Op.or]: [
+                {
+                  stock_name: {
+                    [Op.iLike]: '%' + searchh + '%',
+                  },
+                },
+              ],
+            },
             include: [
               {
                 model: vendor_product,
-                attributes: ['vepro_qty_stocked', 'vepro_price'],
+                include: [
+                  {
+                    model: vendor,
+                  },
+                ],
               },
             ],
           },
         ],
       });
-      const totalPages = Math.ceil(result.count / limit);
+      const totalPage = Math.ceil(totalRows / limits);
+      const result = await stock_photo.findAll({
+        include: [
+          {
+            model: stocks,
+            where: {
+              [Op.or]: [
+                {
+                  stock_name: {
+                    [Op.iLike]: '%' + searchh + '%',
+                  },
+                },
+              ],
+            },
+            include: [
+              {
+                model: vendor_product,
+                include: [
+                  {
+                    model: vendor,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        offset: offset,
+        limit: limit,
+        // order: [['stock_name', 'ASC']],
+      });
       return {
         statusCode: 200,
         message: 'Success',
         data: {
-          totalPages,
-          currentPage: page,
-          data: result.rows,
+          totalPage: totalPage,
+          totalRows: totalRows,
+          currentPage: pages,
+          data: result,
         },
       };
     } catch (err) {

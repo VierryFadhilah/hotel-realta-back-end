@@ -48,10 +48,11 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Get(':id')
-  async getUserById(@Param('id') id: string) {
+  @Get('profile/:id')
+  async getUserByIdProfile(@Param('id') id: string) {
     try {
-      const result = await this.usersService.getUserById(+id);
+      const result = await this.usersService.getUserJoinById(+id);
+
       if (result.length === 0) {
         return { statusCode: HttpStatus.NOT_FOUND, message: 'User not found' };
       }
@@ -60,6 +61,24 @@ export class UsersController {
         statusCode: HttpStatus.OK,
         message: 'User found',
         data: result[0],
+      };
+    } catch (e) {
+      return { statusCode: HttpStatus.BAD_REQUEST, message: e };
+    }
+  }
+
+  @Get(':id')
+  async getUserById(@Param('id') id: string) {
+    try {
+      const result = await this.usersService.getUserById(+id);
+      if (!result) {
+        return { statusCode: HttpStatus.NOT_FOUND, message: 'User not found' };
+      }
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'User found',
+        data: result,
       };
     } catch (e) {
       return { statusCode: HttpStatus.BAD_REQUEST, message: e };
