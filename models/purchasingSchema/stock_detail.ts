@@ -9,7 +9,7 @@ import {
   BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
-import { facilities } from '../../hotelSchema/facilities';
+import { facilities } from '../hotelSchema/facilities';
 import { purchase_order_header } from './purchase_order_header';
 import { stocks } from './stocks';
 
