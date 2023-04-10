@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { PaymentTransacationService } from './payment_transacation.service';
 import { CreatePaymentTransacationDto } from './dto/create-payment_transacation.dto';
 import { UpdatePaymentTransacationDto } from './dto/update-payment_transacation.dto';
@@ -12,23 +12,20 @@ export class PaymentTransacationController {
     return this.paymentTransacationService.create(createPaymentTransacationDto);
   }
 
+  @Post('booking')
+  createBooking(@Body() createPaymentTransacationDto: CreatePaymentTransacationDto) {
+    return this.paymentTransacationService.createBooking(createPaymentTransacationDto);
+  }
+
   @Get()
-  findAll() {
-    return this.paymentTransacationService.findAll();
+  findAll( @Query('search') search: any, @Query('page') page: any, @Query('limit') limit: any, @Query('type') type: any) {
+    return this.paymentTransacationService.findAll(search,page,limit,type );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.paymentTransacationService.findOne(+id);
+  @Get('topup')
+  findAllTopUp( @Query('search') search: any, @Query('page') page: any, @Query('limit') limit: any) {
+    return this.paymentTransacationService.findAllTopUp( search, page, limit);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePaymentTransacationDto: UpdatePaymentTransacationDto) {
-    return this.paymentTransacationService.update(+id, updatePaymentTransacationDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.paymentTransacationService.remove(+id);
-  }
+  
 }

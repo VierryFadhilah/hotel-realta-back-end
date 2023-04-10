@@ -23,7 +23,9 @@ export interface user_accountsAttributes {
   usac_modified_date?: Date;
 }
 
-@Table({ tableName: 'user_accounts', schema: 'payment', timestamps: false })
+@Table({ tableName: 'user_accounts', schema: 'payment',  timestamps: true,
+createdAt: 'usac_modified_date',
+updatedAt: 'usac_modified_date', })
 export class user_accounts
   extends Model<user_accountsAttributes, user_accountsAttributes>
   implements user_accountsAttributes

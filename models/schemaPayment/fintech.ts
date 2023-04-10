@@ -19,7 +19,13 @@ export interface fintechAttributes {
   paga_modified?: Date;
 }
 
-@Table({ tableName: 'fintech', schema: 'payment', timestamps: false })
+@Table({
+  tableName: 'fintech',
+  schema: 'payment',
+  timestamps: true,
+  createdAt: 'paga_modified',
+  updatedAt: 'paga_modified',
+})
 export class fintech
   extends Model<fintechAttributes, fintechAttributes>
   implements fintechAttributes

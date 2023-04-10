@@ -4,10 +4,10 @@ export class UserAccountDto {
     @IsNotEmpty()
     usac_user_id: number;
 
-    @IsNotEmpty()
+    @IsOptional()
     usac_entity_id:number;
 
-    @IsNotEmpty()
+    @IsOptional()
     usac_account_number: string;
 
     @IsNotEmpty()

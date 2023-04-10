@@ -22,6 +22,11 @@ export class UserAccountsController {
     return this.userAccountsService.findOne(id);
   }
 
+  @Get('users/:id')
+  findUserAccount(@Param('id') id:number){
+    return this.userAccountsService.findUserAccount(id)
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() userAccountDto: UserAccountDto) {
     return this.userAccountsService.update(id, userAccountDto);
