@@ -1,3 +1,4 @@
+import { users } from 'models/usersSchema';
 import {
   Model,
   Table,
@@ -6,6 +7,7 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 
 export interface payment_transactionAttributes {
@@ -85,6 +87,10 @@ export class payment_transaction
   })
   part_trx_number_ref?: string;
 
+  @ForeignKey(() => users)
   @Column({ allowNull: true, type: DataType.INTEGER })
   part_user_id?: number;
+
+  @BelongsTo(() => users)
+  user?: users;
 }

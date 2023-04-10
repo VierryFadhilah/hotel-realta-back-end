@@ -13,6 +13,5 @@ import { UserAccountsModule } from './user_accounts/user_accounts.module';
     UserAccountsModule,
     PaymentTransacationModule,
   ],
- 
 })
 export class PaymentModule {}

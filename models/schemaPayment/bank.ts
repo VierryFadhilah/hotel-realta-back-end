@@ -6,9 +6,10 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
   HasOne,
-  BelongsTo,
 } from 'sequelize-typescript';
+import { user_accounts } from './user_accounts';
 import { entity } from './entity';
 
 export interface bankAttributes {
@@ -29,7 +30,6 @@ export class bank
   extends Model<bankAttributes, bankAttributes>
   implements bankAttributes
 {
-  @ForeignKey(() => entity)
   @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'bank_pkey', using: 'btree', unique: true })
   bank_entity_id!: number;
@@ -42,6 +42,12 @@ export class bank
   @Index({ name: 'bank_bank_name_key', using: 'btree', unique: true })
   bank_name?: string;
 
-  @BelongsTo(() => entity)
+  @Column({ allowNull: true, type: DataType.DATE(6) })
+  bank_modified_date?: Date;
+
+  @HasMany(() => user_accounts, { sourceKey: 'bank_entity_id' })
+  user_accounts?: user_accounts[];
+
+  @HasOne(() => entity, { sourceKey: 'bank_entity_id' })
   entity?: entity;
 }

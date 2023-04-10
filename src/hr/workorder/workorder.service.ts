@@ -66,15 +66,15 @@ export class WorkorderService {
 
     const offset = entry * (page - 1);
     const totalData = await work_orders.count();
-    const result = await work_orders.findAll({
+    const result = await work_orders.findAndCountAll({
       include: users,
       limit: entry,
       offset: offset,
       where,
     });
     const workorder = [];
-    for (let i = 0; i < result.length; i++) {
-      const element = result[i];
+    for (let i = 0; i < result.rows.length; i++) {
+      const element = result.rows[i];
       workorder.push({
         id: element.woro_id,
         workorderDate: element.woro_start_date,
@@ -83,7 +83,7 @@ export class WorkorderService {
       });
     }
 
-    const totalPage = Math.ceil(workorder.length / entry);
+    const totalPage = Math.ceil(result.count / entry);
     return {
       statusCode: 200,
       message: 'success',
@@ -94,7 +94,7 @@ export class WorkorderService {
         totalPage,
         totalData,
         from: offset + 1,
-        to: +offset + result.length,
+        to: +offset + result.rows.length,
       },
     };
   }

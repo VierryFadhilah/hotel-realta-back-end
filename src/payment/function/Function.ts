@@ -1,3 +1,4 @@
+import { Sequelize } from 'sequelize-typescript';
 
 export const getTransactionNumber = (TransactionID: any, TransactionType: any, TransactionDate?: Date): string => {
     const TransactionDateObj = TransactionDate ? TransactionDate : new Date();
@@ -20,6 +21,18 @@ export const OrderNumberToUp = (): string => {
     return `${date.getFullYear()}${(date.getMonth() + 1).toString().padStart(2, '0')}${date.getDate().toString().padStart(2, '0')}`;
 }
 
+export const conCat =  async(source:any, target:any)=>{
+    const sequelize = new Sequelize()
+
+    const sources:any =  await sequelize.query(
+        `SELECT * FROM payment.user_accountfindall  WHERE  "accountNumber" = '${source}'::text`,
+      );
+
+      const targets:any = await sequelize.query(
+        `SELECT * FROM payment.user_accountfindall  WHERE  "accountNumber" = '${target}'::text`,
+      );
+      return ` Top Up ${sources[0][0].paymentType} To ${targets[0][0].paymentType}`
+}
 
 
 
