@@ -5,12 +5,12 @@ import {
   employee,
   work_order_detail,
   work_orders,
-} from 'models/humanResourceSchema';
-import { users } from 'models/usersSchema';
+} from 'models/HR/humanResourceSchema';
+import { users } from 'models/HR/usersSchema';
 import { Op } from 'sequelize';
 import sequelize from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
-import { service_task } from 'models/masterSchema';
+import { service_task } from 'models/HR/masterSchema';
 import { waitForDebugger } from 'inspector';
 
 @Injectable()

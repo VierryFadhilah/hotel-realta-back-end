@@ -1,4 +1,4 @@
-import { stock_detail } from 'models/Purchasing/purchasingSchema';
+// import { stock_detail } from 'models/purchasingSchema';
 import {
   Model,
   Table,
@@ -9,6 +9,8 @@ import {
   ForeignKey,
   HasMany,
 } from 'sequelize-typescript';
+import { hotels } from './hotels';
+import { stock_detail } from '../purchasingSchema/stock_detail';
 
 export interface facilitiesAttributes {
   faci_id?: number;
@@ -90,6 +92,7 @@ export class facilities
   @Column({ allowNull: true, type: DataType.INTEGER })
   faci_cagro_id?: number;
 
+  @ForeignKey(() => hotels)
   @Column({ allowNull: true, type: DataType.INTEGER })
   faci_hotel_id?: number;
 

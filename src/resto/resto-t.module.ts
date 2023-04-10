@@ -5,7 +5,7 @@ import {
   order_menus,
   resto_menu_photos,
   resto_menus,
-} from 'models/restoSchema';
+} from 'models/Resto/restoSchema';
 import { RestoMenusModule } from './resto_menus/resto_menus.module';
 import { RestoMenuPhotosModule } from './resto_menu_photos/resto_menu_photos.module';
 import { OrderMenusModule } from './order_menus/order_menus.module';
