@@ -132,7 +132,6 @@ export class RestoMenuPhotosController {
       '../../../../uploads/image/resto/',
       remp_photo_filename,
     );
-    console.log('tes=>', showImage);
 
     res.sendFile(showImage);
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateOrderMenuDto } from './dto/create-order_menu.dto';
 import { UpdateOrderMenuDto } from './dto/update-order_menu.dto';
-import { order_menu_detail, order_menus } from 'models/restoSchema';
+import { order_menu_detail, order_menus } from 'models/Resto/restoSchema';
 import { OrderMenuDetailService } from '../order_menu_detail/order_menu_detail.service';
 import { CreateOrderMenuDetailDto } from '../order_menu_detail/dto/create-order_menu_detail.dto';
 
