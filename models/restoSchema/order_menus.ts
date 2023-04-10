@@ -5,7 +5,10 @@ import {
   DataType,
   Index,
   Sequelize,
+  ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
+import { order_menu_detail } from './order_menu_detail';
 
 export interface order_menusAttributes {
   orme_id?: number;
@@ -61,13 +64,12 @@ export class order_menus
   @Column({ allowNull: true, type: DataType.STRING(2) })
   orme_is_paid?: string;
 
-  @Column({
-    allowNull: false,
-    type: DataType.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-  })
+  @Column({ allowNull: true, type: DataType.DATE(6) })
   orme_modified_date?: Date;
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   orme_user_id?: number;
+
+  @HasMany(() => order_menu_detail, { sourceKey: 'orme_id' })
+  order_menu_details?: order_menu_detail[];
 }

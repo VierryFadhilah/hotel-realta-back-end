@@ -3,6 +3,7 @@ import { CreateFacilityPriceHistoryDto } from './dto/create-facility-price-histo
 import { UpdateFacilityPriceHistoryDto } from './dto/update-facility-price-history.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { facility_price_history } from 'models/hotelSchema';
+import { QueryTypes } from 'sequelize';
 
 @Injectable()
 export class FacilityPriceHistoryService {
@@ -60,6 +61,85 @@ export class FacilityPriceHistoryService {
       return faph;
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  async getFacilitiesPagination(
+    faci_ident: number,
+    offset: number,
+  ): Promise<{}>;
+  async getFacilitiesPagination(
+    faci_ident: number,
+    offset: number,
+    ord_by: string,
+  ): Promise<{}>;
+  async getFacilitiesPagination(
+    faci_ident: number,
+    offset: number,
+    ord_by?: string,
+  ) {
+    try {
+      const page_size = 10;
+      let facility: {}[];
+
+      if (ord_by) {
+        const theFacility = await facility_price_history.sequelize.query(
+          `SELECT * FROM hotel.facility_history_pagination(:faci_ident,:page, :page_size, :ord_by);`,
+          {
+            replacements: {
+              faci_ident,
+              page: offset,
+              page_size,
+              ord_by,
+            },
+            type: QueryTypes.SELECT,
+            model: facility_price_history,
+          },
+        );
+
+        facility = theFacility;
+      } else {
+        const theFacility = await facility_price_history.sequelize.query(
+          `SELECT * FROM hotel.facility_history_pagination(:faci_ident, :page, :page_size);`,
+          {
+            replacements: {
+              faci_ident,
+              page: offset,
+              page_size,
+            },
+            type: QueryTypes.SELECT,
+            model: facility_price_history,
+          },
+        );
+
+        facility = theFacility;
+      }
+
+      if (facility.length <= 0) {
+        return {
+          data: [{}],
+          message: 'facility tidak ditemukan',
+          page_size,
+          status: 400,
+        };
+      }
+
+      return {
+        data: facility,
+        message: 'berhasil ambil data',
+        // totalPagination:,
+        page_size,
+        status: 200,
+      };
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        {
+          message: error.message,
+          status: 500,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 

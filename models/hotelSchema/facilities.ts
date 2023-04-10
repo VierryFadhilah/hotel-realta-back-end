@@ -1,3 +1,4 @@
+import { stock_detail } from 'models/purchasingSchema';
 import {
   Model,
   Table,
@@ -6,7 +7,6 @@ import {
   Index,
   Sequelize,
   ForeignKey,
-  BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
 import { hotels } from './hotels';
@@ -19,8 +19,8 @@ export interface facilitiesAttributes {
   faci_max_number?: number;
   faci_measure_unit?: string;
   faci_room_number?: string;
-  faci_startdate?: Date;
-  faci_enddate?: Date;
+  faci_startdate?: string;
+  faci_enddate?: string;
   faci_low_price?: string;
   faci_high_price?: string;
   faci_rate_price?: string;
@@ -28,6 +28,8 @@ export interface facilitiesAttributes {
   faci_tax_rate?: string;
   faci_cagro_id?: number;
   faci_hotel_id?: number;
+  faci_modified_date?: Date;
+  faci_expose_price?: string;
 }
 
 @Table({ tableName: 'facilities', schema: 'hotel', timestamps: false })
@@ -35,9 +37,15 @@ export class facilities
   extends Model<facilitiesAttributes, facilitiesAttributes>
   implements facilitiesAttributes
 {
-  @Column({ primaryKey: true, autoIncrement: true, type: DataType.INTEGER })
-  @Index({ name: 'pk_faci_id', using: 'btree', unique: true })
+  @Column({
+    primaryKey: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal(
+      "nextval('hotel.facilities_faci_id_seq'::regclass)",
+    ),
+  })
   @Index({ name: 'facilities_pkey', using: 'btree', unique: true })
+  @Index({ name: 'pk_faci_id', using: 'btree', unique: true })
   faci_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(125) })
@@ -60,11 +68,11 @@ export class facilities
   })
   faci_room_number?: string;
 
-  @Column({ allowNull: true, type: DataType.DATE(6) })
-  faci_startdate?: Date;
+  @Column({ allowNull: true, type: DataType.STRING })
+  faci_startdate?: string;
 
-  @Column({ allowNull: true, type: DataType.DATE(6) })
-  faci_enddate?: Date;
+  @Column({ allowNull: true, type: DataType.STRING })
+  faci_enddate?: string;
 
   @Column({ allowNull: true, type: DataType.NUMBER })
   faci_low_price?: string;
@@ -88,9 +96,20 @@ export class facilities
   @Column({ allowNull: true, type: DataType.INTEGER })
   faci_hotel_id?: number;
 
-  @BelongsTo(() => hotels)
-  hotel?: hotels;
+  @Column({
+    allowNull: true,
+    type: DataType.DATE(6),
+    defaultValue: Sequelize.literal('now()'),
+  })
+  faci_modified_date?: Date;
+
+  @Column({
+    allowNull: true,
+    type: DataType.STRING(20),
+    defaultValue: Sequelize.literal("'Rate Price'::character varying"),
+  })
+  faci_expose_price?: string;
 
   @HasMany(() => stock_detail, { sourceKey: 'faci_id' })
-  stock_details?: stock_detail[];
+  stock_detail?: stock_detail[];
 }
