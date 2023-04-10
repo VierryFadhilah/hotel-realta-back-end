@@ -13,22 +13,23 @@ export class OrderMenuDetailService {
 
   //menambahkan data order menu detail
   async create(
-    createOrderMenuDetailDto: CreateOrderMenuDetailDto,
+    createOrderMenuDetailDtos: CreateOrderMenuDetailDto[],
   ): Promise<any> {
     try {
-      const subtotal = (
-        Number(createOrderMenuDetailDto.orme_price) *
-        createOrderMenuDetailDto.orme_qty
-      ).toString();
-      const orderMenus = await order_menu_detail.create({
-        orme_price: createOrderMenuDetailDto.orme_price,
-        orme_qty: createOrderMenuDetailDto.orme_qty,
-        orme_subtotal: subtotal,
-        orme_discount: createOrderMenuDetailDto.orme_discount,
-        omde_orme_id: createOrderMenuDetailDto.omde_orme_id,
-        omde_reme_id: createOrderMenuDetailDto.omde_reme_id,
-      });
-      const result = await orderMenus.save();
+      const orderMenus = await Promise.all(
+        createOrderMenuDetailDtos.map(async (createOrderMenuDetailDto) => {
+          const orderMenu = await order_menu_detail.create({
+            orme_price: createOrderMenuDetailDto.orme_price,
+            orme_qty: createOrderMenuDetailDto.orme_qty,
+            orme_subtotal: createOrderMenuDetailDto.orme_subtotal,
+            orme_discount: createOrderMenuDetailDto.orme_discount,
+            omde_orme_id: createOrderMenuDetailDto.omde_orme_id,
+            omde_reme_id: createOrderMenuDetailDto.omde_reme_id,
+          });
+          return orderMenu;
+        }),
+      );
+      const result = await order_menu_detail.bulkCreate(orderMenus);
       return {
         status: 200,
         message: `Data berhasil ditambahkan`,

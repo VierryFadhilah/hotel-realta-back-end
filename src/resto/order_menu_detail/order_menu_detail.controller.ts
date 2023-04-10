@@ -18,7 +18,7 @@ export class OrderMenuDetailController {
   ) {}
 
   @Post()
-  create(@Body() createOrderMenuDetailDto: CreateOrderMenuDetailDto) {
+  create(@Body() createOrderMenuDetailDto: CreateOrderMenuDetailDto[]) {
     return this.orderMenuDetailService.create(createOrderMenuDetailDto);
   }
 
