@@ -1,7 +1,7 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { CreateOrderMenuDetailDto } from './dto/create-order_menu_detail.dto';
 import { UpdateOrderMenuDetailDto } from './dto/update-order_menu_detail.dto';
-import { order_menu_detail } from 'models/restoSchema';
+import { order_menu_detail } from 'models/Resto/restoSchema';
 import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
