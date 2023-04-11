@@ -21,8 +21,7 @@ import { PurchasingModule } from './purchasing/purchasing.module';
       autoLoadModels: true,
       synchronize: true,
     }),
-
-    // PaymentModule,
+    UsersTModule,
     // HotelModule,
     // HrModule,
     RestoTModule,

@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { user_bonus_points } from 'models/usersSchema';
+import { user_bonus_points } from 'models/User/usersSchema';
 import { CreateUserBonusPointDto } from './dto/create-user-bonus-point.dto';
 import { UpdateUserBonusPointDto } from './dto/update-user-bonus-point.dto';
 @Injectable()
@@ -25,11 +25,7 @@ export class UserBonusPointsService {
   //Kemudian kita menggunakan Object.assign() untuk menyalin properti dari objek createUserBonusPointDto ke objek userBonusPoint.
   //Terakhir, kita memanggil metode save() pada instance userBonusPointsRepository untuk menyimpan objek UserBonusPoint baru ke database.
   async getUserBonusPoints(user_id: number) {
-    return await user_bonus_points.findAll({
-      where: {
-        ubpo_user_id: user_id,
-      },
-    });
+    return await user_bonus_points.findAll();
   }
 
   async getUserBonusPointsById(id: number): Promise<any> {
