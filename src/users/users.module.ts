@@ -14,7 +14,7 @@ import { UserMembersModule } from './user-members/user-members.module';
 import { UserBonusPointsModule } from './user-bonus-points/user-bonus-points.module';
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
-import { employee } from 'models/humanResourceSchema';
+// import { employee } from 'models/humanResourceSchema';
 import { UserPasswordModule } from './user-password/user-password.module';
 // ad
 
@@ -22,12 +22,12 @@ import { UserPasswordModule } from './user-password/user-password.module';
   imports: [
     SequelizeModule.forFeature([
       users,
-      // user_password,
+      user_password,
       user_profiles,
       user_members,
       user_bonus_points,
       user_roles,
-      employee,
+      // employee,
     ]),
     UsersModule,
     UserMembersModule,

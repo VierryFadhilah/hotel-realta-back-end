@@ -20,7 +20,7 @@ import path from 'path';
 import { UpdateUserDto } from './dto/update-user.dto';
 import e from 'express';
 import { unlink } from 'fs';
-import { Op } from 'sequelize';
+import { Op, QueryTypes } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { employee } from 'models/humanResourceSchema';
 

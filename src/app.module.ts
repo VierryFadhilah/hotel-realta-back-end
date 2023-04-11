@@ -23,7 +23,7 @@ import { AuthMiddleware } from './users/auth/auth.middleware';
     // HotelModule,
     // HrModule,
     // RestoTModule,
-    PurchasingModule,
+    // PurchasingModule,
     // UsersTModule,
     // MasterModule,
   ],
