@@ -184,21 +184,28 @@ export class WorkorderService {
   }
 
   async createDetail(body: any) {
-    const startDate = new Date();
-    const taskname = await service_task.findByPk(body.taskId);
-    console.log(taskname.seta_name);
+    try {
+      const startDate = new Date();
+      const taskname = await service_task.findByPk(body.taskId);
+      console.log(taskname.seta_name);
 
-    const result = work_order_detail.create({
-      wode_task_name: taskname.seta_name,
-      wode_status: 'INPROGRESS',
-      wode_start_date: startDate,
-      wode_notes: body.notes,
-      wode_emp_id: body.assignTo,
-      wode_seta_id: body.taskId,
-      wode_faci_id: body.faciId,
-      wode_woro_id: body.workOrderId,
-    });
-    return { statusCode: 200, message: 'success' };
+      const result = work_order_detail.create({
+        wode_task_name: taskname.seta_name,
+        wode_status: 'INPROGRESS',
+        wode_start_date: startDate,
+        wode_notes: body.notes,
+        wode_emp_id: body.assignTo,
+        wode_seta_id: body.taskId,
+        wode_faci_id: body.faciId,
+        wode_woro_id: body.workOrderId,
+      });
+      return { statusCode: 200, message: 'success' };
+    } catch (error) {
+      return {
+        statusCode: 400,
+        message: error,
+      };
+    }
   }
 
   async findTask(query: any) {
