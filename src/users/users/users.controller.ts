@@ -14,6 +14,7 @@ import {
   ParseFilePipe,
   UploadedFile,
   Req,
+  Query,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { UsersService } from './users.service';
@@ -21,11 +22,17 @@ import { SignupEmployee } from './dto/signUpEmployee.dto';
 import { SignupGuest } from './dto/signUpGuest.dto copy';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Get('usersByName')
+  getUsersByName(@Query('search') search: string) {
+    return this.usersService.getUserByName(search);
+  }
 
   @Post('signupEmployee')
   async signupEmployee(@Body() signupEmployee: SignupEmployee) {
@@ -41,11 +48,30 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @Get('profile/:id')
+  async getUserByIdProfile(@Param('id') id: string) {
+    try {
+      const result = await this.usersService.getUserJoinById(+id);
+
+      if (result.length === 0) {
+        return { statusCode: HttpStatus.NOT_FOUND, message: 'User not found' };
+      }
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'User found',
+        data: result,
+      };
+    } catch (e) {
+      return { statusCode: HttpStatus.BAD_REQUEST, message: e };
+    }
+  }
+
   @Get(':id')
   async getUserById(@Param('id') id: string) {
     try {
       const result = await this.usersService.getUserById(+id);
-      if (result.length === 0) {
+      if (!result) {
         return { statusCode: HttpStatus.NOT_FOUND, message: 'User not found' };
       }
 

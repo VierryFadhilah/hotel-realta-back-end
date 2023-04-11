@@ -1,8 +1,8 @@
-import { Module, RequestMethod } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+// import { PaymentModule } from './payment/payment.module';
 // import { HotelModule } from './hotel-schema/hotel.module';
+// import { MasterModule } from './master-schema/master.module';
 // import { HrModule } from './hr/hr.module';
 import { UsersTModule } from './users/users.module';
 import { AuthMiddleware } from './users/auth/auth.middleware';
@@ -22,8 +22,10 @@ import { AuthMiddleware } from './users/auth/auth.middleware';
     UsersTModule,
     // HotelModule,
     // HrModule,
+    // RestoTModule,
+    PurchasingModule,
+    // UsersTModule,
+    // MasterModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

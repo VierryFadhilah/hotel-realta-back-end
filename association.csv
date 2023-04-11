@@ -6,11 +6,55 @@ N:N, cagro_id, poli_id, master.category_group, master.policy, master.policy_cate
 1:N, user_id, hore_user_id, users.users, hotel.hotel_reviews
 1:N, hotel_id, hore_hotel_id, hotel.hotels, hotel.hotel_reviews
 1:N, cagro_id, faci_cagro_id, master.category_group, hotel.facilities
-1:N, hotel_id, faci_hotel_id, hotel.hotels, hotel.facilities
+1:N, hotel_id, faci_hotel_id, hotels, facilities
 1:N, faci_id, fapho_faci_id, hotel.facilities, hotel.facility_photos
 1:N, faci_id, faph_faci_id, hotel.facilities, hotel.facility_price_history
 1:N, user_id, faph_user_id, users.users, hotel.facility_price_history
 1:N, user_id, woro_user_id, users, work_orders
 1:N, woro_id, wode_woro_id, work_orders, work_order_detail
 1:N, emp_id, wode_emp_id, employee, work_order_detail
+1:N, emp_id,shide_emp_id,employee, shift_detail
+1:N, emp_id,shide_emp_id,employee, shift_detail
 1:1, user_id,emp_user_id, users,employee
+1:N, vendor_entity_id, pohe_vendor_id, vendor, purchase_order_header
+1:1, stock_id, pode_stock_id, stocks, purchase_order_detail
+1:1, stock_id, vepro_stock_id, stocks, vendor_product
+1:1, spho_stock_id, stock_id, stock_photo, stocks
+1:N, faci_id, stod_faci_id, facilities, stock_detail
+1:N, stod_pohe_id, pohe_id, stock_detail, purchase_order_header
+1:N, pohe_id, pode_pohe_id, purchase_order_header, purchase_order_detail
+1:N, stock_id, stod_stock_id, stocks, stock_detail
+1:N, stock_id, stod_stock_id, stocks, stock_detail
+1:1, emp_joro_id, joro_id, employee, job_role
+1:N, emp_id, ephi_emp_id, employee, employee_pay_history
+1:N, emp_id, edhi_emp_id, employee, employee_department_history
+1:1, edhi_dept_id, dept_id, employee_department_history, department
+1:1, edhi_shift_id, shift_id, employee_department_history, shift
+1:N, user_id,usac_user_id, users, user_accounts
+1:N, paga_entity_id,usac_entity_id, fintech, user_accounts
+1:N, bank_entity_id,usac_entity_id, bank, user_accounts
+1:1, bank_entity_id, entity_id, bank,entity
+1:1, paga_entity_id,entity_id, fintech,entity
+1:N,reme_id,remp_reme_id,resto_menus,resto_menu_photos
+1:N,reme_id,omde_reme_id,resto_menus,order_menu_detail
+1:N,orme_id,omde_orme_id,order_menus,order_menu_detail
+
+1:N, vendor_entity_id, pohe_vendor_id, vendor, purchase_order_header
+1:1, stock_id, pode_stock_id, stocks, purchase_order_detail
+1:1, stock_id, vepro_stock_id, stocks, vendor_product
+1:1, spho_stock_id, stock_id, stock_photo, stocks
+1:N, faci_id, stod_faci_id, facilities, stock_detail
+1:N, stod_pohe_id, pohe_id, stock_detail, purchase_order_header
+1:N, pohe_id, pode_pohe_id, purchase_order_header, purchase_order_detail
+1:N, stock_id, stod_stock_id, stocks, stock_detail
+1:N, stock_id, stod_stock_id, stocks, stock_detail
+1:1, emp_joro_id, joro_id, employee, job_role
+1:N, emp_id, ephi_emp_id, employee, employee_pay_history
+1:N, emp_id, edhi_emp_id, employee, employee_department_history
+1:1, edhi_dept_id, dept_id, employee_department_history, department
+1:1, edhi_shift_id, shift_id, employee_department_history, shift
+1:N, user_id,usac_user_id, users, user_accounts
+1:N, paga_entity_id,usac_entity_id, fintech, user_accounts
+1:N, bank_entity_id,usac_entity_id, bank, user_accounts
+1:1, bank_entity_id, entity_id, bank,entity
+1:1, paga_entity_id,entity_id, fintech,entity

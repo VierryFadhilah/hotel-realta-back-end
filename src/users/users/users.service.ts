@@ -20,9 +20,58 @@ import path from 'path';
 import { UpdateUserDto } from './dto/update-user.dto';
 import e from 'express';
 import { unlink } from 'fs';
+import { Op } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
+import { employee } from 'models/humanResourceSchema';
 
 @Injectable()
 export class UsersService {
+  constructor(private sequelize: Sequelize) {}
+  async getUserByName(search: string) {
+    try {
+      const result = await users.findAll({
+        where: {
+          user_full_name: {
+            [Op.iLike]: `%${search}%`,
+          },
+          '$employee.emp_id$': null,
+        },
+        limit: 5,
+        include: [
+          {
+            model: employee,
+            attributes: ['emp_id'],
+          },
+        ],
+      });
+      // // console.log(result);
+      // return result;
+      const resultList = [];
+      for (let i = 0; i < result.length; i++) {
+        const element = result[i];
+        resultList.push({
+          user_id: element.user_id,
+          user_full_name: element.user_full_name,
+        });
+      }
+
+      if (result.length === 0) {
+        return {
+          statusCode: HttpStatus.OK,
+          message: 'Users Not Found',
+          data: resultList,
+        };
+      }
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Users Found',
+        data: resultList,
+      };
+    } catch (e) {
+      return { statusCode: HttpStatus.BAD_REQUEST, message: e };
+    }
+  }
   findOne(arg0: number) {
     throw new Error('Method not implemented.');
   }
@@ -60,6 +109,17 @@ export class UsersService {
     } catch (error) {
       return error;
     }
+  }
+  async getUserJoinById(id: number) {
+    return await this.sequelize.query(
+      'SELECT * FROM users.get_user_data(:user_id);',
+      {
+        replacements: {
+          user_id: id,
+        },
+        type: QueryTypes.SELECT,
+      },
+    );
   }
   async getUserById(id: number) {
     return await users.findOne({ where: { user_id: id } });
