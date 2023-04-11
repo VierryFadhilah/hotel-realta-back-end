@@ -9,7 +9,7 @@ import {
   BelongsTo,
   HasMany,
 } from 'sequelize-typescript';
-import { users } from '../usersSchema/users';
+import { users } from '../User/usersSchema/users';
 import { work_order_detail } from './work_order_detail';
 
 export interface work_ordersAttributes {

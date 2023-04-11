@@ -7,7 +7,7 @@ import { LoginGuestDto } from './dto/loginGuest.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post('loginEmployee')
+  @Post('/loginEmployee')
   loginEmployee(@Body() loginEmployeeDto: LoginEmployeeDto) {
     return this.authService.loginEmployee(loginEmployeeDto);
   }
