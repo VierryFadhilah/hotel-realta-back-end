@@ -8,11 +8,12 @@ import {
   user_profiles,
   user_roles,
   users,
-} from 'models/usersSchema';
+} from 'models/User/usersSchema';
 import { UserMembersModule } from './user-members/user-members.module';
 import { UserBonusPointsModule } from './user-bonus-points/user-bonus-points.module';
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
+import { UserPasswordModule } from './user-password/user-password.module';
 // ad
 
 @Module({
@@ -30,6 +31,7 @@ import { AuthModule } from './auth/auth.module';
     UserBonusPointsModule,
     RolesModule,
     AuthModule,
+    UserPasswordModule,
   ],
 })
 export class UsersTModule {}

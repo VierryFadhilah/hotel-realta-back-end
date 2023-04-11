@@ -5,7 +5,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
 // import { HotelModule } from './hotel-schema/hotel.module';
 // import { HrModule } from './hr/hr.module';
 import { UsersTModule } from './users/users.module';
-import { UserPasswordModule } from './users/user-password/user-password.module';
 import { AuthMiddleware } from './users/auth/auth.middleware';
 @Module({
   imports: [
@@ -21,7 +20,6 @@ import { AuthMiddleware } from './users/auth/auth.middleware';
       synchronize: true,
     }),
     UsersTModule,
-    UserPasswordModule,
     // HotelModule,
     // HrModule,
   ],

@@ -10,7 +10,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { work_order_detail } from './work_order_detail';
-import { users } from '../usersSchema/users';
+import { users } from '../User/usersSchema/users';
 
 export interface employeeAttributes {
   emp_id?: number;

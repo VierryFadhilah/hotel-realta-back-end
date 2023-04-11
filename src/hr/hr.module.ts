@@ -12,7 +12,7 @@ import {
   work_orders,
 } from 'models/humanResourceSchema';
 import { EmployeeModule } from './employee/employee.module';
-import { users } from 'models/usersSchema';
+import { users } from 'models/User/usersSchema';
 import { service_task } from 'models/masterSchema';
 
 @Module({

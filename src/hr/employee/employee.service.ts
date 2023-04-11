@@ -13,7 +13,7 @@ import {
 import { Sequelize } from 'sequelize-typescript';
 import { unlink } from 'fs';
 import { join } from 'path';
-import { users } from 'models/usersSchema';
+import { users } from 'models/User/usersSchema';
 import { Op } from 'sequelize';
 
 @Injectable()

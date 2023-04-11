@@ -6,7 +6,7 @@ import {
   work_order_detail,
   work_orders,
 } from 'models/humanResourceSchema';
-import { users } from 'models/usersSchema';
+import { users } from 'models/User/usersSchema';
 import { Op } from 'sequelize';
 import sequelize from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
