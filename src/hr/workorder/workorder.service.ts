@@ -71,6 +71,7 @@ export class WorkorderService {
       limit: entry,
       offset: offset,
       where,
+      order: [['woro_start_date', 'DESC']],
     });
     const workorder = [];
     for (let i = 0; i < result.rows.length; i++) {
@@ -147,27 +148,24 @@ export class WorkorderService {
       include: work_order_detail,
     });
 
-    const getName = async (woro_id: number) => {
-      const userNAmeeee = await this.sequelize.query(
-        `SELECT * FROM human_resource.get_user_work_order_details(${woro_id});`,
-      );
-
-      const dataIni: any = userNAmeeee[0];
-
-      const fullName = dataIni[0].get_user_work_order_details;
-
-      return fullName;
-    };
-
     const workOrderDetail = [];
     for (let i = 0; i < result.work_order_details.length; i++) {
       const element = result.work_order_details[i];
+      const usersData = await employee.findByPk(element.wode_emp_id, {
+        include: [
+          {
+            model: users,
+            attributes: ['user_full_name'],
+          },
+        ],
+      });
+
       workOrderDetail.push({
         id: element.wode_id,
         taskname: element.wode_task_name,
         notes: element.wode_notes,
         status: element.wode_status,
-        assignTo: await getName(1),
+        assignTo: usersData.user.user_full_name,
       });
     }
 
@@ -187,7 +185,7 @@ export class WorkorderService {
     try {
       const startDate = new Date();
       const taskname = await service_task.findByPk(body.taskId);
-      console.log(taskname.seta_name);
+      // console.log(taskname.seta_name);
 
       const result = work_order_detail.create({
         wode_task_name: taskname.seta_name,
@@ -237,14 +235,36 @@ export class WorkorderService {
   }
 
   async finduser(query: any) {
-    const result: any = await this.sequelize.query(
-      `select * from human_resource.emp_name`,
-    );
-    let data = result[0];
+    // eslint-disable-next-line prefer-const
+    let where: any = {};
+    let like = ``;
+
     if (query.namelike) {
-      data = result[0].filter((obj: any) =>
-        obj.user_full_name.includes(`${query.namelike}`),
-      );
+      like = query.namelike;
+    }
+
+    const result = await employee.findAll({
+      attributes: ['emp_id'],
+      where,
+      include: [
+        {
+          model: users,
+          attributes: ['user_full_name'],
+          where: {
+            user_full_name: { [Op.iLike]: `%${like}%` },
+          },
+        },
+      ],
+      limit: 5,
+      order: [['emp_id', 'ASC']],
+    });
+    const data = [];
+    for (let i = 0; i < result.length; i++) {
+      const element = result[i];
+      data.push({
+        id: element.emp_id,
+        name: element.user.user_full_name,
+      });
     }
 
     return {
