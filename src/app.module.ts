@@ -21,14 +21,18 @@ import { UsersTModule } from './users/users.module';
       autoLoadModels: true,
       synchronize: true,
     }),
+    UsersTModule,
+    HotelModule,
+    HrModule,
 
     PaymentModule,
     HotelModule,
     HrModule,
     RestoTModule,
     PurchasingModule,
-    UsersTModule,
+
     MasterModule,
+    PaymentModule,
   ],
 })
 export class AppModule {}

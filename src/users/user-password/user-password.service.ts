@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserPasswordDto } from './dto/create-user-password.dto';
 import * as bcrypt from 'bcrypt';
-import { user_password } from 'models/usersSchema';
+import { user_password } from 'models/User/usersSchema';
 // user-password.service.ts
 
 @Injectable()
@@ -15,7 +15,7 @@ export class UserPasswordService {
   async createOrUpdate(
     createUserPasswordDto: CreateUserPasswordDto,
     user_id?: number,
-  ): Promise<void> {
+  ): Promise<any> {
     const user = await this.findOne(user_id);
 
     if (createUserPasswordDto.Password !== createUserPasswordDto.retypePass) {
@@ -45,13 +45,14 @@ export class UserPasswordService {
         uspa_passwordsalt: salt,
       });
     } else {
-      await user_password.update(
+      const berhasil = await user_password.update(
         {
           uspa_passwordhash: passHash,
           uspa_passwordsalt: salt,
         },
         { where: { uspa_user_id: user_id } },
       );
+      return { message: 'berhasil', status: 200 };
     }
   }
 }

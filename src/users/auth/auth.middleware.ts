@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { verify } from 'jsonwebtoken';
-import { users } from 'models/usersSchema';
+import { users } from 'models/User/usersSchema';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
