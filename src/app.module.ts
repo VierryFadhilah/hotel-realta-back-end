@@ -22,17 +22,12 @@ import { UsersTModule } from './users/users.module';
       synchronize: true,
     }),
     UsersTModule,
-    HotelModule,
-    HrModule,
-
     PaymentModule,
     HotelModule,
     HrModule,
     RestoTModule,
     PurchasingModule,
-
     MasterModule,
-    PaymentModule,
   ],
 })
 export class AppModule {}
