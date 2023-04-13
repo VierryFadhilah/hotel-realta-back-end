@@ -29,7 +29,7 @@ export class employee_pay_history
 {
   @ForeignKey(() => employee)
   @Column({ primaryKey: true, type: DataType.INTEGER })
-  @Index({ name: 'pk_ephi', using: 'btree', unique: true })
+  @Index({ name: 'pk_ephi', using: 'btree', unique: false })
   ephi_emp_id!: number;
 
   @Column({ primaryKey: true, type: DataType.DATE(6) })
