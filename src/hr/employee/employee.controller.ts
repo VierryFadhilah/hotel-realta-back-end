@@ -10,6 +10,7 @@ import {
   Put,
   UseInterceptors,
   UploadedFile,
+  HttpStatus,
 } from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
@@ -31,7 +32,29 @@ const storage = diskStorage({
 @Controller('hr/employee')
 export class EmployeeController {
   constructor(private readonly employeeService: EmployeeService) {}
+  @Get('usersByName')
+  getUsersByName(@Query('search') search: string) {
+    return this.employeeService.getUserByName(search);
+  }
 
+  @Get('userprofile/:id')
+  async getUserByIdProfile(@Param('id') id: string) {
+    try {
+      const result = await this.employeeService.getUserJoinById(+id);
+
+      if (result.length === 0) {
+        return { statusCode: HttpStatus.NOT_FOUND, message: 'User not found' };
+      }
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'User found',
+        data: result[0],
+      };
+    } catch (e) {
+      return { statusCode: HttpStatus.BAD_REQUEST, message: e };
+    }
+  }
   @Post()
   @UseInterceptors(FileInterceptor('image', { storage }))
   create(

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import {
@@ -16,11 +16,69 @@ import { Sequelize } from 'sequelize-typescript';
 import { unlink, unlinkSync } from 'fs';
 import { join } from 'path';
 import { users } from 'models/HR/usersSchema';
-import { Op } from 'sequelize';
+import { Op, QueryTypes } from 'sequelize';
 
 @Injectable()
 export class EmployeeService {
   constructor(private readonly sequelize: Sequelize) {}
+
+  async getUserByName(search: string) {
+    try {
+      const result = await users.findAll({
+        where: {
+          user_full_name: {
+            [Op.iLike]: `%${search}%`,
+          },
+          '$employee.emp_id$': null,
+        },
+        limit: 5,
+        include: [
+          {
+            model: employee,
+            attributes: ['emp_id'],
+          },
+        ],
+      });
+      // // console.log(result);
+      // return result;
+      const resultList = [];
+      for (let i = 0; i < result.length; i++) {
+        const element = result[i];
+        resultList.push({
+          user_id: element.user_id,
+          user_full_name: element.user_full_name,
+        });
+      }
+
+      if (result.length === 0) {
+        return {
+          statusCode: HttpStatus.OK,
+          message: 'Users Not Found',
+          data: resultList,
+        };
+      }
+
+      return {
+        statusCode: HttpStatus.OK,
+        message: 'Users Found',
+        data: resultList,
+      };
+    } catch (e) {
+      return { statusCode: HttpStatus.BAD_REQUEST, message: e };
+    }
+  }
+
+  async getUserJoinById(id: number) {
+    return await this.sequelize.query(
+      'SELECT * FROM users.get_user_data(:user_id);',
+      {
+        replacements: {
+          user_id: id,
+        },
+        type: QueryTypes.SELECT,
+      },
+    );
+  }
   create(createEmployeeDto: CreateEmployeeDto): any;
   create(createEmployeeDto: CreateEmployeeDto, file: Express.Multer.File): any;
   async create(
@@ -186,6 +244,7 @@ export class EmployeeService {
 
           order: [['ephi_rate_change_date', 'DESC']],
           attributes: [
+            'ephi_emp_id',
             'ephi_rate_change_date',
             'ephi_rate_salary',
             'ephi_pay_frequence',
@@ -213,10 +272,10 @@ export class EmployeeService {
         },
       ],
     });
+
     const emDeHi = result.employee_department_histories[0];
     const emPaHa = result.employee_pay_histories[0];
-
-    // return result;
+    return result;
     return {
       statusCode: 200,
       message: 'success',

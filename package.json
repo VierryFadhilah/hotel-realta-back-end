@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "stg:hr" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s human_resource -u postgres -x root -o models/humanResourceSchema --indices --associations-file ./association.csv",
+    "stg:hr" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s human_resource -u postgres -x root -o models/HR/humanResourceSchema --indices --associations-file ./association.csv",
     "stg:users" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s users -u postgres -x root -o models/usersSchema --indices --associations-file ./association.csv",
     "stg:master" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s master -u postgres -x root -o models/masterSchema --indices --associations-file ./association.csv",    
     "stg:hotel" : "stg -D postgres -o models/hotelSchema/ -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv -s hotel",

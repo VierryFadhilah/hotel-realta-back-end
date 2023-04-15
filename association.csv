@@ -38,7 +38,6 @@ N:N, cagro_id, poli_id, master.category_group, master.policy, master.policy_cate
 1:N,reme_id,remp_reme_id,resto_menus,resto_menu_photos
 1:N,reme_id,omde_reme_id,resto_menus,order_menu_detail
 1:N,orme_id,omde_orme_id,order_menus,order_menu_detail
-
 1:N, vendor_entity_id, pohe_vendor_id, vendor, purchase_order_header
 1:1, stock_id, pode_stock_id, stocks, purchase_order_detail
 1:1, stock_id, vepro_stock_id, stocks, vendor_product
