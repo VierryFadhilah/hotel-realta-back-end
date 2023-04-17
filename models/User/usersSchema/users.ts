@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasOne,
 } from 'sequelize-typescript';
+import { user_profiles } from './user_profiles';
 
 export interface usersAttributes {
   user_id?: number;
@@ -61,4 +63,7 @@ export class users
   length: number;
   image: any;
   static photoProfile: any;
+
+  @HasOne(() => user_profiles, { sourceKey: 'user_id' })
+  user_profiles?: user_profiles;
 }

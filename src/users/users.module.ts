@@ -16,6 +16,7 @@ import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
 // import { employee } from 'models/humanResourceSchema';
 import { UserPasswordModule } from './user-password/user-password.module';
+import { MailModule } from './mailing/mailing.module';
 // ad
 
 @Module({
@@ -27,6 +28,7 @@ import { UserPasswordModule } from './user-password/user-password.module';
       user_members,
       user_bonus_points,
       user_roles,
+
       // employee,
     ]),
     UsersModule,
@@ -35,6 +37,7 @@ import { UserPasswordModule } from './user-password/user-password.module';
     RolesModule,
     AuthModule,
     UserPasswordModule,
+    MailModule,
   ],
 })
 export class UsersTModule {}

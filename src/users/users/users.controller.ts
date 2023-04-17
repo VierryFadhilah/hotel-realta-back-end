@@ -53,7 +53,7 @@ export class UsersController {
     try {
       const result = await this.usersService.getUserJoinById(+id);
 
-      if (result.length === 0) {
+      if (!result) {
         return { statusCode: HttpStatus.NOT_FOUND, message: 'User not found' };
       }
 
@@ -122,6 +122,7 @@ export class UsersController {
           new MaxFileSizeValidator({ maxSize: 2000000 }),
           new FileTypeValidator({ fileType: /(jpg|jpeg|png)$/ }),
         ],
+        fileIsRequired: false,
       }),
     )
     file: Express.Multer.File,

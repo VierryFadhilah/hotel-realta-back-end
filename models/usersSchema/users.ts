@@ -12,6 +12,7 @@ import {
 import { work_orders } from '../humanResourceSchema/work_orders';
 import { employee } from '../humanResourceSchema/employee';
 import { user_accounts } from '../schemaPayment/user_accounts';
+import { user_profiles } from 'models/User/usersSchema';
 
 export interface usersAttributes {
   user_id?: number;

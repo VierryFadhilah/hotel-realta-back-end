@@ -102,6 +102,9 @@ export class UsersService {
         usro_user_id: result.user_id,
         usro_role_id: 1,
       });
+      const uspro = await user_profiles.create({
+        uspro_user_id: result.user_id,
+      });
       return {
         statusCode: 200,
         message: 'Employee success created',
@@ -111,7 +114,7 @@ export class UsersService {
     }
   }
   async getUserJoinById(id: number) {
-    return await this.sequelize.query(
+    const result = await this.sequelize.query(
       'SELECT * FROM users.get_user_data(:user_id);',
       {
         replacements: {
@@ -120,9 +123,13 @@ export class UsersService {
         type: QueryTypes.SELECT,
       },
     );
+    return result[0];
   }
   async getUserById(id: number) {
-    return await users.findOne({ where: { user_id: id } });
+    return await users.findOne({
+      include: [{ model: user_profiles }],
+      where: { user_id: id },
+    });
   }
 
   async signupGuest(signupGuest: SignupGuest) {
@@ -141,12 +148,13 @@ export class UsersService {
   }
 
   async findAll() {
-    return await users.findAll();
+    return await users.findAll({
+      include: [{ model: user_profiles }],
+    });
   }
 
   async updateUser(id: number, updateUserDto: UpdateUserDto, file: any) {
     try {
-      console.log(file);
       await users.update(
         {
           user_full_name: updateUserDto.username,

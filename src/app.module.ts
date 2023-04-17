@@ -6,6 +6,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 // import { HrModule } from './hr/hr.module';
 import { UsersTModule } from './users/users.module';
 import { AuthMiddleware } from './users/auth/auth.middleware';
+// import { MailModule } from './users/mailing/mailing.module';
 @Module({
   imports: [
     SequelizeModule.forRoot({
@@ -20,6 +21,7 @@ import { AuthMiddleware } from './users/auth/auth.middleware';
       synchronize: true,
     }),
     UsersTModule,
+
     // HotelModule,
     // HrModule,
     // RestoTModule,

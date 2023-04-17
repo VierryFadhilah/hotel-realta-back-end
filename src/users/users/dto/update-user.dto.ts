@@ -1,15 +1,14 @@
-
 import { IsEmail } from 'class-validator';
 
 export class UpdateUserDto {
   username: string;
   type: 'T' | 'C' | 'I';
   company: string;
-  @IsEmail()
+  // @IsEmail()
   email: string;
   phoneNumber: string;
   photoProfile: string;
-  modifiedDate: Date;
+  // modifiedDate: Date;
   hotelId: number;
   nationalId: string;
   jobTitle: string;
