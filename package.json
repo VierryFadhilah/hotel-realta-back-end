@@ -22,8 +22,9 @@
     "stg:users" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s users -u postgres -x root -o models/usersSchema --indices --associations-file ./association.csv",
     "stg:master" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s master -u postgres -x root -o models/masterSchema --indices --associations-file ./association.csv",    
     "stg:hotel" : "stg -D postgres -o models/hotelSchema/ -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv -s hotel",
+    "stg:booking" : "stg -D postgres -o models/booking/bookingSchema/ -h localhost -p 5432 -d realta -u postgres -x fal31 --indices --associations-file ./booking.csv -s booking",
     "stg:purchasing" : "stg -D postgres -o models/purchasingSchema/ -h localhost -p 5432 -d HotelRealtaDB -u postgres -x root --indices --associations-file ./association.csv -s purchasing",
-    "stg:paynment": "stg -D postgres -o models/schemaPayment -s payment -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv  "
+    "stg:payment": "stg -D postgres -o models/schemaPayment -s payment -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv  "
     
   },
   "dependencies": {
@@ -78,7 +79,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "fal31Dir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
