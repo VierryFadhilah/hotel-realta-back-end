@@ -18,13 +18,13 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "stg:hr" : "stg -D postgres -h localhost -p 5432 -d realta -s human_resource -u postgres -x fal31 -o models/booking/humanResourceSchema --indices --associations-file ./booking.csv",
-    "stg:users" : "stg -D postgres -h localhost -p 5432 -d realta -s users -u postgres -x fal31 -o models/booking/usersSchema --indices --associations-file ./booking.csv",
-    "stg:master" : "stg -D postgres -h localhost -p 5432 -d realta -s master -u postgres -x fal31 -o models/booking/masterSchema --indices --associations-file ./booking.csv",    
-    "stg:hotel" : "stg -D postgres -o models/booking/hotelSchema/ -h localhost -p 5432 -d realta -u postgres -x fal31 --indices --associations-file ./booking.csv -s hotel",
+    "stg:hr" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s human_resource -u postgres -x root -o models/HR/humanResourceSchema --indices --associations-file ./association.csv",
+    "stg:users" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s users -u postgres -x root -o models/usersSchema --indices --associations-file ./association.csv",
+    "stg:master" : "stg -D postgres -h localhost -p 5432 -d hotel-realta -s master -u postgres -x root -o models/masterSchema --indices --associations-file ./association.csv",    
+    "stg:hotel" : "stg -D postgres -o models/hotelSchema/ -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv -s hotel",
     "stg:booking" : "stg -D postgres -o models/booking/bookingSchema/ -h localhost -p 5432 -d realta -u postgres -x fal31 --indices --associations-file ./booking.csv -s booking",
-    "stg:purchasing" : "stg -D postgres -o models/booking/purchasingSchema/ -h localhost -p 5432 -d HotelRealtaDB -u postgres -x fal31 --indices --associations-file ./booking.csv -s purchasing",
-    "stg:payment": "stg -D postgres -o models/booking/schemaPayment -s payment -h localhost -p 5432 -d realta -u postgres -x fal31 --indices --associations-file ./booking.csv  "
+    "stg:purchasing" : "stg -D postgres -o models/purchasingSchema/ -h localhost -p 5432 -d HotelRealtaDB -u postgres -x root --indices --associations-file ./association.csv -s purchasing",
+    "stg:payment": "stg -D postgres -o models/schemaPayment -s payment -h localhost -p 5432 -d hotel-realta -u postgres -x root --indices --associations-file ./association.csv  "
     
   },
   "dependencies": {

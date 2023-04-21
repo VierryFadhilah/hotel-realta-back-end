@@ -60,7 +60,7 @@ export class UsersController {
       return {
         statusCode: HttpStatus.OK,
         message: 'User found',
-        data: result[0],
+        data: result,
       };
     } catch (e) {
       return { statusCode: HttpStatus.BAD_REQUEST, message: e };

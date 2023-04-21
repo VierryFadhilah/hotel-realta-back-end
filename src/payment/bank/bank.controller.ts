@@ -14,7 +14,7 @@ export class BankController {
 
   @Get()
   findAll( @Query('search') search: any):Promise<any> {
-    return this.bankService.findAll({search});
+    return this.bankService.findAll(search);
   }
 
   @Get(':id')
@@ -23,8 +23,8 @@ export class BankController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() bankDto: BankDto) {
-    return this.bankService.update(+id, bankDto);
+  update(@Param('id') id: number, @Body() bankDto: BankDto) {
+    return this.bankService.update(id, bankDto);
   }
 
   @Delete(':id')

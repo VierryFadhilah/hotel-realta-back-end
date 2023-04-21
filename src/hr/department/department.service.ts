@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { department } from 'models/humanResourceSchema';
+import { department } from 'models/HR/humanResourceSchema';
 import { Op } from 'sequelize';
 
 @Injectable()

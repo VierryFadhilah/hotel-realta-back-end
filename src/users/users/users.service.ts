@@ -13,15 +13,14 @@ import {
   user_password,
   user_roles,
   user_profiles,
-} from 'models/usersSchema';
-import { QueryTypes } from 'sequelize';
+} from 'models/User/usersSchema';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import path from 'path';
 import { UpdateUserDto } from './dto/update-user.dto';
 import e from 'express';
 import { unlink } from 'fs';
-import { Op } from 'sequelize';
+import { Op, QueryTypes } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { employee } from 'models/humanResourceSchema';
 
@@ -99,6 +98,10 @@ export class UsersService {
         uspa_passwordhash: passHash,
         uspa_passwordsalt: salt,
       });
+      const role = await user_roles.create({
+        usro_user_id: result.user_id,
+        usro_role_id: 1,
+      });
       return {
         statusCode: 200,
         message: 'Employee success created',
@@ -124,13 +127,17 @@ export class UsersService {
 
   async signupGuest(signupGuest: SignupGuest) {
     try {
-      console.log('terpanggil');
+      console.log('signup guest', signupGuest);
       const result = await users.create({
         user_phone_number: signupGuest.phone_number,
       });
+      const role = await user_roles.create({
+        usro_user_id: result.user_id,
+        usro_role_id: 1,
+      });
       return { statusCode: 201, message: 'Guest success created' };
     } catch (e) {}
-    return { statusCode: HttpStatus.BAD_REQUEST, message: e };
+    return { statusCode: HttpStatus.BAD_REQUEST, message: 'already created' };
   }
 
   async findAll() {

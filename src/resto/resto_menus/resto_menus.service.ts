@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { resto_menu_photos, resto_menus } from 'models/restoSchema';
+import { resto_menu_photos, resto_menus } from 'models/Resto/restoSchema';
 import { Op } from 'sequelize';
 import { CreateRestoMenuDto } from './dto/create-resto_menu.dto';
 import { UpdateRestoMenuDto } from './dto/update-resto_menu.dto';
+import { join } from 'path';
+import * as fs from 'fs';
 
 @Injectable()
 export class RestoMenusService {
@@ -137,15 +139,46 @@ export class RestoMenusService {
     }
   }
 
-  //menghapus data yang pada resto_menu berdasarkan id yang di pilih
+  //menghapus data yang pada resto_menu dan foto berdasarkan id yang di pilih
   async remove(reme_id: number): Promise<any> {
     try {
-      const result = await resto_menus.destroy({ where: { reme_id } });
-      if (!result) {
-        return { status: 400, message: `Data id ${reme_id} tidak di temukan` };
-      } else {
-        return { status: 200, message: `Data id ${reme_id} berhasil di hapus` };
+      const restoMenu = await resto_menus.findOne({
+        where: { reme_id },
+        include: [resto_menu_photos],
+      });
+
+      if (!restoMenu) {
+        return { status: 400, message: `Data id ${reme_id} tidak ditemukan` };
       }
+
+      // hapus foto jika ada
+      if (restoMenu.resto_menu_photos.length) {
+        for (const photo of restoMenu.resto_menu_photos) {
+          const imageUrl = photo.remp_photo_filename;
+          const imagefilename = imageUrl.split('/').pop();
+          const imagePath = join(
+            __dirname,
+            '../../../../uploads/image/resto/',
+            imagefilename,
+          );
+          console.log(imagePath);
+          if (fs.existsSync(imagePath)) {
+            fs.unlinkSync(imagePath);
+          }
+          await resto_menu_photos.destroy({
+            where: { remp_id: photo.remp_id },
+          });
+        }
+      }
+
+      // hapus menu
+      await resto_menus.destroy({ where: { reme_id } });
+
+      return {
+        status: 200,
+        message: `Data id ${reme_id} berhasil dihapus`,
+        data: restoMenu,
+      };
     } catch (error) {
       return { status: 400, message: error };
     }
